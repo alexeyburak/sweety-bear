@@ -8,6 +8,11 @@
 <h1>Sweety Bear</h1>
 <h4>Инфа</h4>
 
+<tr th:each="image : ${images}">
+    <!--/*@thymesVar id="image" type="image"*/-->
+    <img th:src="@{/images/{id}(id=${image.id})}" height="60px"/><br><br>
+</tr>
+
 <b> Название</b> <p th:utext="${product.title}"></p>
 <b> Описание</b> <p th:utext="${product.description}"></p>
 <b> Цeна</b> <p th:utext="${product.price}"></p>

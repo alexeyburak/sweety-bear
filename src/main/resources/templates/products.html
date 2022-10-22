@@ -21,18 +21,21 @@
 </tr>
 
 New Product
-<form action="/product/create" method="post">
-    <input type="text" name="title"/>
+<form action="/product/create" method="post" enctype="multipart/form-data">
+    Название товара <input type="text" name="title"/>
     <br>
-    <input type="text" name="description"/>
+    Описание товара <input type="text" name="description"/>
     <br>
-    <input type="number" name="price"/>
+    Цена товара <input type="number" name="price"/>
     <br>
-    <input type="number" name="weight"/>
+    Вес товара <input type="number" name="weight"/>
     <br>
-    <input type="text" name="availability"/>
+    Наличие товара <input type="text" name="availability"/>
     <br>
-    <input type="submit" value="New">
+    Первое фото <input type="file" name="file1"/>
+    Второе фото <input type="file" name="file2"/>
+
+    <input type="submit" value="Добавить">
 
 </form>
 </body>
