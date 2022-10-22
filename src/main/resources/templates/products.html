@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" ><head>
+    <meta charset="UTF-8">
+    <title>Sweety Bear</title>
+</head>
+<body>
+
+<h1>Sweety Bear</h1>
+<h4>Сладости</h4>
+
+<form action="/" method="get">
+    Поиск <input type="text" name="title"><br>
+    <input type="submit" value="Поиск">
+</form>
+
+<tr th:each="product : ${products}">
+    <!--/*@thymesVar id="product" type="product"*/-->
+    <td th:utext="${product.title}">Full Name</td>
+    <td th:utext="${product.description}">Email</td>
+    <td ><a th:href="@{/product/{id}(id=${product.id})}">Подробнее</a></td>
+</tr>
+
+New Product
+<form action="/product/create" method="post">
+    <input type="text" name="title"/>
+    <br>
+    <input type="text" name="description"/>
+    <br>
+    <input type="number" name="price"/>
+    <br>
+    <input type="number" name="weight"/>
+    <br>
+    <input type="text" name="availability"/>
+    <br>
+    <input type="submit" value="New">
+
+</form>
+</body>
+</html>
