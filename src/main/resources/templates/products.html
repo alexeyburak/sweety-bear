@@ -6,12 +6,21 @@
 <body>
 
 <h1>Sweety Bear</h1>
-<h4>Сладости</h4>
+<h4>Сладости | <a href="/login">Войти</a> </h4>
+
+</hr>
+
+<form th:action="@{/logout}" method="post">
+    <input type="hidden" name="_csrf" value="${_csrf.token}"><br>
+    <input type="submit" value="Выйти">
+</form>
+
 
 <form action="/" method="get">
     Поиск <input type="text" name="title"><br>
     <input type="submit" value="Поиск">
 </form>
+</hr>
 
 <tr th:each="product : ${products}">
     <!--/*@thymesVar id="product" type="product"*/-->
@@ -19,6 +28,7 @@
     <td th:utext="${product.description}">Email</td>
     <td ><a th:href="@{/product/{id}(id=${product.id})}">Подробнее</a></td>
 </tr>
+</hr>
 
 New Product
 <form action="/product/create" method="post" enctype="multipart/form-data">

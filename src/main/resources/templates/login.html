@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+<h4>Авторизация</h4>
+
+<form th:action="@{/login}" method="post">
+  Почта <input type="email" name="username"><br><br>
+  Пароль<input type="password" name="password"><br><br>
+
+  <input type="hidden" name="_csrf" value="${_csrf.token}"><br>
+  <input type="submit" value="Вход">
+</form>
+
+<a href="/registration">Зарегаться</a>
+
+</body>
+</html>
