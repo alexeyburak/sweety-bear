@@ -31,7 +31,7 @@
 </hr>
 
 New Product
-<form action="/product/create" method="post" enctype="multipart/form-data">
+<form th:action="@{/product/create}" method="post" enctype="multipart/form-data">
     Название товара <input type="text" name="title"/>
     <br>
     Описание товара <input type="text" name="description"/>
