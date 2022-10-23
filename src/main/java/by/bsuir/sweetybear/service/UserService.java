@@ -9,6 +9,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.List;
 
 /**
  * sweety-bear
@@ -29,14 +30,29 @@ public class UserService {
         if (userRepository.findByEmail(email) != null) return false;
         user.setActive(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.getRoles().add(Role.ROLE_USER);
+        user.getRoles().add(Role.ROLE_ADMIN);
         log.info("Saving User. Email {}", email);
         userRepository.save(user);
         return true;
     }
 
+    public List<User> userList() {
+        System.out.println(userRepository.findAll());
+        return userRepository.findAll();
+    }
+
     public User getUserByPrincipal(Principal principal) {
         if (principal == null) return new User();
         return userRepository.findByEmail(principal.getName());
+    }
+
+    public void banUser(Long id) {
+        User user = userRepository.findById(id).orElse(null);
+        if (user != null) {
+            user.setActive(false);
+            log.info("Ban user. Id: {}, Email: {}", user.getId(), user.getEmail());
+        }
+        assert user != null;
+        userRepository.save(user);
     }
 }

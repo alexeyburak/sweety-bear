@@ -12,17 +12,22 @@
 
 <!-- IF CUSTOMER IS ANONYMOUS -->
 <div th:if="${user.email}">
-
     <div th:text=" 'Hi,' + ${user.name}">Hi, User</div>
     <form th:action="@{/logout}" method="post">
         <input type="hidden" name="_csrf" value="${_csrf.token}"><br>
         <input type="submit" value="Выйти">
     </form>
+    <div th:if="${user.isAdmin()}">
+        <a href="/admin">Панель админа</a>
+
+    </div>
 </div>
 <!-- ELSE -->
 <div th:unless="${user.email}">
     <a href="/login">Войти</a>
 </div>
+
+
 
 
 <form action="/" method="get">

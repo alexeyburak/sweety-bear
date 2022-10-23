@@ -6,10 +6,8 @@ import by.bsuir.sweetybear.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -36,10 +34,11 @@ public class ProductController {
     }
 
     @GetMapping("/product/{id}")
-    public String productInfo(@PathVariable Long id, Model model) {
+    public String productInfo(@PathVariable Long id, Model model, Principal principal) {
         Product product = productService.getProductById(id);
         model.addAttribute("product", product);
         model.addAttribute("images", product.getImages());
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
         return "product-info";
     }
 
@@ -55,8 +54,18 @@ public class ProductController {
     public String deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return "redirect:/";
-
     }
 
+    @GetMapping("/product/edit/{id}")
+    public String edit(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("product", productService.getProductById(id));
+        return "product-edit";
+    }
+
+    @PostMapping("/product/edit/{id}")
+    public String update(@ModelAttribute("product") Product product, @PathVariable("id") Long id) {
+        productService.updateProductById(id, product);
+        return "redirect:/product/{id}";
+    }
 
 }

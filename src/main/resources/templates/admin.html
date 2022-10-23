@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" ><head>
+    <meta charset="UTF-8">
+    <title>Sweety Bear</title>
+</head>
+<body>
+
+<h1>Sweety Bear</h1>
+<h4>Панель админа</h4>
+
+</hr>
+
+<table border="1">
+    <tr>
+        <th>Email</th>
+        <th>Активность</th>
+        <th>Роли</th>
+        <th>Бан</th>
+        <th>Редактирование</th>
+        <th>Посмотреть информацию</th>
+    </tr>
+<!--    <div th:each="user : ${users}">-->
+
+<!--        <tr>-->
+<!--            <th th:utext="${user.email}">Email</th>-->
+<!--            <th">-->
+<!--                <div th:if="${user.active}">-->
+<!--                    true-->
+<!--                </div>-->
+<!--                <div th:unless="${user.active}">-->
+<!--                    false-->
+<!--                </div>-->
+<!--            </th>-->
+<!--            <th >-->
+<!--                <div th:each="role : ${user.roles}">-->
+<!--                    <div th:utext="${role}">,</div>-->
+<!--                </div>-->
+<!--            </th>-->
+<!--            <th>-->
+<!--                <form th:action="@{/admin/user/ban/{id}(id=${user.id})}" method="post">-->
+<!--                <input type="hidden" name="_csrf" value="${_csrf.token}"><br>-->
+<!--                <input type="submit" th:value="Бан">-->
+<!--                </form>-->
+<!--            </th>-->
+<!--            <th><a th:href="@{/admin/user/edit/{id}(id=${user.id})}">Редактирование</a></th>-->
+<!--            <th><a th:href="@{/user/{id}(id=${user.id})}">Подробнее</a></th>-->
+<!--        </tr>-->
+
+<!--        <div th:unless="${user.email}">-->
+<!--            Пользователей нет-->
+<!--        </div>-->
+<!--    </div>-->
+</table>
+
+
+</body>
+</html>

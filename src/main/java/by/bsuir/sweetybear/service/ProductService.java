@@ -66,5 +66,15 @@ public class ProductService {
         return productRepository.findById(id).orElse(null);
     }
 
-
+    public void updateProductById(Long id, Product productUpdate) {
+        log.info("Update product. Id: {}", id);
+        Product product = productRepository.findById(id).orElse(null);
+        assert product != null;
+        product.setTitle(productUpdate.getTitle());
+        product.setDescription(productUpdate.getDescription());
+        product.setPrice(productUpdate.getPrice());
+        product.setWeight(productUpdate.getWeight());
+        product.setAvailability(productUpdate.isAvailability());
+        productRepository.save(product);
+    }
 }

@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>EDit</title>
+</head>
+<body>
+
+<form th:method="post" th:action="@{/product/edit/{id}(id=${product.getId()})}" th:object="${product}">
+    <div>
+        <label for="title">Enter title: </label>
+        <input type="text" th:field="*{title}" id="title"/>
+        <br/>
+        <label for="description">Enter description: </label>
+        <input type="text" th:field="*{description}" id="description"/>
+        <br/>
+        <label for="price">Enter description: </label>
+        <input type="number" th:field="*{price}" id="price"/>
+        <br/>
+        <label for="weight">Enter weight: </label>
+        <input type="number" th:field="*{weight}" id="weight"/>
+        <br/>
+        <label for="availability">Enter availability: </label>
+        <input type="text" th:field="*{availability}" id="availability"/>
+        <br/>
+    </div>
+    <div>
+        <input type="hidden" name="_csrf" value="${_csrf.token}">
+        <input type="submit" value="Update" />
+    </div>
+</form>
+
+</body>
+</html>

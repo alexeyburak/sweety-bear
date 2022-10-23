@@ -19,12 +19,16 @@
 <b> вес</b> <p th:utext="${product.weight}"></p>
 <b> Наличие</b> <p th:utext="${product.availability}"></p>
 
+<div th:if="${user.isAdmin()}">
+    Delete Product
+    <!--/*@thymesVar id="product" type="product"*/-->
+    <form th:action="@{/product/delete/{id}(id=${product.id})}" method="post">
+        <input type="submit" value="delete">
+    </form>
 
-New Product
-<!--/*@thymesVar id="product" type="product"*/-->
-<form th:action="@{/product/delete/{id}(id=${product.id})}" method="post">
-    <input type="submit" value="delete">
-</form>
+    Edit product
+    <a th:href="@{/product/edit/{id}(id=${product.id})}">EDIT</a>
+</div>
 
 </body>
 </html>
