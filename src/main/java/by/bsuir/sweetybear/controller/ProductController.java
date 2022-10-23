@@ -2,6 +2,7 @@ package by.bsuir.sweetybear.controller;
 
 import by.bsuir.sweetybear.model.Product;
 import by.bsuir.sweetybear.service.ProductService;
+import by.bsuir.sweetybear.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -12,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.security.Principal;
 
 /**
  * sweety-bear
@@ -24,10 +26,12 @@ import java.io.IOException;
 public class ProductController {
 
     private final ProductService productService;
+    private final UserService userService;
 
     @GetMapping("/")
-    public String products(@RequestParam(name = "title", required = false) String title, Model model) {
+    public String products(@RequestParam(name = "title", required = false) String title, Principal principal, Model model) {
         model.addAttribute("products", productService.listProducts(title));
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
         return "products";
     }
 

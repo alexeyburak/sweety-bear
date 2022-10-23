@@ -6,14 +6,23 @@
 <body>
 
 <h1>Sweety Bear</h1>
-<h4>Сладости | <a href="/login">Войти</a> </h4>
+<h4>Сладости</h4>
 
 </hr>
 
-<form th:action="@{/logout}" method="post">
-    <input type="hidden" name="_csrf" value="${_csrf.token}"><br>
-    <input type="submit" value="Выйти">
-</form>
+<!-- IF CUSTOMER IS ANONYMOUS -->
+<div th:if="${user.email}">
+
+    <div th:text=" 'Hi,' + ${user.name}">Hi, User</div>
+    <form th:action="@{/logout}" method="post">
+        <input type="hidden" name="_csrf" value="${_csrf.token}"><br>
+        <input type="submit" value="Выйти">
+    </form>
+</div>
+<!-- ELSE -->
+<div th:unless="${user.email}">
+    <a href="/login">Войти</a>
+</div>
 
 
 <form action="/" method="get">
@@ -30,23 +39,26 @@
 </tr>
 </hr>
 
-New Product
-<form th:action="@{/product/create}" method="post" enctype="multipart/form-data">
-    Название товара <input type="text" name="title"/>
-    <br>
-    Описание товара <input type="text" name="description"/>
-    <br>
-    Цена товара <input type="number" name="price"/>
-    <br>
-    Вес товара <input type="number" name="weight"/>
-    <br>
-    Наличие товара <input type="text" name="availability"/>
-    <br>
-    Первое фото <input type="file" name="file1"/>
-    Второе фото <input type="file" name="file2"/>
+<div th:if="${user.email}">
+    New Product
+    <form th:action="@{/product/create}" method="post" enctype="multipart/form-data">
+        Название товара <input type="text" name="title"/>
+        <br>
+        Описание товара <input type="text" name="description"/>
+        <br>
+        Цена товара <input type="number" name="price"/>
+        <br>
+        Вес товара <input type="number" name="weight"/>
+        <br>
+        Наличие товара <input type="text" name="availability"/>
+        <br>
+        Первое фото <input type="file" name="file1"/>
+        Второе фото <input type="file" name="file2"/>
 
-    <input type="submit" value="Добавить">
+        <input type="submit" value="Добавить">
+    </form>
 
-</form>
+</div>
+
 </body>
 </html>
