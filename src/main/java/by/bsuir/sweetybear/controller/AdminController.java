@@ -24,10 +24,11 @@ import org.springframework.web.bind.annotation.PostMapping;
 public class AdminController {
 
     private final UserService userService;
+    private final ProductService productService;
 
     @GetMapping("/admin")
     private String admin(Model model) {
-//        model.addAttribute("users", userService.userList());
+        model.addAttribute("users", userService.userList());
         return "admin";
     }
 
@@ -35,6 +36,18 @@ public class AdminController {
     public String userBan(@PathVariable("id") Long id) {
         userService.banUser(id);
         return "redirect:/admin";
+    }
+
+    @GetMapping("/product/edit/{id}")
+    public String edit(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("product", productService.getProductById(id));
+        return "product-edit";
+    }
+
+    @PostMapping("/product/edit/{id}")
+    public String update(@ModelAttribute("product") Product product, @PathVariable("id") Long id) {
+        productService.updateProductById(id, product);
+        return "redirect:/product/{id}";
     }
 
 }

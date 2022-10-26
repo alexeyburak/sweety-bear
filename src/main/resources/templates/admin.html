@@ -52,6 +52,10 @@
 <!--    </div>-->
 </table>
 
+<div th:each="user : ${users}">
+    <h1 th:utext="${user.email}">email</h1>
+</div>
+
 
 </body>
 </html>

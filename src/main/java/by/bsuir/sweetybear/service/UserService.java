@@ -8,6 +8,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.security.Principal;
 import java.util.List;
 
@@ -37,7 +38,6 @@ public class UserService {
     }
 
     public List<User> userList() {
-        System.out.println(userRepository.findAll());
         return userRepository.findAll();
     }
 
