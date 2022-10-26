@@ -8,7 +8,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
-import javax.transaction.Transactional;
 import java.security.Principal;
 import java.util.List;
 
@@ -41,6 +40,10 @@ public class UserService {
         return userRepository.findAll();
     }
 
+    public User getUserById(Long id) {
+        return userRepository.findById(id).orElse(null);
+    }
+
     public User getUserByPrincipal(Principal principal) {
         if (principal == null) return new User();
         return userRepository.findByEmail(principal.getName());
@@ -53,6 +56,16 @@ public class UserService {
             log.info("Ban user. Id: {}, Email: {}", user.getId(), user.getEmail());
         }
         assert user != null;
+        userRepository.save(user);
+    }
+
+    public void updateUserById(Long id, User userUpdate) {
+        log.info("Update user. Id: {}", id);
+        User user = getUserById(id);
+        assert user != null;
+        user.setName(userUpdate.getName());
+        user.setEmail(userUpdate.getEmail());
+        user.setPassword(passwordEncoder.encode(userUpdate.getPassword()));
         userRepository.save(user);
     }
 }

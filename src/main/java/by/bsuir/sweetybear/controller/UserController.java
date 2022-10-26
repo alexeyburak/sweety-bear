@@ -6,6 +6,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 /**
@@ -32,5 +34,17 @@ public class UserController {
             return "registration";
         }
         return "redirect:/login";
+    }
+
+    @GetMapping("/user/edit/{id}")
+    public String edit(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("user", userService.getUserById(id));
+        return "account-edit";
+    }
+
+    @PostMapping("/user/edit/{id}")
+    public String update(@ModelAttribute("user") User user, @PathVariable("id") Long id) {
+        userService.updateUserById(id, user);
+        return "redirect:/";
     }
 }

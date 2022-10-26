@@ -17,6 +17,7 @@
         <input type="hidden" name="_csrf" value="${_csrf.token}"><br>
         <input type="submit" value="Выйти">
     </form>
+    <a th:href="@{/user/edit/{id}(id=${user.id})}">Редактирование аккаунта</a>
     <div th:if="${user.isAdmin()}">
         <a href="/admin">Панель админа</a>
 

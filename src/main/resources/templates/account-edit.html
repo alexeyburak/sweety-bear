@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Edit account</title>
+</head>
+<body>
+    <form th:method="post" th:action="@{/user/edit/{id}(id=${user.getId()})}" th:object="${user}">
+        <div>
+            <label for="name">Enter name: </label>
+            <input type="text" th:field="*{name}" id="name"/>
+            <br/>
+            <label for="email">Enter email: </label>
+            <input type="email" th:field="*{email}" id="email"/>
+            <br/>
+            <label for="password">Enter password: </label>
+            <input type="text" th:field="*{password}" id="password" placeholder=""/>
+            <br/>
+        </div>
+        <div>
+            <input type="hidden" name="_csrf" value="${_csrf.token}">
+            <input type="submit" value="Update account" />
+        </div>
+    </form>
+</body>
+</html>
