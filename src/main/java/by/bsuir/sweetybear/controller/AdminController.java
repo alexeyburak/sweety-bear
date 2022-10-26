@@ -7,10 +7,13 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+
+import javax.validation.Valid;
 
 /**
  * sweety-bear
@@ -45,7 +48,11 @@ public class AdminController {
     }
 
     @PostMapping("/product/edit/{id}")
-    public String update(@ModelAttribute("product") Product product, @PathVariable("id") Long id) {
+    public String update(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult, Model model,
+                         @PathVariable("id") Long id) {
+        if (bindingResult.hasErrors()) {
+            return "product-edit";
+        }
         productService.updateProductById(id, product);
         return "redirect:/product/{id}";
     }

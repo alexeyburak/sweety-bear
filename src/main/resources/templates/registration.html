@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html xmlns:th="http://www.thymeleaf.org"  lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
@@ -7,17 +7,25 @@
 <body>
 <h4>Регистрация</h4>
 
-<form  method="post" th:action="@{/registration}" >
-    Имя пользователя <input type="text" name="name" ><br><br>
-    Почта <input type="email" name="email" ><br><br>
-    Пароль <input type="password" name="password"><br><br>
+<form th:method="post" th:action="@{/registration}" th:object="${user}">
+    <label for="name">Enter name: </label>
+    <input type="text" th:field="*{name}" id="name"/>
+    <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"> Name Error</div><br><br>
+
+    <label for="email">Enter email: </label>
+    <input type="text" th:field="*{email}" id="email"/>
+    <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div><br><br>
+
+    <label for="password">Enter password: </label>
+    <input type="password"  th:field="*{password}" id="password"/>
+    <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"> Name Error</div><br><br>
 
     <input type="hidden" name="_csrf" value="${_csrf.token}"><br>
     <input type="submit" value="Зарегаться">
 </form>
 
 <div th:if="errorMessage">
-    <h2 th:utext="${errorMessage}"></h2>
+    <h4 th:utext="${errorMessage}"></h4>
 </div>
 
 <a href="/login">Вход</a>
