@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" ><head>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"  lang="en"><head>
     <meta charset="UTF-8">
     <title>Sweety Bear</title>
 </head>
@@ -10,7 +10,6 @@
 
 </hr>
 
-<!-- IF CUSTOMER IS ANONYMOUS -->
 <div th:if="${user.email}">
     <div th:text=" 'Hi,' + ${user.name}">Hi, User</div>
     <form th:action="@{/logout}" method="post">
@@ -29,8 +28,6 @@
 </div>
 
 
-
-
 <form action="/" method="get">
     Поиск <input type="text" name="title"><br>
     <input type="submit" value="Поиск">
@@ -47,16 +44,21 @@
 
 <div th:if="${user.email}">
     New Product
-    <form th:action="@{/product/create}" method="post" enctype="multipart/form-data">
-        Название товара <input type="text" name="title"/>
+    <form th:action="@{/product/create}" th:method="post" th:object="${product}" enctype="multipart/form-data">
+        Название товара <input type="text" th:field="*{title}" />
+        <div style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"> Name Error</div><br><br>
         <br>
-        Описание товара <input type="text" name="description"/>
+        Описание товара <input type="text" th:field="*{description}" />
+        <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"> Name Error</div><br><br>
         <br>
-        Цена товара <input type="number" name="price"/>
+        Цена товара <input type="number" th:field="*{price}"/>
+        <div style="color:red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"> Name Error</div><br><br>
         <br>
-        Вес товара <input type="number" name="weight"/>
+        Вес товара <input type="number" th:field="*{weight}" />
+        <div style="color:red" th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}"> Name Error</div><br><br>
         <br>
-        Наличие товара <input type="text" name="availability"/>
+        Наличие товара <input type="text" th:field="*{availability}" />
+        <div style="color:red" th:if="${#fields.hasErrors('availability')}" th:errors="*{availability}"> Name Error</div><br><br>
         <br>
         Первое фото <input type="file" name="file1"/>
         Второе фото <input type="file" name="file2"/>

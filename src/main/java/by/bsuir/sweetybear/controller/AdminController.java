@@ -30,7 +30,7 @@ public class AdminController {
     private final ProductService productService;
 
     @GetMapping("/admin")
-    private String admin(Model model) {
+    public String admin(Model model) {
         model.addAttribute("users", userService.userList());
         return "admin";
     }

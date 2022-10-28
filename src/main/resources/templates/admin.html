@@ -19,42 +19,42 @@
         <th>Редактирование</th>
         <th>Посмотреть информацию</th>
     </tr>
-<!--    <div th:each="user : ${users}">-->
+    <div th:each="user : ${users}">
 
-<!--        <tr>-->
-<!--            <th th:utext="${user.email}">Email</th>-->
-<!--            <th">-->
-<!--                <div th:if="${user.active}">-->
-<!--                    true-->
-<!--                </div>-->
-<!--                <div th:unless="${user.active}">-->
-<!--                    false-->
-<!--                </div>-->
-<!--            </th>-->
-<!--            <th >-->
-<!--                <div th:each="role : ${user.roles}">-->
-<!--                    <div th:utext="${role}">,</div>-->
-<!--                </div>-->
-<!--            </th>-->
-<!--            <th>-->
-<!--                <form th:action="@{/admin/user/ban/{id}(id=${user.id})}" method="post">-->
-<!--                <input type="hidden" name="_csrf" value="${_csrf.token}"><br>-->
-<!--                <input type="submit" th:value="Бан">-->
-<!--                </form>-->
-<!--            </th>-->
-<!--            <th><a th:href="@{/admin/user/edit/{id}(id=${user.id})}">Редактирование</a></th>-->
-<!--            <th><a th:href="@{/user/{id}(id=${user.id})}">Подробнее</a></th>-->
-<!--        </tr>-->
+        <tr>
+            <th th:utext="${user.email}">Email</th>
+            <th>
+                <div th:if="${user.active}">
+                    true
+                </div>
+                <div th:unless="${user.active}">
+                    false
+                </div>
+            </th>
+            <th >
+                <div th:each="role : ${user.roles}">
+                    <div th:utext="${role}">,</div>
+                </div>
+            </th>
+            <th>
+                <form th:action="@{/admin/user/ban/{id}(id=${user.id})}" method="post">
+                <input type="hidden" name="_csrf" value="${_csrf.token}"><br>
+                <input type="submit" th:value="Бан">
+                </form>
+            </th>
+            <th><a th:href="@{/admin/user/edit/{id}(id=${user.id})}">Редактирование</a></th>
+            <th><a th:href="@{/user/{id}(id=${user.id})}">Подробнее</a></th>
+        </tr>
 
-<!--        <div th:unless="${user.email}">-->
-<!--            Пользователей нет-->
-<!--        </div>-->
-<!--    </div>-->
+        <div th:unless="${user.email}">
+            Пользователей нет
+        </div>
+    </div>
 </table>
 
-<div th:each="user : ${users}">
-    <h1 th:utext="${user.email}">email</h1>
-</div>
+<!--<div th:each="user : ${users}">-->
+<!--    <h1 th:utext="${user.email}">email</h1>-->
+<!--</div>-->
 
 
 </body>

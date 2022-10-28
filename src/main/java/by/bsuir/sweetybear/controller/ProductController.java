@@ -10,6 +10,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
 
@@ -30,6 +31,7 @@ public class ProductController {
     public String products(@RequestParam(name = "title", required = false) String title, Principal principal, Model model) {
         model.addAttribute("products", productService.listProducts(title));
         model.addAttribute("user", userService.getUserByPrincipal(principal));
+        model.addAttribute("product", new Product());
         return "products";
     }
 
@@ -45,7 +47,11 @@ public class ProductController {
     @PostMapping("/product/create")
     public String createProduct(@RequestParam("file1") MultipartFile file1,
                                 @RequestParam("file2") MultipartFile file2,
-                                Product product) throws IOException {
+                                @ModelAttribute("product") @Valid Product product,
+                                BindingResult bindingResult) throws IOException {
+        if (bindingResult.hasErrors()) {
+            return "products";
+        }
         productService.saveProduct(product, file1, file2);
         return "redirect:/";
     }
