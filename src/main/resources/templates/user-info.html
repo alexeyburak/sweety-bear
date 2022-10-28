@@ -1,10 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
+<html xmlns:th="http://www.thymeleaf.org" ><head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Sweety Bear</title>
 </head>
 <body>
+
+<h1>Информация о пользователе</h1>
+
+<b> Почта </b> <p th:utext="${user.email}"></p>
+<b> Имя </b> <p th:utext="${user.name}"></p>
+<b> Дата создания </b> <p th:utext="${user.dateOfCreated}"></p>
+<div th:each="role : ${user.roles}">
+    <div th:utext="${role}">,</div>
+</div>
+<div th:if="${user.active}">
+    Активен
+</div>
+<div th:unless="${user.active}">
+    Заблокирован
+</div>
+
 
 </body>
 </html>

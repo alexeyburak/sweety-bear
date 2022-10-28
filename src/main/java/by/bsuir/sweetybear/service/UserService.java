@@ -9,7 +9,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import java.security.Principal;
+import java.util.Arrays;
 import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 /**
  * sweety-bear
@@ -52,8 +56,8 @@ public class UserService {
     public void banUser(Long id) {
         User user = userRepository.findById(id).orElse(null);
         if (user != null) {
-            user.setActive(false);
-            log.info("Ban user. Id: {}, Email: {}", user.getId(), user.getEmail());
+            user.setActive(!user.isActive());
+            log.info("Ban/Unban user. Id: {}, Email: {}", user.getId(), user.getEmail());
         }
         assert user != null;
         userRepository.save(user);
@@ -66,6 +70,20 @@ public class UserService {
         user.setName(userUpdate.getName());
         user.setEmail(userUpdate.getEmail());
         user.setPassword(passwordEncoder.encode(userUpdate.getPassword()));
+        userRepository.save(user);
+    }
+
+    public void changeUserRole(Long id, Map<String, String> form) {
+        User user = this.getUserById(id);
+        Set<String> roles = Arrays.stream(Role.values())
+                .map(Role::name)
+                .collect(Collectors.toSet());
+        user.getRoles().clear();
+        for (String key : form.keySet()) {
+            if (roles.contains(key)) {
+                user.getRoles().add(Role.valueOf(key));
+            }
+        }
         userRepository.save(user);
     }
 }

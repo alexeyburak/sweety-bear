@@ -1,6 +1,7 @@
 package by.bsuir.sweetybear.controller;
 
 import by.bsuir.sweetybear.model.Product;
+import by.bsuir.sweetybear.model.enums.Role;
 import by.bsuir.sweetybear.service.ProductService;
 import by.bsuir.sweetybear.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -8,12 +9,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.util.Map;
 
 /**
  * sweety-bear
@@ -41,14 +40,33 @@ public class AdminController {
         return "redirect:/admin";
     }
 
+    @GetMapping("/user/{id}")
+    public String userInfo(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("user", userService.getUserById(id));
+        return "user-info";
+    }
+
+    @GetMapping("/admin/user/edit/{id}")
+    public String userEdit(@PathVariable("id") Long id, Model model) {
+        model.addAttribute("user", userService.getUserById(id));
+        model.addAttribute("roles", Role.values());
+        return "user-edit";
+    }
+
+    @PostMapping("/admin/user/edit/{id}")
+    public String userUpdate(@PathVariable("id") Long id, @RequestParam Map<String, String> form) {
+        userService.changeUserRole(id, form);
+        return "redirect:/admin";
+    }
+
     @GetMapping("/product/edit/{id}")
-    public String edit(@PathVariable("id") Long id, Model model) {
+    public String productEdit(@PathVariable("id") Long id, Model model) {
         model.addAttribute("product", productService.getProductById(id));
         return "product-edit";
     }
 
     @PostMapping("/product/edit/{id}")
-    public String update(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult, Model model,
+    public String productUpdate(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult, Model model,
                          @PathVariable("id") Long id) {
         if (bindingResult.hasErrors()) {
             return "product-edit";
