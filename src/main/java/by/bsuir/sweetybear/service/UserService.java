@@ -73,17 +73,15 @@ public class UserService {
         userRepository.save(user);
     }
 
-    public void changeUserRole(Long id, Map<String, String> form) {
-        User user = this.getUserById(id);
-        Set<String> roles = Arrays.stream(Role.values())
-                .map(Role::name)
-                .collect(Collectors.toSet());
-        user.getRoles().clear();
-        for (String key : form.keySet()) {
-            if (roles.contains(key)) {
-                user.getRoles().add(Role.valueOf(key));
-            }
+    public void changeUserRole(User user) {
+        if (user.isAdmin()) {
+            user.getRoles().clear();
+            user.getRoles().add(Role.valueOf("ROLE_USER"));
+        } else {
+            user.getRoles().clear();
+            user.getRoles().add(Role.valueOf("ROLE_ADMIN"));
         }
+        log.info("Change role. User email: {}", user.getEmail());
         userRepository.save(user);
     }
 }

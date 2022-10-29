@@ -1,6 +1,7 @@
 package by.bsuir.sweetybear.controller;
 
 import by.bsuir.sweetybear.model.Product;
+import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.model.enums.Role;
 import by.bsuir.sweetybear.service.ProductService;
 import by.bsuir.sweetybear.service.UserService;
@@ -46,16 +47,16 @@ public class AdminController {
         return "user-info";
     }
 
-    @GetMapping("/admin/user/edit/{id}")
-    public String userEdit(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
+    @GetMapping("/admin/user/edit/{user}")
+    public String userEdit(@PathVariable("user") User user, Model model) {
+        model.addAttribute("user", user);
         model.addAttribute("roles", Role.values());
         return "user-edit";
     }
 
-    @PostMapping("/admin/user/edit/{id}")
-    public String userUpdate(@PathVariable("id") Long id, @RequestParam Map<String, String> form) {
-        userService.changeUserRole(id, form);
+    @PostMapping("/admin/user/edit")
+    public String userUpdate(@RequestParam("userId") User user) {
+        userService.changeUserRole(user);
         return "redirect:/admin";
     }
 

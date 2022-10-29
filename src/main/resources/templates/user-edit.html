@@ -8,19 +8,15 @@
 
 <h3>Редактирование пользователя</h3>
 
-<form th:method="post" th:action="@{/admin/user/edit/{id}(id=${user.getId()})}" >
-    <div>
-        <div th:each="role : ${user.roles}">
-           <label>
-<!--               <input type="checkbox" th:field="${role}">-->
-               <div th:utext="${role}">role</div>
-           </label>
-        </div>
-
+<form th:method="post" th:action="@{/admin/user/edit}" >
+    <div th:each="role : ${user.roles}">
+        <div th:utext="${user.email}">email</div>
+        <div th:utext="${role}">,</div>
     </div>
     <div>
         <input type="hidden" name="_csrf" value="${_csrf.token}">
-        <input type="submit" value="Update" />
+        <input type="hidden" th:value="${user.id}" name="userId">
+        <input type="submit" value="Change role" />
     </div>
 </form>
 

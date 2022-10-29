@@ -1,31 +1,48 @@
 <!DOCTYPE html>
-<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"  lang="en"><head>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
     <meta charset="UTF-8">
     <title>Sweety Bear</title>
+    <link rel="stylesheet" href="../static/css/main.css" th:href="@{/css/main.css}">
 </head>
 <body>
 
-<h1>Sweety Bear</h1>
-<h4>Сладости</h4>
+<header>
+    <div class="nav-container">
+        <div class="nav-buttons">
+            <div class="nav-buttons-catalog">
+                <a href="/">Каталог</a>
+            </div>
+            <div class="nav-buttons-edit-account">
+                <a th:href="@{/user/edit/{id}(id=${user.id})}">Редактирование аккаунта</a>
+            </div>
+            <div class="nav-buttons-admin-panel">
+                <div th:if="${user.isAdmin()}">
+                    <a href="/admin">Панель админа</a>
+                </div>
+            </div>
+
+        </div>
+        <div class="log-buttons">
+            <div class="log-buttons-logout">
+                <div th:if="${user.email}">
+                    <form th:action="@{/logout}" method="post">
+                        <input type="hidden" name="_csrf" value="${_csrf.token}"><br>
+                        <input type="submit" value="Выйти">
+                    </form>
+                </div>
+                <div th:unless="${user.email}">
+                    <a href="/login">Войти</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</header>
+
 
 </hr>
 
-<div th:if="${user.email}">
-    <div th:text=" 'Hi,' + ${user.name}">Hi, User</div>
-    <form th:action="@{/logout}" method="post">
-        <input type="hidden" name="_csrf" value="${_csrf.token}"><br>
-        <input type="submit" value="Выйти">
-    </form>
-    <a th:href="@{/user/edit/{id}(id=${user.id})}">Редактирование аккаунта</a>
-    <div th:if="${user.isAdmin()}">
-        <a href="/admin">Панель админа</a>
 
-    </div>
-</div>
-<!-- ELSE -->
-<div th:unless="${user.email}">
-    <a href="/login">Войти</a>
-</div>
 
 
 <form action="/" method="get">

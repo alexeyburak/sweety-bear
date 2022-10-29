@@ -4,20 +4,48 @@
     <meta charset="UTF-8">
     <title>Авторизация</title>
     <link rel="stylesheet" href="../static/css/login.css" th:href="@{/css/login.css}">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800&display=swap" rel="stylesheet">
 </head>
 <body>
-<h4>Авторизация</h4>
 
-<form th:action="@{/login}" method="post">
-  Почта <input type="email" name="username"><br><br>
-  Пароль<input type="password" name="password"><br><br>
 
-  <input type="hidden" name="_csrf" value="${_csrf.token}"><br>
-  <input type="submit" value="Вход">
-</form>
+<div class="nav">
+    <div class="log-buttons">
+        <div>
+            <a class="log-buttons-login" href="/login">Войти</a>
+        </div>
+        <div>
+            <a class="log-buttons-reg" href="/registration">Зарегистрироваться</a>
+        </div>
+    </div>
+</div>
 
-<a href="/registration">Зарегаться</a>
+<div class="main">
 
+        <div class="text">Добро
+            пожаловать
+            в Sweety Bear</div>
+        <div class="container">
+            <form th:action="@{/login}" method="post">
+                <div >
+                    <input id="email" type="email" placeholder="Почта" name="username"><br><br>
+                    <label  for="email">Почта</label>
+                </div>
+                <div >
+                    <input  id="password" type="password"  placeholder="Пароль" name="password"><br><br>
+                    <label  for="password">Пароль</label>
+                </div>
+
+                <input type="hidden" name="_csrf" value="${_csrf.token}"><br>
+
+                <button class="submit" type="submit" value="Вход">Вход</button>
+            </form>
+
+    </div>
+
+</div>
 
 
 </body>
