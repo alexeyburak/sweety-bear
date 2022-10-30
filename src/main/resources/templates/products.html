@@ -4,86 +4,116 @@
     <meta charset="UTF-8">
     <title>Sweety Bear</title>
     <link rel="stylesheet" href="../static/css/main.css" th:href="@{/css/main.css}">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 </head>
 <body>
 
-<header>
-    <div class="nav-container">
-        <div class="nav-buttons">
-            <div class="nav-buttons-catalog">
-                <a href="/">Каталог</a>
-            </div>
-            <div class="nav-buttons-edit-account">
-                <a th:href="@{/user/edit/{id}(id=${user.id})}">Редактирование аккаунта</a>
-            </div>
-            <div class="nav-buttons-admin-panel">
-                <div th:if="${user.isAdmin()}">
-                    <a href="/admin">Панель админа</a>
-                </div>
-            </div>
+<nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="container-fluid ">
+                <a class="navbar-brand" href="/" style="font-size:30px">
+                    <!--                        <img src="../static/images/logo.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">-->
+                    Sweety Bear
+                </a>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Catalog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/user/edit/{id}(id=${user.id})}">Edit account</a>
+                    </li>
+                    <li class="nav-item" th:if="${user.isAdmin()}">
+                        <a class="nav-link active" href="/admin">Admin menu</a>
+                    </li>
+                    <li class="nav-item" th:if="${user.email}">
+                        <form class="d-flex" role="search" th:action="@{/logout}" method="post">
+                            <input class="form-control me-2" type="hidden" name="_csrf" value="${_csrf.token}"><br>
+                            <button class="btn btn-primary" type="submit">Log Out</button>
+                        </form>
+                    </li>
 
-        </div>
-        <div class="log-buttons">
-            <div class="log-buttons-logout">
-                <div th:if="${user.email}">
-                    <form th:action="@{/logout}" method="post">
-                        <input type="hidden" name="_csrf" value="${_csrf.token}"><br>
-                        <input type="submit" value="Выйти">
-                    </form>
-                </div>
-                <div th:unless="${user.email}">
-                    <a href="/login">Войти</a>
-                </div>
+                    <li class="nav-item nav-pills" th:unless="${user.email}">
+                        <a class="nav-link active" aria-current="page" href="/login">Login</a>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search" action="/" method="get">
+                    <input class="form-control me-2" name="title" type="search" placeholder="Search"
+                           aria-label="Search">
+                    <button class="btn btn btn-outline-primary" type="submit">Search</button>
+                </form>
             </div>
         </div>
     </div>
-</header>
-
-
-</hr>
-
-
-
-
-<form action="/" method="get">
-    Поиск <input type="text" name="title"><br>
-    <input type="submit" value="Поиск">
-</form>
-</hr>
-
-<tr th:each="product : ${products}">
-    <!--/*@thymesVar id="product" type="product"*/-->
-    <td th:utext="${product.title}">Full Name</td>
-    <td th:utext="${product.description}">Email</td>
-    <td ><a th:href="@{/product/{id}(id=${product.id})}">Подробнее</a></td>
-</tr>
-</hr>
-
-<div th:if="${user.email}">
-    New Product
-    <form th:action="@{/product/create}" th:method="post" th:object="${product}" enctype="multipart/form-data">
-        Название товара <input type="text" th:field="*{title}" />
-        <div style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"> Name Error</div><br><br>
-        <br>
-        Описание товара <input type="text" th:field="*{description}" />
-        <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"> Name Error</div><br><br>
-        <br>
-        Цена товара <input type="number" th:field="*{price}"/>
-        <div style="color:red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"> Name Error</div><br><br>
-        <br>
-        Вес товара <input type="number" th:field="*{weight}" />
-        <div style="color:red" th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}"> Name Error</div><br><br>
-        <br>
-        Наличие товара <input type="text" th:field="*{availability}" />
-        <div style="color:red" th:if="${#fields.hasErrors('availability')}" th:errors="*{availability}"> Name Error</div><br><br>
-        <br>
-        Первое фото <input type="file" name="file1"/>
-        Второе фото <input type="file" name="file2"/>
-
-        <input type="submit" value="Добавить">
-    </form>
-
+</nav>
+<div class="mt-3 ml-5" style="font-size:18px">
+    Catalog
 </div>
+<div>
+    <div class="row row-cols-1 row-cols-md-3 g-4 ml-4 mr-4 mb-4">
+        <div class="col" th:each="product : ${products}">
+            <div class="card h-90 mt-4">
+                <tr th:each="image : ${images}">
+                    <img class="card-img-top" th:src="@{/images/{id}(id=${image.id})}"/>
+                </tr>
+                <div class="card-body">
+                    <h5 class="card-title" th:utext="${product.title}">Card title</h5>
+                    <p class="card-text" th:utext="${product.description}">Des</p>
+                    <a th:href="@{/product/{id}(id=${product.id})}">Подробнее</a>
+                </div>
+            </div>
+        </div>
 
+    </div>
+</div>
+<div class="ml-5 mr-5 mt-4" th:if="${user.email}">
+    <div style="font-size:18px">
+        Add new product
+    </div>
+    <form th:action="@{/product/create}" th:method="post" th:object="${product}" enctype="multipart/form-data">
+        <div class="input-group mb-3 mt-4">
+            <span class="input-group-text" id="inputGroup-sizing-default">Title</span>
+            <input type="text" th:field="*{title}" class="form-control" aria-label="Sizing example input"
+                   aria-describedby="inputGroup-sizing-default">
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">Description</span>
+            <textarea th:field="*{description}" class="form-control" aria-label="With textarea"></textarea>
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">BYN</span>
+            <input type="text" th:field="*{price}" class="form-control" aria-label="Amount (to the nearest dollar)">
+            <span class="input-group-text">.00</span>
+        </div>
+
+        <div class="input-group mb-3">
+            <span class="input-group-text">Weight</span>
+            <input type="text" th:field="*{weight}" class="form-control" aria-label="Amount (to the nearest dollar)">
+            <span class="input-group-text">.00</span>
+        </div>
+
+        <input class="form-control mb-3" th:field="*{availability}" list="datalistOptions" id="exampleDataList"
+               placeholder="Availability">
+        <datalist id="datalistOptions">
+            <option value="true">
+            <option value="false">
+        </datalist>
+
+        <div class="mb-3">
+            <label for="formFile1" class="form-label">First image</label>
+            <input class="form-control" type="file" name="file1" id="formFile1">
+        </div>
+
+        <div class="mb-3">
+            <label for="formFile2" class="form-label">Second image</label>
+            <input class="form-control" type="file" name="file2" id="formFile2">
+        </div>
+        <button type="submit" class="btn btn-outline-secondary mb-5">Add product</button>
+    </form>
+</div>
 </body>
 </html>

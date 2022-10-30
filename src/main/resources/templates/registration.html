@@ -3,32 +3,44 @@
 <head>
     <meta charset="UTF-8">
     <title>Title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 </head>
 <body>
-<h4>Регистрация</h4>
+
 
 <form th:method="post" th:action="@{/registration}" th:object="${user}">
-    <label for="name">Enter name: </label>
-    <input type="text" th:field="*{name}" id="name"/>
-    <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"> Name Error</div><br><br>
+    <div  style="margin-right:700px">
+        <div class="mb-3 ml-5 mt-5" >
+            <label for="name" class="form-label">Enter name: </label>
+            <input type="text" th:field="*{name}" class="form-control"  id="name"/>
+            <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+        </div>
 
-    <label for="email">Enter email: </label>
-    <input type="text" th:field="*{email}" id="email"/>
-    <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}">Email Error</div><br><br>
+        <div class="mb-3 ml-5 mt-2" >
+            <label for="email" class="form-label">Enter email: </label>
+            <input type="email" th:field="*{email}" class="form-control" id="email"/>
+            <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+        </div>
 
-    <label for="password">Enter password: </label>
-    <input type="password"  th:field="*{password}" id="password"/>
-    <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"> Name Error</div><br><br>
+        <div class="mb-3 ml-5 mt-2">
+            <label for="password1" class="form-label">Enter password: </label>
+            <input type="password"  th:field="*{password}" class="form-control" id="password1"/>
+            <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+        </div>
 
-    <input type="hidden" name="_csrf" value="${_csrf.token}"><br>
-    <input type="submit" value="Зарегаться">
+        <input type="hidden" name="_csrf" value="${_csrf.token}"><br>
+        <button type="submit" class="btn btn-primary ml-5 mt-1">Sign up</button>
+        <a class="ml-4" href="/login">Вход</a>
+    </div>
+
 </form>
 
 <div th:if="errorMessage">
     <h4 th:utext="${errorMessage}"></h4>
 </div>
 
-<a href="/login">Вход</a>
+
 
 </body>
 </html>

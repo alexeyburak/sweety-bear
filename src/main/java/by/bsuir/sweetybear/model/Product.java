@@ -6,10 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -32,12 +29,12 @@ public class Product {
     @Column(name = "id")
     private Long id;
     @Column(name = "title")
-    @Size(min = 1, max = 30, message = "title must be between 2 and 30 characters")
-    @NotBlank(message = "title is required")
+    @Size(min = 3, max = 30, message = "title must be between 3 and 30 characters")
+    @NotEmpty(message = "title is required")
     private String title;
     @Column(name = "description", columnDefinition = "text")
     @Length(min = 5, max = 1000, message = "description must be between 5 and 1000 characters")
-    @NotBlank(message = "description is required")
+    @NotEmpty(message = "description is required")
     private String description;
     @Column(name = "price")
     @NotNull(message = "price is required")

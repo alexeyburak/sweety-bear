@@ -13,7 +13,6 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.Map;
 
 /**
  * sweety-bear
@@ -67,7 +66,9 @@ public class AdminController {
     }
 
     @PostMapping("/product/edit/{id}")
-    public String productUpdate(@ModelAttribute("product") @Valid Product product, BindingResult bindingResult, Model model,
+    public String productUpdate(@ModelAttribute("product") @Valid Product product,
+                                BindingResult bindingResult,
+                                Model model,
                          @PathVariable("id") Long id) {
         if (bindingResult.hasErrors()) {
             return "product-edit";
