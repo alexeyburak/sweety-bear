@@ -13,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
+import java.security.Principal;
 
 /**
  * sweety-bear
@@ -29,7 +30,8 @@ public class AdminController {
     private final ProductService productService;
 
     @GetMapping("/admin")
-    public String admin(Model model) {
+    public String admin(Model model, Principal principal) {
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
         model.addAttribute("users", userService.userList());
         return "admin";
     }

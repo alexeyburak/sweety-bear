@@ -1,29 +1,72 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" ><head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
     <meta charset="UTF-8">
     <title>Sweety Bear</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 </head>
 <body>
 
-<h1>Sweety Bear</h1>
-<h4>Панель админа</h4>
+<nav class="navbar navbar-expand-lg bg-light">
+    <div class="container-fluid">
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <div class="container-fluid ">
+                <a class="navbar-brand" href="/" style="font-size:30px">
+                    <!--                        <img src="../static/images/logo.png" alt="Logo" width="30" height="24" class="d-inline-block align-text-top">-->
+                    Sweety Bear
+                </a>
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0 ">
+                    <li class="nav-item">
+                        <a class="nav-link active" aria-current="page" href="/">Catalog</a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link active" th:href="@{/user/edit/{id}(id=${user.id})}">Edit account</a>
+                    </li>
+                    <li class="nav-item" th:if="${user.isAdmin()}">
+                        <a class="nav-link active" href="/admin">Admin menu</a>
+                    </li>
+                    <li class="nav-item" th:if="${user.email}">
+                        <form class="d-flex" role="search" th:action="@{/logout}" method="post">
+                            <input class="form-control me-2" type="hidden" name="_csrf" value="${_csrf.token}"><br>
+                            <button class="btn btn-primary" type="submit">Log Out</button>
+                        </form>
+                    </li>
 
-</hr>
+                    <li class="nav-item nav-pills" th:unless="${user.email}">
+                        <a class="nav-link active" aria-current="page" href="/login">Login</a>
+                    </li>
+                </ul>
+                <form class="d-flex" role="search" action="/" method="get">
+                    <input class="form-control me-2" name="title" type="search" placeholder="Search"
+                           aria-label="Search">
+                    <button class="btn btn btn-outline-primary" type="submit">Search</button>
+                </form>
+            </div>
+        </div>
+    </div>
+</nav>
 
-<table border="1">
+<div class="mt-3 ml-5" style="font-size:18px">
+    Admin panel
+</div>
+
+<table class="table table-hover mt-3 ml-5 mb-5 mr-5">
     <tr>
-        <th>Email</th>
-        <th>Активность</th>
-        <th>Роли</th>
-        <th>Бан</th>
-        <th>Редактирование</th>
-        <th>Посмотреть информацию</th>
+        <th scope="col">Id</th>
+        <th scope="col">Email</th>
+        <th scope="col">Activity</th>
+        <th scope="col">Role</th>
+        <th scope="col">Bun</th>
+        <th scope="col">Editing</th>
+        <th scope="col">View information</th>
     </tr>
     <div th:each="user : ${users}">
-
         <tr>
-            <th th:utext="${user.email}">Email</th>
-            <th>
+            <th scope="row" th:utext="${user.id}">Id</th>
+            <th scope="row" th:utext="${user.email}">Email</th>
+            <th scope="row">
                 <div th:if="${user.active}">
                     true
                 </div>
@@ -31,23 +74,23 @@
                     false
                 </div>
             </th>
-            <th >
+            <th scope="row">
                 <div th:each="role : ${user.roles}">
                     <div th:utext="${role}">,</div>
                 </div>
             </th>
-            <th>
+            <th scope="row">
                 <form th:action="@{/admin/user/ban/{id}(id=${user.id})}" method="post">
-                <input type="hidden" name="_csrf" value="${_csrf.token}"><br>
-                <input type="submit" th:value="Бан">
+                    <input type="hidden" name="_csrf" value="${_csrf.token}">
+                    <button type="submit" th:value="Bun" class="btn btn-outline-secondary">Bun</button>
                 </form>
             </th>
-            <th><a th:href="@{/admin/user/edit/{id}(id=${user.id})}">Редактирование</a></th>
-            <th><a th:href="@{/user/{id}(id=${user.id})}">Подробнее</a></th>
+            <th scope="row"><a th:href="@{/admin/user/edit/{id}(id=${user.id})}">Editing</a></th>
+            <th scope="row"><a th:href="@{/user/{id}(id=${user.id})}">View information</a></th>
         </tr>
 
-        <div th:unless="${user.email}">
-            Пользователей нет
+        <div class="mt-3 ml-5" th:unless="${user.email}">
+            There are no users
         </div>
     </div>
 </table>
