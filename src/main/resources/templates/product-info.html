@@ -1,12 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" ><head>
     <meta charset="UTF-8">
-    <title>Sweety Bear</title>
+    <title th:utext="${product.title}">title</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 </head>
 <body>
 
-<h1>Sweety Bear</h1>
-<h4>Инфа</h4>
+<header th:insert="blocks/header :: header"></header>
 
 <tr th:each="image : ${images}">
     <!--/*@thymesVar id="image" type="image"*/-->

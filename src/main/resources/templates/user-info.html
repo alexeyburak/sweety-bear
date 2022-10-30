@@ -1,23 +1,47 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" ><head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
     <meta charset="UTF-8">
     <title>Sweety Bear</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 </head>
 <body>
 
-<h1>Информация о пользователе</h1>
+<header th:insert="blocks/header :: header"></header>
 
-<b> Почта </b> <p th:utext="${user.email}"></p>
-<b> Имя </b> <p th:utext="${user.name}"></p>
-<b> Дата создания </b> <p th:utext="${user.dateOfCreated}"></p>
-<div th:each="role : ${user.roles}">
-    <div th:utext="${role}">,</div>
+<div class="mt-3 ml-5" style="font-size:18px">
+    User information
 </div>
-<div th:if="${user.active}">
-    Активен
-</div>
-<div th:unless="${user.active}">
-    Заблокирован
+
+<div class="ml-5 mt-4">
+    <div class="card mb-3 " style="max-width: 540px;">
+        <div class="row g-0">
+            <div class="col-md-4" th:if="${user.isAvatarNull()}">
+                <img th:src="@{/images/{id}(id=${user.avatar.id})} " class="img-fluid rounded-start" alt="Without avatar">
+            </div>
+            <div class="col-md-4" th:unless="${user.isAvatarNull()}">
+                <p class="card-text">Without avatar</p>
+            </div>
+            <div class="col-md-8">
+                <div class="card-body">
+                    <h5 class="card-title" th:utext="${user.name}">Name</h5>
+                    <p class="card-text" th:utext="${user.email}">Email</p>
+                    <p class="card-text">
+                    <div th:each="role : ${user.roles}">
+                        <div th:utext="${role}">role</div>
+                    </div>
+                    </p>
+                    <p class="card-text" th:if="${user.active}">Active</p>
+                    <p class="card-text" th:unless="${user.active}">In block</p>
+                    <p class="card-text">
+                        <small class="text-muted" th:utext="${user.dateOfCreated}">Date</small>
+                    </p>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 
 

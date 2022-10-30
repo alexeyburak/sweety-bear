@@ -3,22 +3,32 @@
 <head>
     <meta charset="UTF-8">
     <title>Edit user</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 </head>
 <body>
 
-<h3>Редактирование пользователя</h3>
+<header th:insert="blocks/header :: header"></header>
 
-<form th:method="post" th:action="@{/admin/user/edit}" >
-    <div th:each="role : ${user.roles}">
-        <div th:utext="${user.email}">email</div>
-        <div th:utext="${role}">,</div>
+<div class="mt-3 ml-5" style="font-size:18px">
+    Edit user
+</div>
+
+<form th:method="post" th:action="@{/admin/user/edit}">
+    <div class="mb-3 ml-5 mt-4" th:each="role : ${user.roles}">
+        Email:
+        <div class="mb-3" th:utext="${user.email}">email</div>
+        Role:
+        <div th:utext="${role}">role</div>
     </div>
     <div>
         <input type="hidden" name="_csrf" value="${_csrf.token}">
         <input type="hidden" th:value="${user.id}" name="userId">
-        <input type="submit" value="Change role" />
+        <button type="submit" class="btn btn-primary ml-5 mt-1">Change role</button>
     </div>
 </form>
+
 
 </body>
 </html>

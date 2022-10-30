@@ -56,6 +56,15 @@ public class User implements UserDetails {
         return roles.contains(Role.ROLE_ADMIN);
     }
 
+    public boolean isAvatarNull() {
+        return avatar != null;
+    }
+
+    public void addAvatarToUser(Image image) {
+        image.setUser(this);
+        this.avatar = image;
+    }
+
     @PrePersist
     private void init() {
         dateOfCreated = LocalDateTime.now();
