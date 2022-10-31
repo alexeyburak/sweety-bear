@@ -2,16 +2,19 @@
 <html xmlns:th="http://www.thymeleaf.org"  lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Title</title>
+    <title>Registration</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
 </head>
 <body>
 
+<div class="mt-4 ml-5" style="font-size:20px">
+    Registration
+</div>
 
 <form th:method="post" th:action="@{/registration}" th:object="${user}">
     <div  style="margin-right:700px">
-        <div class="mb-3 ml-5 mt-5" >
+        <div class="mb-3 ml-5 mt-4" >
             <label for="name" class="form-label">Enter name: </label>
             <input type="text" th:field="*{name}" class="form-control"  id="name"/>
             <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>

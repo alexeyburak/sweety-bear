@@ -1,5 +1,6 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" ><head>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
     <meta charset="UTF-8">
     <title th:utext="${product.title}">title</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
@@ -10,16 +11,50 @@
 
 <header th:insert="blocks/header :: header"></header>
 
+<div id="carouselExampleIndicators" class="carousel slide" data-bs-ride="true" style="height:500px; width:500px">
+    <div class="carousel-indicators">
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="0" class="active"
+                aria-current="true" aria-label="Slide 1"></button>
+        <button type="button" data-bs-target="#carouselExampleIndicators" data-bs-slide-to="1"
+                aria-label="Slide 2"></button>
+    </div>
+    <div class="carousel-inner" th:each="image : ${images}">
+
+        <div class="carousel-item active" th:if="${image.id} == ${product.previewImageId}">
+            <img th:src="@{/images/{id}(id=${image.id})}" class="d-block w-100"/>
+        </div>
+        <div class="carousel-item" th:unless="${image.id} == ${product.previewImageId}">
+            <img th:src="@{/images/{id}(id=${image.id})}" class="d-block w-100"/>
+        </div>
+
+    </div>
+    <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="prev">
+        <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Previous</span>
+    </button>
+    <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleIndicators"
+            data-bs-slide="next">
+        <span class="carousel-control-next-icon" aria-hidden="true"></span>
+        <span class="visually-hidden">Next</span>
+    </button>
+</div>
+
 <tr th:each="image : ${images}">
     <!--/*@thymesVar id="image" type="image"*/-->
     <img th:src="@{/images/{id}(id=${image.id})}" height="60px"/><br><br>
 </tr>
 
-<b> Название</b> <p th:utext="${product.title}"></p>
-<b> Описание</b> <p th:utext="${product.description}"></p>
-<b> Цeна</b> <p th:utext="${product.price}"></p>
-<b> вес</b> <p th:utext="${product.weight}"></p>
-<b> Наличие</b> <p th:utext="${product.availability}"></p>
+<b> Название</b>
+<p th:utext="${product.title}"></p>
+<b> Описание</b>
+<p th:utext="${product.description}"></p>
+<b> Цeна</b>
+<p th:utext="${product.price}"></p>
+<b> вес</b>
+<p th:utext="${product.weight}"></p>
+<b> Наличие</b>
+<p th:utext="${product.availability}"></p>
 
 <div th:if="${user.isAdmin()}">
     Delete Product

@@ -43,7 +43,7 @@ public class UserService {
         user.getRoles().add(Role.ROLE_ADMIN);
         log.info("Saving User. Email {}", email);
         mailSender.send(email, "Thanks for registration!", user.getName() +
-                " ,we hope that we will not quarrel! \nStart using our sait now: http://localhost:8085/");
+                ", we hope that we will not quarrel! \nStart using our sait now: http://localhost:8085/");
         userRepository.save(user);
         return true;
     }

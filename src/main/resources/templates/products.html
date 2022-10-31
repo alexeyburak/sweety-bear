@@ -18,9 +18,12 @@
 <div>
     <div class="row row-cols-1 row-cols-md-3 g-4 ml-4 mr-4 mb-4">
         <div class="col" th:each="product : ${products}">
-            <div class="card h-90 mt-4">
-                <tr th:each="image : ${images}">
-                    <img class="card-img-top" th:src="@{/images/{id}(id=${image.id})}"/>
+            <div class="card h-10 mt-4">
+                <tr th:each="image : ${product.images}">
+                    <div th:if="${image.id} == ${product.previewImageId}">
+                        <img class="card-img-top mt-1" style="height:250px; width:250px; display: block;
+                        margin-left: auto; margin-right: auto " th:src="@{/images/{id}(id=${image.id})}"/>
+                    </div>
                 </tr>
                 <div class="card-body">
                     <h5 class="card-title" th:utext="${product.title}">Card title</h5>
@@ -29,54 +32,58 @@
                 </div>
             </div>
         </div>
-
     </div>
 </div>
 <div class="ml-5 mr-5 mt-4" th:if="${user.email}">
     <div style="font-size:18px">
         Add new product
     </div>
-    <form th:action="@{/product/create}" th:method="post" th:object="${product}" enctype="multipart/form-data">
-        <div class="input-group mb-3 mt-4">
+    <form th:action="@{/product/create}" th:method="post" th:object="${product}" enctype="multipart/form-data"
+          class="row g-3">
+        <div class="input-group mb-3 mt-4 col-md-6">
             <span class="input-group-text" id="inputGroup-sizing-default">Title</span>
             <input type="text" th:field="*{title}" class="form-control" aria-label="Sizing example input"
                    aria-describedby="inputGroup-sizing-default">
         </div>
 
-        <div class="input-group mb-3">
-            <span class="input-group-text">Description</span>
-            <textarea th:field="*{description}" class="form-control" aria-label="With textarea"></textarea>
-        </div>
-
-        <div class="input-group mb-3">
+        <div class="input-group mb-3 mt-4 col-sm-3">
             <span class="input-group-text">BYN</span>
             <input type="number" th:field="*{price}" class="form-control" aria-label="Amount (to the nearest dollar)">
             <span class="input-group-text">.00</span>
         </div>
 
-        <div class="input-group mb-3">
+        <div class="input-group mb-3 mt-4 col-md-3">
             <span class="input-group-text">Weight</span>
             <input type="number" th:field="*{weight}" class="form-control" aria-label="Amount (to the nearest dollar)">
             <span class="input-group-text">.00</span>
         </div>
 
-        <input class="form-control mb-3" th:field="*{availability}" list="datalistOptions" id="exampleDataList"
-               placeholder="Availability">
-        <datalist id="datalistOptions">
-            <option value="true">
-            <option value="false">
-        </datalist>
+        <div class="input-group mb-3 col-md-12">
+            <span class="input-group-text">Description</span>
+            <textarea th:field="*{description}" class="form-control" aria-label="With textarea"></textarea>
+        </div>
 
-        <div class="mb-3">
-            <label for="formFile1" class="form-label">First image</label>
+        <div class="input-group mb-3 col-md-3">
+            <label for="formFile1" class="form-label">First image </label>
             <input class="form-control" type="file" name="file1" id="formFile1">
         </div>
 
-        <div class="mb-3">
-            <label for="formFile2" class="form-label">Second image</label>
+        <div class="input-group mb-3 col-md-3">
+            <label for="formFile2" class="form-label">Second image </label>
             <input class="form-control" type="file" name="file2" id="formFile2">
         </div>
-        <button type="submit" class="btn btn-outline-secondary mb-5">Add product</button>
+        <div class="input-group mb-3 col-md-6">
+            <input class="form-control mb-3 col-md-3" th:field="*{availability}" list="datalistOptions"
+                   id="exampleDataList"
+                   placeholder="Availability">
+            <datalist id="datalistOptions">
+                <option value="true">
+                <option value="false">
+            </datalist>
+        </div>
+
+        <button type="submit" class="btn btn-outline-secondary input-group col-md-2 ml-3 mb-5">Add product</button>
+
     </form>
 </div>
 </body>

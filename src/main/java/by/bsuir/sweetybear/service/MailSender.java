@@ -25,13 +25,11 @@ public class MailSender {
 
     public void send(String emailTo, String subject, String message) {
         SimpleMailMessage mailMessage = new SimpleMailMessage();
-
         mailMessage.setFrom(username);
         mailMessage.setTo(emailTo);
         mailMessage.setSubject(subject);
         mailMessage.setText(message);
-
+        log.info("Send greeting message. Email: {}", emailTo);
         mailSender.send(mailMessage);
-
     }
 }
