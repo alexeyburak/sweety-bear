@@ -33,6 +33,7 @@ public class UserService {
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;
     private final PasswordEncoder passwordEncoder;
+    private final MailSender mailSender;
 
     public boolean createUser(User user) {
         String email = user.getEmail();
@@ -41,6 +42,8 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getRoles().add(Role.ROLE_ADMIN);
         log.info("Saving User. Email {}", email);
+        mailSender.send(email, "Thanks for registration!", user.getName() +
+                " ,we hope that we will not quarrel! \nStart using our sait now: http://localhost:8085/");
         userRepository.save(user);
         return true;
     }

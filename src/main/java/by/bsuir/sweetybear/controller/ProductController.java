@@ -4,6 +4,7 @@ import by.bsuir.sweetybear.model.Product;
 import by.bsuir.sweetybear.service.ProductService;
 import by.bsuir.sweetybear.service.UserService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -35,6 +36,7 @@ public class ProductController {
         return "products";
     }
 
+
     @GetMapping("/product/{id}")
     public String productInfo(@PathVariable Long id, Model model, Principal principal) {
         Product product = productService.getProductById(id);
@@ -44,6 +46,7 @@ public class ProductController {
         return "product-info";
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/product/create")
     public String createProduct(@RequestParam("file1") MultipartFile file1,
                                 @RequestParam("file2") MultipartFile file2,
@@ -56,10 +59,31 @@ public class ProductController {
         return "redirect:/";
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/product/delete/{id}")
     public String deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return "redirect:/";
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @GetMapping("/product/edit/{id}")
+    public String productEdit(@PathVariable("id") Long id, Model model, Principal principal) {
+        model.addAttribute("product", productService.getProductById(id));
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
+        return "product-edit";
+    }
+
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PostMapping("/product/edit/{id}")
+    public String productUpdate(@ModelAttribute("product") @Valid Product product,
+                                BindingResult bindingResult,
+                                @PathVariable("id") Long id) {
+        if (bindingResult.hasErrors()) {
+            return "product-edit";
+        }
+        productService.updateProductById(id, product);
+        return "redirect:/product/{id}";
     }
 
 }

@@ -1,18 +1,14 @@
 package by.bsuir.sweetybear.controller;
 
-import by.bsuir.sweetybear.model.Product;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.model.enums.Role;
-import by.bsuir.sweetybear.service.ProductService;
 import by.bsuir.sweetybear.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
-import javax.validation.Valid;
 import java.security.Principal;
 
 /**
@@ -27,7 +23,6 @@ import java.security.Principal;
 public class AdminController {
 
     private final UserService userService;
-    private final ProductService productService;
 
     @GetMapping("/admin")
     public String admin(Model model, Principal principal) {
@@ -59,25 +54,6 @@ public class AdminController {
     public String userUpdate(@RequestParam("userId") User user) {
         userService.changeUserRole(user);
         return "redirect:/admin";
-    }
-
-    @GetMapping("/product/edit/{id}")
-    public String productEdit(@PathVariable("id") Long id, Model model, Principal principal) {
-        model.addAttribute("product", productService.getProductById(id));
-        model.addAttribute("user", userService.getUserByPrincipal(principal));
-        return "product-edit";
-    }
-
-    @PostMapping("/product/edit/{id}")
-    public String productUpdate(@ModelAttribute("product") @Valid Product product,
-                                BindingResult bindingResult,
-                                Model model,
-                         @PathVariable("id") Long id) {
-        if (bindingResult.hasErrors()) {
-            return "product-edit";
-        }
-        productService.updateProductById(id, product);
-        return "redirect:/product/{id}";
     }
 
 }
