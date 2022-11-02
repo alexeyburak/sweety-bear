@@ -25,10 +25,9 @@ public class AdminController {
     private final UserService userService;
 
     @GetMapping("/admin")
-    public String admin(Model model, Principal principal) {
-        User user = userService.getUserByPrincipal(principal);
-        model.addAttribute("user", user);
-        model.addAttribute("users", userService.userList(user));
+    public String admin(@RequestParam(name = "email", required = false) String email, Model model, Principal principal) {
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
+        model.addAttribute("users", userService.userList(email));
         return "admin";
     }
 

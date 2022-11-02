@@ -11,8 +11,13 @@
 
 <header th:insert="blocks/header :: header"></header>
 
-<div class="mt-3 ml-5" style="font-size:18px">
+<div class="mt-3 ml-5 d-flex" style="font-size:18px">
     Admin panel
+    <form class="d-flex ml-4" role="search" action="/admin" method="get">
+        <input class="form-control me-2" name="email" type="search" placeholder="admin@example"
+               aria-label="Search">
+        <button class="btn btn-light ml-1" type="submit">Search</button>
+    </form>
 </div>
 
 <table class="table table-hover mt-3 ml-5 mb-5 mr-5">
@@ -21,7 +26,7 @@
         <th scope="col">Email</th>
         <th scope="col">Activity</th>
         <th scope="col">Role</th>
-        <th scope="col">Bun</th>
+        <th scope="col">Ban</th>
         <th scope="col">Editing</th>
         <th scope="col">View information</th>
     </tr>
@@ -45,7 +50,7 @@
             <th scope="row">
                 <form th:action="@{/admin/user/ban/{id}(id=${user.id})}" method="post">
                     <input type="hidden" name="_csrf" value="${_csrf.token}">
-                    <button type="submit" th:value="Bun" class="btn btn-outline-secondary">Bun</button>
+                    <button type="submit" th:value="Bun" class="btn btn-outline-secondary">Ban</button>
                 </form>
             </th>
             <th scope="row"><a th:href="@{/admin/user/edit/{id}(id=${user.id})}">Editing</a></th>

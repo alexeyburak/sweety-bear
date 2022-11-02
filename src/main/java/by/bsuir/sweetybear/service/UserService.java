@@ -48,10 +48,9 @@ public class UserService {
         return true;
     }
 
-    public List<User> userList(User user) {
-        List<User> users = userRepository.findAll();
-        users.remove(user);
-        return users;
+    public List<User> userList(String email) {
+        if (email != null) return Collections.singletonList(userRepository.findByEmail(email));
+        return userRepository.findAll();
     }
 
     public User getUserById(Long id) {
