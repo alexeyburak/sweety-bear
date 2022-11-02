@@ -17,12 +17,8 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Image {
+public class Image extends IdentifiedModel {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
-    @Column(name = "id")
-    private Long id;
     @Column(name = "name")
     private String name;
     @Column(name = "original_File_Name")

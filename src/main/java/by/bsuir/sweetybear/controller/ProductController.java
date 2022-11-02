@@ -76,13 +76,15 @@ public class ProductController {
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @PostMapping("/product/edit/{id}")
-    public String productUpdate(@ModelAttribute("product") @Valid Product product,
+    public String productUpdate(@RequestParam("file1") MultipartFile file1,
+                                @RequestParam("file2") MultipartFile file2,
+                                @ModelAttribute("product") @Valid Product product,
                                 BindingResult bindingResult,
-                                @PathVariable("id") Long id) {
+                                @PathVariable("id") Long id) throws IOException {
         if (bindingResult.hasErrors()) {
             return "product-edit";
         }
-        productService.updateProductById(id, product);
+        productService.updateProductById(id, product, file1, file2);
         return "redirect:/product/{id}";
     }
 

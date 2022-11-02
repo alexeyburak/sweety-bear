@@ -16,15 +16,15 @@
 </div>
 
 <form th:method="post" th:action="@{/admin/user/edit}">
-    <div class="mb-3 ml-5 mt-4" th:each="role : ${user.roles}">
+    <div class="mb-3 ml-5 mt-4" th:each="role : ${userToChange.roles}">
         Email:
-        <div class="mb-3" th:utext="${user.email}">email</div>
+        <div class="mb-3" th:utext="${userToChange.email}">email</div>
         Role:
         <div th:utext="${role}">role</div>
     </div>
     <div>
         <input type="hidden" name="_csrf" value="${_csrf.token}">
-        <input type="hidden" th:value="${user.id}" name="userId">
+        <input type="hidden" th:value="${userToChange.id}" name="userId">
         <button type="submit" class="btn btn-primary ml-5 mt-1">Change role</button>
     </div>
 </form>

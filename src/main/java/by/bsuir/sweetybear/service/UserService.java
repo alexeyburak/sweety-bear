@@ -42,14 +42,16 @@ public class UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getRoles().add(Role.ROLE_ADMIN);
         log.info("Saving User. Email {}", email);
-        mailSender.send(email, "Thanks for registration!", user.getName() +
-                ", we hope that we will not quarrel! \nStart using our sait now: http://localhost:8085/");
+//        mailSender.send(email, "Thanks for registration!", user.getName() +
+//                ", we hope that we will not quarrel! \nStart using our sait now: http://localhost:8085/");
         userRepository.save(user);
         return true;
     }
 
-    public List<User> userList() {
-        return userRepository.findAll();
+    public List<User> userList(User user) {
+        List<User> users = userRepository.findAll();
+        users.remove(user);
+        return users;
     }
 
     public User getUserById(Long id) {

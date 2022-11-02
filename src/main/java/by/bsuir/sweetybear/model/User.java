@@ -23,12 +23,8 @@ import java.util.Set;
 @Entity
 @Table(name = "users")
 @Data
-public class User implements UserDetails {
+public class User extends IdentifiedModel implements UserDetails {
 
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id")
-    private Long id;
     @Column(name = "email", unique = true)
     @Email(message = "Email must be valid")
     @NotBlank(message = "Email is required")
@@ -51,6 +47,9 @@ public class User implements UserDetails {
     private Set<Role> roles = new HashSet<>();
     @Column(name = "date_Of_Created")
     private LocalDateTime dateOfCreated;
+
+    @OneToOne
+    private Bucket bucket;
 
     public boolean isAdmin() {
         return roles.contains(Role.ROLE_ADMIN);

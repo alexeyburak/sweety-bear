@@ -18,25 +18,25 @@
 <div class="ml-5 mt-4">
     <div class="card mb-3 " style="max-width: 540px;">
         <div class="row g-0">
-            <div class="col-md-4" th:if="${user.isAvatarNull()}">
-                <img th:src="@{/images/{id}(id=${user.avatar.id})} " class="img-fluid rounded-start" alt="Without avatar">
+            <div class="col-md-4" th:if="${userInfo.isAvatarNull()}">
+                <img th:src="@{/images/{id}(id=${userInfo.avatar.id})} " class="img-fluid rounded-start" alt="Without avatar">
             </div>
-            <div class="col-md-4" th:unless="${user.isAvatarNull()}">
+            <div class="col-md-4" th:unless="${userInfo.isAvatarNull()}">
                 <p class="card-text">Without avatar</p>
             </div>
             <div class="col-md-8">
                 <div class="card-body">
-                    <h5 class="card-title" th:utext="${user.name}">Name</h5>
-                    <p class="card-text" th:utext="${user.email}">Email</p>
+                    <h5 class="card-title" th:utext="${userInfo.name}">Name</h5>
+                    <p class="card-text" th:utext="${userInfo.email}">Email</p>
                     <p class="card-text">
-                    <div th:each="role : ${user.roles}">
+                    <div th:each="role : ${userInfo.roles}">
                         <div th:utext="${role}">role</div>
                     </div>
                     </p>
-                    <p class="card-text" th:if="${user.active}">Active</p>
-                    <p class="card-text" th:unless="${user.active}">In block</p>
+                    <p class="card-text" th:if="${userInfo.active}">Active</p>
+                    <p class="card-text" th:unless="${userInfo.active}">In block</p>
                     <p class="card-text">
-                        <small class="text-muted" th:utext="${user.dateOfCreated}">Date</small>
+                        <small class="text-muted" th:utext="${userInfo.dateOfCreated}">Date</small>
                     </p>
                 </div>
             </div>

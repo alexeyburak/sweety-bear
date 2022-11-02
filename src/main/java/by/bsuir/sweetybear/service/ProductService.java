@@ -2,10 +2,12 @@ package by.bsuir.sweetybear.service;
 
 import by.bsuir.sweetybear.model.Image;
 import by.bsuir.sweetybear.model.Product;
+import by.bsuir.sweetybear.repository.ImageRepository;
 import by.bsuir.sweetybear.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -22,9 +24,11 @@ import static by.bsuir.sweetybear.utils.Utils.toImageEntity;
 @Service
 @Slf4j
 @RequiredArgsConstructor
+@Transactional
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final ImageRepository imageRepository;
 
     public List<Product> listProducts(String title) {
         if (title != null) return productRepository.findByTitle(title);
@@ -32,17 +36,7 @@ public class ProductService {
     }
 
     public void saveProduct(Product product, MultipartFile file1, MultipartFile file2) throws IOException {
-        Image image1;
-        Image image2;
-        if (file1.getSize() != 0) {
-            image1 = toImageEntity(file1);
-            image1.setPreviewImage(true);
-            product.addImageToProduct(image1);
-        }
-        if (file2.getSize() != 0) {
-            image2 = toImageEntity(file2);
-            product.addImageToProduct(image2);
-        }
+        addImages(product, file1, file2);
         log.info("Saving new Product. Id: {}, Title: {} ", product.getId(), product.getTitle());
         Product productFromDb = productRepository.save(product);
         productFromDb.setPreviewImageId(productFromDb.getImages().get(0).getId());
@@ -58,15 +52,39 @@ public class ProductService {
         return productRepository.findById(id).orElse(null);
     }
 
-    public void updateProductById(Long id, Product productUpdate) {
+    private void addImages(Product product, MultipartFile file1, MultipartFile file2) throws IOException {
+        Image image1;
+        Image image2;
+        if (file1.getSize() != 0) {
+            if (product.getImages() != null) {
+                imageRepository.markToDeleteByProductId(product.getId(), "toDelete");
+                imageRepository.deleteByName("toDelete");
+                log.info("Delete product images.");
+                product.setPreviewImageId(null);
+                product.getImages().clear();
+            }
+            image1 = toImageEntity(file1);
+            image1.setPreviewImage(true);
+            product.addImageToProduct(image1);
+        }
+        if (file2.getSize() != 0) {
+            image2 = toImageEntity(file2);
+            product.addImageToProduct(image2);
+        }
+    }
+
+    public void updateProductById(Long id, Product productUpdate, MultipartFile file1, MultipartFile file2) throws IOException {
         log.info("Update product. Id: {}", id);
         Product product = productRepository.findById(id).orElse(null);
         assert product != null;
+        addImages(product, file1, file2);
         product.setTitle(productUpdate.getTitle());
         product.setDescription(productUpdate.getDescription());
         product.setPrice(productUpdate.getPrice());
         product.setWeight(productUpdate.getWeight());
         product.setAvailability(productUpdate.isAvailability());
+        Product productFromDb = productRepository.save(product);
+        product.setPreviewImageId(productFromDb.getImages().get(0).getId());
         productRepository.save(product);
     }
 }

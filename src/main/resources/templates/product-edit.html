@@ -11,37 +11,54 @@
 
 <header th:insert="blocks/header :: header"></header>
 
-<form th:method="post" th:action="@{/product/edit/{id}(id=${product.getId()})}" th:object="${product}">
-    <div>
-        <label for="title">Enter title: </label>
-        <input type="text" th:field="*{title}" id="title"/>
-        <div style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}"> Name Error</div><br><br>
-        <br/>
-        <label for="description">Enter description: </label>
-        <input type="text" th:field="*{description}" id="description"/>
-        <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"> Name Error</div><br><br>
-        <br/>
-        <label for="price">Enter description: </label>
-        <input type="number" th:field="*{price}" id="price"/>
-        <div style="color:red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"> Name Error</div><br><br>
-        <br/>
-        <label for="weight">Enter weight: </label>
-        <input type="number" th:field="*{weight}" id="weight"/>
-        <div style="color:red" th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}"> Name Error</div><br><br>
-        <br/>
-        <label for="availability">Enter availability: </label>
-        <input type="text" th:field="*{availability}" id="availability" list="availabilities"/>
-        <div style="color:red" th:if="${#fields.hasErrors('availability')}" th:errors="*{availability}"> Name Error</div><br><br>
+<form th:method="post" th:action="@{/product/edit/{id}(id=${product.getId()})}" th:object="${product}"
+      enctype="multipart/form-data" class="row g-3">
 
-        <datalist id="availabilities">
-            <option value="true"></option>
-            <option value="false"></option>
-        </datalist>
-        <br/>
+    <div class="input-group mb-3 mt-4 col-md-6">
+        <span class="input-group-text" id="inputGroup-sizing-default">Title</span>
+        <input type="text" th:field="*{title}" class="form-control" aria-label="Sizing example input"
+               aria-describedby="inputGroup-sizing-default">
     </div>
+
+    <div class="input-group mb-3 mt-4 col-sm-3">
+        <span class="input-group-text">BYN</span>
+        <input type="number" th:field="*{price}" class="form-control" aria-label="Amount (to the nearest dollar)">
+        <span class="input-group-text">.00</span>
+    </div>
+
+    <div class="input-group mb-3 mt-4 col-md-3">
+        <span class="input-group-text">Weight</span>
+        <input type="number" th:field="*{weight}" class="form-control" aria-label="Amount (to the nearest dollar)">
+        <span class="input-group-text">.00</span>
+    </div>
+
+    <div class="input-group mb-3 col-md-12">
+        <span class="input-group-text">Description</span>
+        <textarea th:field="*{description}" class="form-control" aria-label="With textarea"></textarea>
+    </div>
+
+    <div class="input-group mb-3 col-md-3">
+        <label for="formFile1" class="form-label">First image </label>
+        <input class="form-control" type="file" name="file1" id="formFile1">
+    </div>
+
+    <div class="input-group mb-3 col-md-3">
+        <label for="formFile2" class="form-label">Second image </label>
+        <input class="form-control" type="file" name="file2" id="formFile2">
+    </div>
+    <div class="input-group mb-3 col-md-6">
+        <input class="form-control mb-3 col-md-3" th:field="*{availability}" list="datalistOptions"
+               id="exampleDataList"
+               placeholder="Availability">
+        <datalist id="datalistOptions">
+            <option value="true">
+            <option value="false">
+        </datalist>
+    </div>
+
     <div>
         <input type="hidden" name="_csrf" value="${_csrf.token}">
-        <input type="submit" value="Update" />
+        <input type="submit" value="Update"/>
     </div>
 </form>
 

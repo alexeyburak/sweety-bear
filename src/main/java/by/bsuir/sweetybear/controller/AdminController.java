@@ -26,8 +26,9 @@ public class AdminController {
 
     @GetMapping("/admin")
     public String admin(Model model, Principal principal) {
-        model.addAttribute("user", userService.getUserByPrincipal(principal));
-        model.addAttribute("users", userService.userList());
+        User user = userService.getUserByPrincipal(principal);
+        model.addAttribute("user", user);
+        model.addAttribute("users", userService.userList(user));
         return "admin";
     }
 
@@ -38,14 +39,16 @@ public class AdminController {
     }
 
     @GetMapping("/user/{id}")
-    public String userInfo(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
+    public String userInfo(@PathVariable("id") Long id, Model model, Principal principal) {
+        model.addAttribute("userInfo", userService.getUserById(id));
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
         return "user-info";
     }
 
     @GetMapping("/admin/user/edit/{user}")
-    public String userEdit(@PathVariable("user") User user, Model model) {
-        model.addAttribute("user", user);
+    public String userEdit(@PathVariable("user") User user, Model model, Principal principal) {
+        model.addAttribute("userToChange", user);
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
         model.addAttribute("roles", Role.values());
         return "user-edit";
     }
