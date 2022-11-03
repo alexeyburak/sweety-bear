@@ -14,8 +14,11 @@
             <li class="nav-item" th:if="${user.email}">
               <a class="nav-link active" th:href="@{/user/edit/{id}(id=${user.id})}">Edit account</a>
             </li>
+            <li class="nav-item" th:if="${user.email}">
+              <a class="nav-link active" th:href="@{/bucket}">Bucket</a>
+            </li>
             <li class="nav-item" th:if="${user.isAdmin()}">
-              <a class="nav-link active" href="/admin">Admin menu</a>
+              <a class="nav-link active" th:href="@{/admin}">Admin menu</a>
             </li>
             <li class="nav-item" th:if="${user.email}">
               <form class="d-flex" role="search" th:action="@{/logout}" method="post">
@@ -23,7 +26,6 @@
                 <button class="btn btn-primary" type="submit">Log Out</button>
               </form>
             </li>
-
             <li class="nav-item nav-pills" th:unless="${user.email}">
               <a class="nav-link active" aria-current="page" href="/login">Login</a>
             </li>

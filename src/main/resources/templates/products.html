@@ -25,11 +25,14 @@
                         margin-left: auto; margin-right: auto " th:src="@{/images/{id}(id=${image.id})}"/>
                     </div>
                 </tr>
-                <div class="card-body">
-                    <h5 class="card-title" th:utext="${product.title}">Card title</h5>
-                    <p class="card-text" th:utext="${product.description}">Des</p>
-                    <a th:href="@{/product/{id}(id=${product.id})}">Подробнее</a>
-                </div>
+                <form th:action="@{/{id}/bucket(id=${product.id})}">
+                    <div class="card-body">
+                        <h5 class="card-title" th:utext="${product.title}">Card title</h5>
+                        <p class="card-text" th:utext="${product.description}">Des</p>
+                        <a th:href="@{/product/{id}(id=${product.id})}">More detailed</a>
+                        <button type="submit" class="ml-3 btn btn-outline-secondary">Add to bucket</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>

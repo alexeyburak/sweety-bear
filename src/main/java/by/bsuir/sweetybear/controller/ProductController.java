@@ -1,6 +1,7 @@
 package by.bsuir.sweetybear.controller;
 
 import by.bsuir.sweetybear.model.Product;
+import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.service.ProductService;
 import by.bsuir.sweetybear.service.UserService;
 import lombok.RequiredArgsConstructor;
@@ -86,6 +87,16 @@ public class ProductController {
         }
         productService.updateProductById(id, product, file1, file2);
         return "redirect:/product/{id}";
+    }
+
+    @GetMapping("/{id}/bucket")
+    public String addBucket(@PathVariable Long id, Principal principal) {
+        User user = userService.getUserByPrincipal(principal);
+        if (principal == null) {
+            return "redirect:/";
+        }
+        productService.addToUserBucket(id, user.getEmail());
+        return "redirect:/";
     }
 
 }

@@ -10,6 +10,7 @@ import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -37,7 +38,7 @@ public class Product extends IdentifiedModel {
     private String description;
     @Column(name = "price")
     @NotNull(message = "price is required")
-    private int price;
+    private BigDecimal price;
     @Column(name = "weight")
     @NotNull(message = "weight is required")
     @Min(value = 10, message = "weight must be min 10")

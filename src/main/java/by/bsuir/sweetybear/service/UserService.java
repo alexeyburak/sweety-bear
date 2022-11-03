@@ -14,7 +14,8 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.*;
+import java.util.Collections;
+import java.util.List;
 
 import static by.bsuir.sweetybear.utils.Utils.toImageEntity;
 
@@ -55,6 +56,10 @@ public class UserService {
 
     public User getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
+    }
+
+    public User getUserByEmail(String email) {
+        return userRepository.findByEmail(email);
     }
 
     public User getUserByPrincipal(Principal principal) {
@@ -102,6 +107,10 @@ public class UserService {
             user.getRoles().add(Role.valueOf("ROLE_ADMIN"));
         }
         log.info("Change role. User email: {}", user.getEmail());
+        userRepository.save(user);
+    }
+
+    public void save(User user) {
         userRepository.save(user);
     }
 }

@@ -1,7 +1,9 @@
 package by.bsuir.sweetybear.service;
 
+import by.bsuir.sweetybear.model.Bucket;
 import by.bsuir.sweetybear.model.Image;
 import by.bsuir.sweetybear.model.Product;
+import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.repository.ImageRepository;
 import by.bsuir.sweetybear.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,6 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.Collections;
 import java.util.List;
 
 import static by.bsuir.sweetybear.utils.Utils.toImageEntity;
@@ -28,6 +31,8 @@ import static by.bsuir.sweetybear.utils.Utils.toImageEntity;
 public class ProductService {
 
     private final ProductRepository productRepository;
+    private final UserService userService;
+    private final BucketService bucketService;
     private final ImageRepository imageRepository;
 
     public List<Product> listProducts(String title) {
@@ -86,5 +91,22 @@ public class ProductService {
         Product productFromDb = productRepository.save(product);
         product.setPreviewImageId(productFromDb.getImages().get(0).getId());
         productRepository.save(product);
+    }
+
+    @Transactional
+    public void addToUserBucket(Long productId, String email) {
+        User user = userService.getUserByEmail(email);
+        if (user == null) {
+            throw new IllegalStateException("User not found. Email: " + email);
+        }
+
+        Bucket bucket = user.getBucket();
+        if (bucket == null) {
+            Bucket newBucket = bucketService.createBucket(user, Collections.singletonList(productId));
+            user.setBucket(newBucket);
+            userService.save(user);
+        } else {
+            bucketService.addProducts(bucket, Collections.singletonList(productId));
+        }
     }
 }

@@ -30,7 +30,7 @@ public class User extends IdentifiedModel implements UserDetails {
     @NotBlank(message = "Email is required")
     private String email;
     @Column(name = "name")
-    @Size(min=5, max=30, message = "Name must be between 5 and 30 characters")
+    @Size(min = 5, max = 30, message = "Name must be between 5 and 30 characters")
     @NotBlank(message = "name is required")
     private String name;
     @Column(name = "active")
@@ -48,7 +48,7 @@ public class User extends IdentifiedModel implements UserDetails {
     @Column(name = "date_Of_Created")
     private LocalDateTime dateOfCreated;
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.REMOVE)
     private Bucket bucket;
 
     public boolean isAdmin() {
