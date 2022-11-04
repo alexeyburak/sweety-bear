@@ -53,6 +53,10 @@ public class Product extends IdentifiedModel {
     private Long previewImageId;
     private LocalDateTime dateOfCreated;
 
+    public boolean isProductAvailable() {
+        return availability;
+    }
+
     @PrePersist
     private void init() {
         dateOfCreated = LocalDateTime.now();

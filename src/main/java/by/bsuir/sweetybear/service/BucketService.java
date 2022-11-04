@@ -19,6 +19,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
+import static by.bsuir.sweetybear.utils.Utils.remove;
+
 /**
  * sweety-bear
  * Created by Alexey Burak
@@ -53,6 +55,13 @@ public class BucketService {
         List<Product> newProductList = products == null ? new ArrayList<>() : new ArrayList<>(products);
         newProductList.addAll(getCollectRefProductsByIds(productIds));
         bucket.setProducts(newProductList);
+        bucketRepository.save(bucket);
+    }
+
+    public void deleteProductFromBucket(Bucket bucket, Long id) {
+        List<Long> ids = bucket.getProducts().stream().map(Product::getId).toList();
+        List<Long> productWithRemovedId = remove(ids, id);
+        bucket.setProducts(new ArrayList<>(getCollectRefProductsByIds(productWithRemovedId)));
         bucketRepository.save(bucket);
     }
 

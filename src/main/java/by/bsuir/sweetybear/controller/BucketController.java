@@ -8,6 +8,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
 
@@ -35,5 +37,12 @@ public class BucketController {
             model.addAttribute("bucket", bucketDTO);
         }
         return "bucket";
+    }
+
+    @PostMapping("/bucket/delete/{id}")
+    public String deleteProduct(@PathVariable Long id, Principal principal) {
+        User user = userService.getUserByPrincipal(principal);
+        bucketService.deleteProductFromBucket(user.getBucket(), id);
+        return "redirect:/bucket";
     }
 }

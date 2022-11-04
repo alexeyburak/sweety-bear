@@ -19,9 +19,9 @@
     <div th:utext="${bucket.sum}">sum</div>
 </div>
 
-<table class="table table-hover mt-3 ml-5 mb-5 mr-5">
+<table class="table table-hover mt-3 ml-5 mb-5 mr-5" style="width: 95%;">
     <tr>
-        <th scope="col">Title</th>
+        <th scope="col" class="col-sm-3">Title</th>
         <th scope="col">Amount</th>
         <th scope="col">Price</th>
         <th scope="col">Sum</th>
@@ -32,7 +32,12 @@
         <th scope="col" th:utext="${detail.amount}">Amount</th>
         <th scope="col" th:utext="${detail.price}">Price</th>
         <th scope="col" th:utext="${detail.sum}">Sum</th>
-        <th scope="col"><a href="#">Remove</a></th>
+
+        <th scope="col">
+            <form th:action="@{/bucket/delete/{id}(id=${detail.productId})}" method="post">
+                <button type="submit" class="btn btn-outline-secondary">Delete</button>
+            </form>
+        </th>
     </tr>
 </table>
 

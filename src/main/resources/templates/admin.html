@@ -20,10 +20,10 @@
     </form>
 </div>
 
-<table class="table table-hover mt-3 ml-5 mb-5 mr-5">
+<table class="table table-hover mt-4 mb-5 ml-5" style="width: 95%;">
     <tr>
-        <th scope="col">Id</th>
-        <th scope="col">Email</th>
+        <th scope="col" class="ml-3">Id</th>
+        <th scope="col" class="col-sm-4">Email</th>
         <th scope="col">Activity</th>
         <th scope="col">Role</th>
         <th scope="col">Ban</th>
@@ -32,7 +32,7 @@
     </tr>
     <div th:each="user : ${users}">
         <tr>
-            <th scope="row" th:utext="${user.id}">Id</th>
+            <th scope="row" class="ml-3" th:utext="${user.id}">Id</th>
             <th scope="row" th:utext="${user.email}">Email</th>
             <th scope="row">
                 <div th:if="${user.active}">
