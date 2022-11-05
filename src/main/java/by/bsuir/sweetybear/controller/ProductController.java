@@ -2,8 +2,8 @@ package by.bsuir.sweetybear.controller;
 
 import by.bsuir.sweetybear.model.Product;
 import by.bsuir.sweetybear.model.User;
-import by.bsuir.sweetybear.service.ProductService;
-import by.bsuir.sweetybear.service.UserService;
+import by.bsuir.sweetybear.service.ProductServiceImpl;
+import by.bsuir.sweetybear.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -26,8 +26,8 @@ import java.security.Principal;
 @RequiredArgsConstructor
 public class ProductController {
 
-    private final ProductService productService;
-    private final UserService userService;
+    private final ProductServiceImpl productService;
+    private final UserServiceImpl userService;
 
     @GetMapping("/")
     public String products(@RequestParam(name = "title", required = false) String title, Principal principal, Model model) {

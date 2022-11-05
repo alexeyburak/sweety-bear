@@ -1,7 +1,7 @@
 package by.bsuir.sweetybear.controller;
 
 import by.bsuir.sweetybear.model.User;
-import by.bsuir.sweetybear.service.UserService;
+import by.bsuir.sweetybear.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -22,7 +22,7 @@ import java.io.IOException;
 @RequiredArgsConstructor
 public class UserController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     @GetMapping("/registration")
     public String registration(@ModelAttribute("user") User user) {

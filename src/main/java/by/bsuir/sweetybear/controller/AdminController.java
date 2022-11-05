@@ -2,7 +2,7 @@ package by.bsuir.sweetybear.controller;
 
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.model.enums.Role;
-import by.bsuir.sweetybear.service.UserService;
+import by.bsuir.sweetybear.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -22,7 +22,7 @@ import java.security.Principal;
 @PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public class AdminController {
 
-    private final UserService userService;
+    private final UserServiceImpl userService;
 
     @GetMapping("/admin")
     public String admin(@RequestParam(name = "email", required = false) String email, Model model, Principal principal) {
