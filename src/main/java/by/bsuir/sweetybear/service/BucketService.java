@@ -59,8 +59,8 @@ public class BucketService {
     }
 
     public void deleteProductFromBucket(Bucket bucket, Long id) {
-        List<Long> ids = bucket.getProducts().stream().map(Product::getId).toList();
-        List<Long> productWithRemovedId = remove(ids, id);
+        List<Long> productIdsInBucket = bucket.getProducts().stream().map(Product::getId).toList();
+        List<Long> productWithRemovedId = remove(productIdsInBucket, id);
         bucket.setProducts(new ArrayList<>(getCollectRefProductsByIds(productWithRemovedId)));
         bucketRepository.save(bucket);
     }

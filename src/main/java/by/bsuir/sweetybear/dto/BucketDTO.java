@@ -28,4 +28,8 @@ public class BucketDTO {
                 .sum();
     }
 
+    public boolean isBucketEmpty() {
+        return bucketDetails.size() == 0;
+    }
+
 }

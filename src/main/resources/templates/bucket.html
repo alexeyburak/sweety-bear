@@ -14,32 +14,43 @@
 <div class="mt-3 ml-5" style="font-size:18px">
     Bucket
 </div>
-<div class="mt-3 ml-5" style="font-size:16px">
-    Final cost
-    <div th:utext="${bucket.sum}">sum</div>
+
+<div th:unless="${bucket.isBucketEmpty()}">
+    <div class="mt-3 ml-5" style="font-size:16px">
+        Final cost
+        <div th:utext="${bucket.sum}">sum</div>
+    </div>
+
+    <table class="table table-hover mt-3 ml-5 mb-5 mr-5" style="width: 95%;">
+        <tr>
+            <th scope="col" class="col-sm-3">Title</th>
+            <th scope="col">Amount</th>
+            <th scope="col">Price</th>
+            <th scope="col">Sum</th>
+            <th scope="col">Remove</th>
+        </tr>
+        <tr th:each="detail : ${bucket.bucketDetails}">
+            <th scope="col">
+                <a th:href="@{/product/{id}(id=${detail.productId})}">
+                    <p th:utext="${detail.title}">Title</p>
+                </a>
+            </th>
+            <th scope="col" th:utext="${detail.amount}">Amount</th>
+            <th scope="col" th:utext="${detail.price}">Price</th>
+            <th scope="col" th:utext="${detail.sum}">Sum</th>
+
+            <th scope="col">
+                <form th:action="@{/bucket/delete/{id}(id=${detail.productId})}" method="post">
+                    <button type="submit" class="btn btn-outline-secondary">Delete</button>
+                </form>
+            </th>
+        </tr>
+    </table>
+</div>
+<div class="mt-3 ml-5" th:if="${bucket.isBucketEmpty()}">
+    Your shopping cart is empty, make purchases in our <a href="/">catalog</a>
 </div>
 
-<table class="table table-hover mt-3 ml-5 mb-5 mr-5" style="width: 95%;">
-    <tr>
-        <th scope="col" class="col-sm-3">Title</th>
-        <th scope="col">Amount</th>
-        <th scope="col">Price</th>
-        <th scope="col">Sum</th>
-        <th scope="col">Remove</th>
-    </tr>
-    <tr th:each="detail : ${bucket.bucketDetails}">
-        <th scope="col" th:utext="${detail.title}">Title</th>
-        <th scope="col" th:utext="${detail.amount}">Amount</th>
-        <th scope="col" th:utext="${detail.price}">Price</th>
-        <th scope="col" th:utext="${detail.sum}">Sum</th>
-
-        <th scope="col">
-            <form th:action="@{/bucket/delete/{id}(id=${detail.productId})}" method="post">
-                <button type="submit" class="btn btn-outline-secondary">Delete</button>
-            </form>
-        </th>
-    </tr>
-</table>
 
 
 </body>
