@@ -28,17 +28,26 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.save(order);
     }
 
+    @Override
     public List<Order> orderList(OrderStatus status) {
         return orderRepository.findByStatus(status);
     }
 
+    @Override
     public Order getOrderById(Long id) {
         return orderRepository.findById(id).orElse(null);
     }
 
+    @Override
     public void updateOrderStatusById(Long id, OrderStatus status) {
         Order order = this.getOrderById(id);
+        log.info("Change order status. Id: {}. Status: {}. New status: {}", id, order.getStatus(), status);
         order.setStatus(status);
         orderRepository.save(order);
+    }
+
+    @Override
+    public List<Order> getUserOrders(Long id) {
+        return orderRepository.findByUserId(id);
     }
 }

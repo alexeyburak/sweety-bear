@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Sweety Bear</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
+          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+</head>
+<body>
+
+<header th:insert="blocks/header :: header"></header>
+
+<div th:each="order : ${orders}">
+    <div class="mt-3 ml-5" style="font-size:18px">
+        Order information. Sum:
+        <div th:utext="${order.sum}"></div>
+    </div>
+
+    <div th:utext="${order.address}"></div>
+    <div th:utext="${order.status}"></div>
+    <div th:utext="${order.dateOfCreated}"></div>
+    <div th:utext="${order.dateOfDelivery}"></div>
+
+    <div th:each="details : ${order.details}">
+        <div th:utext="${details.product.title}"></div>
+        <div th:utext="${details.amount}"></div>
+        <div th:utext="${details.price}"></div>
+    </div>
+
+    <div class="btn-group" role="group" th:unless="${order.isOrderCanceled()}">
+        <form th:method="post" th:action="@{/orders/edit/{id}(id=${order.id})}">
+            <input type="hidden" name="_csrf" value="${_csrf.token}">
+            <input type="hidden" th:value="CLOSED" name="status">
+            <button type="submit" class="btn btn-outline-secondary ml-5 mt-1">Confirm delivery</button>
+        </form>
+    </div>
+
+</div>
+
+
+</body>
+</html>

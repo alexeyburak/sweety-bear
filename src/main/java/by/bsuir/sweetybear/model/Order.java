@@ -40,6 +40,10 @@ public class Order extends IdentifiedModel {
     private LocalDateTime dateOfCreated;
     private LocalDateTime dateOfDelivery;
 
+    public boolean isOrderCanceled() {
+        return status == OrderStatus.CANCELED || status == OrderStatus.CLOSED;
+    }
+
     @PrePersist
     private void init() {
         dateOfCreated = LocalDateTime.now();

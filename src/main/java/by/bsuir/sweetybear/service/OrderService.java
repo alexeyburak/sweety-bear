@@ -21,5 +21,6 @@ public interface OrderService {
     Order getOrderById(Long id);
     // Update order status
     void updateOrderStatusById(Long id, OrderStatus status);
-
+    // Return user orders
+    List<Order> getUserOrders(Long id);
 }

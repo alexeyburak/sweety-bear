@@ -7,7 +7,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.security.Principal;
 
@@ -19,12 +22,12 @@ import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
-@PreAuthorize("hasAuthority('ROLE_ADMIN')")
 public class OrderController {
 
     private final OrderServiceImpl orderService;
     private final UserServiceImpl userService;
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/orders/new")
     public String aboutOrderNew(Model model, Principal principal) {
         model.addAttribute("user", userService.getUserByPrincipal(principal));
@@ -32,6 +35,7 @@ public class OrderController {
         return "orders";
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/orders/approved")
     public String aboutOrderApproved(Model model, Principal principal) {
         model.addAttribute("user", userService.getUserByPrincipal(principal));
@@ -39,6 +43,7 @@ public class OrderController {
         return "orders";
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/orders/canceled")
     public String aboutOrderCanceled(Model model, Principal principal) {
         model.addAttribute("user", userService.getUserByPrincipal(principal));
@@ -46,6 +51,7 @@ public class OrderController {
         return "orders";
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
     @GetMapping("/orders/closed")
     public String aboutOrderClosed(Model model, Principal principal) {
         model.addAttribute("user", userService.getUserByPrincipal(principal));
@@ -53,6 +59,7 @@ public class OrderController {
         return "orders";
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_USER')")
     @GetMapping("/orders/{id}")
     public String orderInfo(@PathVariable("id") Long id, Model model, Principal principal) {
         model.addAttribute("user", userService.getUserByPrincipal(principal));
@@ -60,6 +67,7 @@ public class OrderController {
         return "order-info";
     }
 
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_USER')")
     @PostMapping("/orders/edit/{id}")
     public String orderUpdate(@PathVariable("id") Long id,
                               @RequestParam("status") OrderStatus status) {
@@ -67,6 +75,12 @@ public class OrderController {
         return "redirect:/orders/{id}";
     }
 
-
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_USER')")
+    @GetMapping("/orders/user/{id}")
+    public String userOrderInfo(@PathVariable("id") Long id, Model model, Principal principal) {
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
+        model.addAttribute("orders", orderService.getUserOrders(id));
+        return "user-orders";
+    }
 
 }

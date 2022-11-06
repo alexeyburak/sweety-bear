@@ -29,7 +29,7 @@
     <div th:utext="${details.price}"></div>
 </div>
 
-<div class="btn-group" role="group">
+<div th:if="${user.isAdmin()}" th:unless="${order.isOrderCanceled()}" class="btn-group" role="group">
     <div>
         <form th:method="post" th:action="@{/orders/edit/{id}(id=${order.id})}">
             <input type="hidden" name="_csrf" value="${_csrf.token}">
@@ -44,15 +44,7 @@
             <button type="submit" class="btn btn-outline-danger ml-5 mt-1">CANCELED</button>
         </form>
     </div>
-    <div>
-        <form th:method="post" th:action="@{/orders/edit/{id}(id=${order.id})}">
-            <input type="hidden" name="_csrf" value="${_csrf.token}">
-            <input type="hidden" th:value="CLOSED" name="status">
-            <button type="submit" class="btn btn-outline-secondary ml-5 mt-1">CLOSED</button>
-        </form>
-    </div>
 </div>
-
 
 </body>
 </html>
