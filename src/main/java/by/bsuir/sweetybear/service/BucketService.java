@@ -22,4 +22,6 @@ public interface BucketService {
     void deleteProductFromBucket(Bucket bucket, Long id);
     // Count bucket price
     BucketDTO getBucketByUser(String email);
+    // Add bucket to order
+    void addBucketToOrder(String email);
 }

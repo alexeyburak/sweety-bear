@@ -45,4 +45,13 @@ public class BucketController {
         bucketService.deleteProductFromBucket(user.getBucket(), id);
         return "redirect:/bucket";
     }
+
+    @PostMapping("/bucket")
+    public String commitBucket(Principal principal) {
+        User user = userService.getUserByPrincipal(principal);
+        if (user != null) {
+            bucketService.addBucketToOrder(user.getEmail());
+        }
+        return "redirect:/bucket";
+    }
 }

@@ -51,6 +51,10 @@
     Your shopping cart is empty, make purchases in our <a href="/">catalog</a>
 </div>
 
+<form th:unless="${bucket.isBucketEmpty()}" class="mt-1 ml-5" th:action="@{/bucket}" method="post">
+    <button type="submit" class="btn btn-outline-secondary">Create order</button>
+</form>
+
 
 
 </body>

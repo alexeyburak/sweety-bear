@@ -36,6 +36,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final MailSenderImpl mailSender;
 
+    @Override
     public boolean createUser(User user) {
         String email = user.getEmail();
         if (userRepository.findByEmail(email) != null) return false;
@@ -49,24 +50,29 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
+    @Override
     public List<User> userList(String email) {
         if (email != null) return Collections.singletonList(userRepository.findByEmail(email));
         return userRepository.findAll();
     }
 
+    @Override
     public User getUserById(Long id) {
         return userRepository.findById(id).orElse(null);
     }
 
+    @Override
     public User getUserByEmail(String email) {
         return userRepository.findByEmail(email);
     }
 
+    @Override
     public User getUserByPrincipal(Principal principal) {
         if (principal == null) return new User();
         return userRepository.findByEmail(principal.getName());
     }
 
+    @Override
     public void banUser(Long id) {
         User user = userRepository.findById(id).orElse(null);
         if (user != null) {
@@ -77,6 +83,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
     public void updateUserById(Long id, User userUpdate, MultipartFile file1) throws IOException {
         User user = getUserById(id);
         assert user != null;
@@ -85,7 +92,7 @@ public class UserServiceImpl implements UserService {
             if (user.isAvatarNull()) {
                 imageRepository.markToDeleteByUserId(id, "toDelete");
                 imageRepository.deleteByName("toDelete");
-                log.info("Delete photo.");
+                log.warn("Delete photo.");
             }
             image1 = toImageEntity(file1);
             image1.setPreviewImage(true);
@@ -98,6 +105,7 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
     public void changeUserRole(User user) {
         if (user.isAdmin()) {
             user.getRoles().clear();
@@ -110,7 +118,9 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    @Override
     public void save(User user) {
+        log.info("Save user. Id: {}", user.getId());
         userRepository.save(user);
     }
 }

@@ -35,24 +35,28 @@ public class ProductServiceImpl implements ProductService {
     private final BucketServiceImpl bucketService;
     private final ImageRepository imageRepository;
 
+    @Override
     public List<Product> listProducts(String title) {
         if (title != null) return productRepository.findByTitle(title);
         return productRepository.findAll();
     }
 
+    @Override
     public void saveProduct(Product product, MultipartFile file1, MultipartFile file2) throws IOException {
         addImages(product, file1, file2);
-        log.info("Saving new Product. Id: {}, Title: {} ", product.getId(), product.getTitle());
         Product productFromDb = productRepository.save(product);
         productFromDb.setPreviewImageId(productFromDb.getImages().get(0).getId());
+        log.info("Saving new Product. Id: {}, Title: {} ", product.getId(), product.getTitle());
         productRepository.save(product);
     }
 
+    @Override
     public void deleteProduct(Long id) {
         log.info("Delete product. Id: {}", id);
         productRepository.deleteById(id);
     }
 
+    @Override
     public Product getProductById(Long id) {
         return productRepository.findById(id).orElse(null);
     }
@@ -64,7 +68,7 @@ public class ProductServiceImpl implements ProductService {
             if (product.getImages() != null) {
                 imageRepository.markToDeleteByProductId(product.getId(), "toDelete");
                 imageRepository.deleteByName("toDelete");
-                log.info("Delete product images.");
+                log.warn("Delete product images.");
                 product.setPreviewImageId(null);
                 product.getImages().clear();
             }
@@ -78,8 +82,8 @@ public class ProductServiceImpl implements ProductService {
         }
     }
 
+    @Override
     public void updateProductById(Long id, Product productUpdate, MultipartFile file1, MultipartFile file2) throws IOException {
-        log.info("Update product. Id: {}", id);
         Product product = productRepository.findById(id).orElse(null);
         assert product != null;
         addImages(product, file1, file2);
@@ -90,9 +94,11 @@ public class ProductServiceImpl implements ProductService {
         product.setAvailability(productUpdate.isAvailability());
         Product productFromDb = productRepository.save(product);
         product.setPreviewImageId(productFromDb.getImages().get(0).getId());
+        log.info("Update product. Id: {}", id);
         productRepository.save(product);
     }
 
+    @Override
     @Transactional
     public void addToUserBucket(Long productId, String email) {
         User user = userService.getUserByEmail(email);
@@ -104,6 +110,7 @@ public class ProductServiceImpl implements ProductService {
         if (bucket == null) {
             Bucket newBucket = bucketService.createBucket(user, Collections.singletonList(productId));
             user.setBucket(newBucket);
+            log.info("Create new bucket for user. User id: {}", user.getId());
             userService.save(user);
         } else {
             bucketService.addProducts(bucket, Collections.singletonList(productId));

@@ -33,6 +33,7 @@ public class Order extends IdentifiedModel {
     @Column(name = "address")
     private String address;
     @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "details_id")
     private List<OrderDetails> details;
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
