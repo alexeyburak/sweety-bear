@@ -20,6 +20,9 @@
             <li class="nav-item" th:if="${user.isAdmin()}">
               <a class="nav-link active" th:href="@{/admin}">Admin menu</a>
             </li>
+              <li class="nav-item" th:if="${user.isAdmin()}">
+              <a class="nav-link active" th:href="@{/orders/new}">Orders</a>
+            </li>
             <li class="nav-item" th:if="${user.email}">
               <form class="d-flex" role="search" th:action="@{/logout}" method="post">
                 <input class="form-control me-2" type="hidden" name="_csrf" value="${_csrf.token}"><br>

@@ -26,7 +26,7 @@ public class Utils {
         return image;
     }
 
-    public static List<Long> remove(List<Long> list, Long id) {
+    public static List<Long> removeOnlyOneIdFromList(List<Long> list, Long id) {
         List<Long> refactorList = new ArrayList<>(list);
         int flag = 0;
         for (int i = 0; i < list.size(); i++) {

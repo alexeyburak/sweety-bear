@@ -18,7 +18,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-import static by.bsuir.sweetybear.utils.Utils.remove;
+import static by.bsuir.sweetybear.utils.Utils.removeOnlyOneIdFromList;
 
 /**
  * sweety-bear
@@ -65,7 +65,7 @@ public class BucketServiceImpl implements BucketService {
     @Override
     public void deleteProductFromBucket(Bucket bucket, Long id) {
         List<Long> productIdsInBucket = bucket.getProducts().stream().map(Product::getId).toList();
-        List<Long> productWithRemovedId = remove(productIdsInBucket, id);
+        List<Long> productWithRemovedId = removeOnlyOneIdFromList(productIdsInBucket, id);
         bucket.setProducts(new ArrayList<>(getCollectRefProductsByIds(productWithRemovedId)));
         log.info("Delete product from bucket. Bucket id: {}. Product id: {}", bucket.getId(), id);
         bucketRepository.save(bucket);
