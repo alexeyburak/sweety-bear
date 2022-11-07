@@ -20,10 +20,10 @@
     </div>
     <div class="carousel-inner" th:each="image : ${images}">
 
-        <div class="carousel-item active" th:if="${image.id} == ${product.previewImageId}">
+        <div class="carousel-item active" th:if="${image.isPreviewImage}">
             <img th:src="@{/images/{id}(id=${image.id})}" class="d-block w-100"/>
         </div>
-        <div class="carousel-item" th:unless="${image.id} == ${product.previewImageId}">
+        <div class="carousel-item" th:unless="${image.isPreviewImage}">
             <img th:src="@{/images/{id}(id=${image.id})}" class="d-block w-100"/>
         </div>
 
@@ -40,21 +40,35 @@
     </button>
 </div>
 
+<div class="card mb-3 mt-4 " style="display: block;
+                        margin-left: auto; margin-right: auto; width: 60%">
+    <img src="..." class="card-img-top" alt="...">
+    <div class="card-body">
+        <h5 class="card-title" th:utext="${product.title}">Card title</h5>
+        <p class="card-text" th:utext="${product.description}">Description</p>
+        <div class="card-text" style="display: inline-block">Price:
+            <div th:utext="${product.price}" style="display: inline-block; font-weight:bold">
+                Price
+            </div>
+        </div>
+        <div class="card-text" style="display: inline-block">Weight:
+            <div th:utext="${product.weight}" style="display: inline-block;">
+                Weight
+            </div>
+        </div>
+        <div class="card-text" style="display: inline-block">Availability:
+            <div th:utext="${product.availability}" style="display: inline-block;">
+                Availability
+            </div>
+        </div>
+        <p class="card-text"><small class="text-muted" th:utext="${product.dateOfCreated}">dateOfCreated</small></p>
+    </div>
+</div>
+
 <tr th:each="image : ${images}">
     <!--/*@thymesVar id="image" type="image"*/-->
     <img th:src="@{/images/{id}(id=${image.id})}" height="60px"/><br><br>
 </tr>
-
-<b> Название</b>
-<p th:utext="${product.title}"></p>
-<b> Описание</b>
-<p th:utext="${product.description}"></p>
-<b> Цeна</b>
-<p th:utext="${product.price}"></p>
-<b> вес</b>
-<p th:utext="${product.weight}"></p>
-<b> Наличие</b>
-<p th:utext="${product.availability}"></p>
 
 <div th:if="${user.isAdmin()}">
     Delete Product

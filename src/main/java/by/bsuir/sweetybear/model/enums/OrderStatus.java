@@ -7,5 +7,5 @@ package by.bsuir.sweetybear.model.enums;
  */
 
 public enum OrderStatus {
-    NEW, APPROVED, CANCELED, CLOSED
+    APPROVED, NEW, CANCELED, CLOSED
 }
