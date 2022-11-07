@@ -21,7 +21,7 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Order extends IdentifiedModel {
+public class Order extends IdentifiedModel implements Comparable<Order>{
 
     private static final Long DELIVERY_TIME = 5L;
 
@@ -44,9 +44,23 @@ public class Order extends IdentifiedModel {
         return status == OrderStatus.CANCELED || status == OrderStatus.CLOSED;
     }
 
+    public boolean isOrderApproved() {
+        return status == OrderStatus.APPROVED;
+    }
+
     @PrePersist
     private void init() {
         dateOfCreated = LocalDateTime.now();
         dateOfDelivery = LocalDateTime.now().plusDays(DELIVERY_TIME);
+    }
+
+    @Override
+    public int compareTo(Order o) {
+        if(o.status.ordinal() < this.status.ordinal())
+            return 1;
+        else if(o.status.ordinal() > this.status.ordinal())
+            return -1;
+        else
+            return 1;
     }
 }

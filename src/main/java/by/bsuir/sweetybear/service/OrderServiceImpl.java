@@ -48,6 +48,6 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getUserOrders(Long id) {
-        return orderRepository.findByUserId(id);
+        return orderRepository.findByUserId(id).stream().sorted(Order::compareTo).toList();
     }
 }
