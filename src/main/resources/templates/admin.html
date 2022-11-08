@@ -6,6 +6,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <script>
+        function deleteConfig(){
+            return confirm("Are you sure you want to ban the user?");
+        }
+    </script>
 </head>
 <body>
 
@@ -50,7 +55,7 @@
             <th scope="row">
                 <form th:action="@{/admin/user/ban/{id}(id=${user.id})}" th:unless="${user.isOwner()}" method="post">
                     <input type="hidden" name="_csrf" value="${_csrf.token}">
-                    <button type="submit" th:value="Bun" class="btn btn-outline-secondary">Ban</button>
+                    <button onclick="return deleteConfig()" type="submit" th:value="Bun" class="btn btn-outline-secondary">Ban</button>
                 </form>
             </th>
             <th scope="row"><a th:unless="${user.isOwner()}" th:href="@{/admin/user/edit/{id}(id=${user.id})}">Editing</a></th>

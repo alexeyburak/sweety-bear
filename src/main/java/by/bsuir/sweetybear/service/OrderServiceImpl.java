@@ -7,6 +7,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.List;
 
 /**
@@ -30,7 +31,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> orderList(OrderStatus status) {
-        return orderRepository.findByStatus(status);
+        return orderRepository.findByStatus(status).stream().
+                sorted(Comparator.comparing(Order::getDateOfCreated)
+                        .reversed())
+                .toList();
     }
 
     @Override

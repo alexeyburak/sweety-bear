@@ -6,6 +6,11 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <script>
+        function deleteConfig(message){
+            return confirm("Are you sure you want to " + message + " this order?");
+        }
+    </script>
 </head>
 <body>
 
@@ -59,14 +64,14 @@
         <form th:method="post" th:action="@{/admin/orders/edit/{id}(id=${order.id})}">
             <input type="hidden" name="_csrf" value="${_csrf.token}">
             <input type="hidden" th:value="APPROVED" name="status">
-            <button type="submit" class="btn btn-outline-success ml-5 mt-1">APPROVED</button>
+            <button onclick="return deleteConfig('APPROVED')" type="submit" class="btn btn-outline-success ml-5 mt-1">APPROVED</button>
         </form>
     </div>
     <div>
         <form th:method="post" th:action="@{/orders/edit/{id}(id=${order.id})}">
             <input type="hidden" name="_csrf" value="${_csrf.token}">
             <input type="hidden" th:value="CANCELED" name="status">
-            <button type="submit" class="btn btn-outline-danger ml-5 mt-1">CANCELED</button>
+            <button onclick="return deleteConfig('CANCELED')" type="submit" class="btn btn-outline-danger ml-5 mt-1">CANCELED</button>
         </form>
     </div>
 </div>
