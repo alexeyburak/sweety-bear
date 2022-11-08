@@ -46,7 +46,7 @@ public class ProductController {
         return "product-info";
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
     @PostMapping("/product/create")
     public String createProduct(@RequestParam("file1") MultipartFile file1,
                                 @RequestParam("file2") MultipartFile file2,
@@ -59,14 +59,14 @@ public class ProductController {
         return "redirect:/";
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
     @PostMapping("/product/delete/{id}")
     public String deleteProduct(@PathVariable Long id) {
         productService.deleteProduct(id);
         return "redirect:/";
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
     @GetMapping("/product/edit/{id}")
     public String productEdit(@PathVariable("id") Long id, Model model, Principal principal) {
         model.addAttribute("product", productService.getProductById(id));
@@ -74,7 +74,7 @@ public class ProductController {
         return "product-edit";
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN')")
+    @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
     @PostMapping("/product/edit/{id}")
     public String productUpdate(@RequestParam("file1") MultipartFile file1,
                                 @RequestParam("file2") MultipartFile file2,

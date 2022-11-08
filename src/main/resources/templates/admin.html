@@ -48,12 +48,12 @@
                 </div>
             </th>
             <th scope="row">
-                <form th:action="@{/admin/user/ban/{id}(id=${user.id})}" method="post">
+                <form th:action="@{/admin/user/ban/{id}(id=${user.id})}" th:unless="${user.isOwner()}" method="post">
                     <input type="hidden" name="_csrf" value="${_csrf.token}">
                     <button type="submit" th:value="Bun" class="btn btn-outline-secondary">Ban</button>
                 </form>
             </th>
-            <th scope="row"><a th:href="@{/admin/user/edit/{id}(id=${user.id})}">Editing</a></th>
+            <th scope="row"><a th:unless="${user.isOwner()}" th:href="@{/admin/user/edit/{id}(id=${user.id})}">Editing</a></th>
             <th scope="row"><a th:href="@{/user/{id}(id=${user.id})}">View information</a></th>
         </tr>
 

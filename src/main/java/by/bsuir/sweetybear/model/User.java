@@ -52,7 +52,11 @@ public class User extends IdentifiedModel implements UserDetails {
     private Bucket bucket;
 
     public boolean isAdmin() {
-        return roles.contains(Role.ROLE_ADMIN);
+        return roles.contains(Role.ROLE_ADMIN) || roles.contains(Role.ROLE_OWNER);
+    }
+
+    public boolean isOwner() {
+        return roles.contains(Role.ROLE_OWNER);
     }
 
     public boolean isAvatarNull() {

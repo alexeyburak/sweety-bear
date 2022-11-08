@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
         if (userRepository.findByEmail(email) != null) return false;
         user.setActive(true);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.getRoles().add(Role.ROLE_ADMIN);
+        user.getRoles().add(Role.ROLE_OWNER);
         log.info("Saving User. Email {}", email);
 //        mailSender.send(email, "Thanks for registration!", user.getName() +
 //                ", we hope that we will not quarrel! \nStart using our sait now: http://localhost:8085/");

@@ -19,7 +19,7 @@ import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
-@PreAuthorize("hasAuthority('ROLE_ADMIN')")
+@PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
 public class AdminController {
 
     private final UserServiceImpl userService;
