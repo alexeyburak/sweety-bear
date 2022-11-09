@@ -1,8 +1,10 @@
 package by.bsuir.sweetybear.controller;
 
+import by.bsuir.sweetybear.dto.UserDTO;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -23,19 +25,28 @@ import java.io.IOException;
 public class UserController {
 
     private final UserServiceImpl userService;
+    private final ModelMapper modelMapper;
 
     @GetMapping("/registration")
-    public String registration(@ModelAttribute("user") User user) {
+    public String registration(@ModelAttribute("user") UserDTO user) {
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String createUser(@ModelAttribute("user") @Valid User user, BindingResult bindingResult, Model model) {
+    public String createUser(@ModelAttribute("user") @Valid UserDTO user, BindingResult bindingResult, Model model) {
         if (bindingResult.hasErrors()) {
             return "registration";
         }
-        if (!userService.createUser(user)) {
-            model.addAttribute("errorMessage", "Пользователь с Email: " + user.getEmail() + " уже существует");
+
+        if (!user.getPassword().equals(user.getConfirmPassword())) {
+            model.addAttribute("passwordError", "Passwords do not match");
+            return "registration";
+        }
+
+        User userDb = this.modelMapper.map(user, User.class);
+
+        if (!userService.createUser(userDb)) {
+            model.addAttribute("errorMessage", "User with email " + user.getEmail() + " is already exists");
             return "registration";
         }
         return "redirect:/login";
@@ -49,9 +60,12 @@ public class UserController {
 
     @PostMapping("/user/edit/{id}")
     public String update(@RequestParam("file1") MultipartFile file1,
-                         @ModelAttribute("user") User user,
+                         @ModelAttribute("user") UserDTO user,
                          @PathVariable("id") Long id) throws IOException {
-        userService.updateUserById(id, user, file1);
+
+        User userDb = this.modelMapper.map(user, User.class);
+
+        userService.updateUserById(id, userDb, file1);
         return "redirect:/";
     }
 

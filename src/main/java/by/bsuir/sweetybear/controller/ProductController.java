@@ -1,10 +1,12 @@
 package by.bsuir.sweetybear.controller;
 
+import by.bsuir.sweetybear.dto.ProductDTO;
 import by.bsuir.sweetybear.model.Product;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.service.ProductServiceImpl;
 import by.bsuir.sweetybear.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -28,12 +30,13 @@ public class ProductController {
 
     private final ProductServiceImpl productService;
     private final UserServiceImpl userService;
+    private final ModelMapper modelMapper;
 
     @GetMapping("/")
     public String products(@RequestParam(name = "title", required = false) String title, Principal principal, Model model) {
         model.addAttribute("products", productService.listProducts(title));
         model.addAttribute("user", userService.getUserByPrincipal(principal));
-        model.addAttribute("product", new Product());
+        model.addAttribute("product", new ProductDTO());
         return "products";
     }
 
@@ -50,12 +53,15 @@ public class ProductController {
     @PostMapping("/product/create")
     public String createProduct(@RequestParam("file1") MultipartFile file1,
                                 @RequestParam("file2") MultipartFile file2,
-                                @ModelAttribute("product") @Valid Product product,
+                                @ModelAttribute("product") @Valid ProductDTO product,
                                 BindingResult bindingResult) throws IOException {
         if (bindingResult.hasErrors()) {
             return "products";
         }
-        productService.saveProduct(product, file1, file2);
+
+        Product productDb = this.modelMapper.map(product, Product.class);
+
+        productService.saveProduct(productDb, file1, file2);
         return "redirect:/";
     }
 
@@ -78,13 +84,16 @@ public class ProductController {
     @PostMapping("/product/edit/{id}")
     public String productUpdate(@RequestParam("file1") MultipartFile file1,
                                 @RequestParam("file2") MultipartFile file2,
-                                @ModelAttribute("product") @Valid Product product,
+                                @ModelAttribute("product") @Valid ProductDTO product,
                                 BindingResult bindingResult,
                                 @PathVariable("id") Long id) throws IOException {
         if (bindingResult.hasErrors()) {
             return "product-edit";
         }
-        productService.updateProductById(id, product, file1, file2);
+
+        Product productDb = this.modelMapper.map(product, Product.class);
+
+        productService.updateProductById(id, productDb, file1, file2);
         return "redirect:/product/{id}";
     }
 
