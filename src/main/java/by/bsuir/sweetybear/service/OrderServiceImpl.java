@@ -31,15 +31,19 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> orderList(OrderStatus status) {
-        return orderRepository.findByStatus(status).stream().
-                sorted(Comparator.comparing(Order::getDateOfCreated)
+        return orderRepository
+                .findByStatus(status)
+                .stream()
+                .sorted(Comparator.comparing(Order::getDateOfCreated)
                         .reversed())
                 .toList();
     }
 
     @Override
     public Order getOrderById(Long id) {
-        return orderRepository.findById(id).orElse(null);
+        return orderRepository
+                .findById(id)
+                .orElse(null);
     }
 
     @Override
@@ -52,6 +56,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getUserOrders(Long id) {
-        return orderRepository.findByUserId(id).stream().sorted(Order::compareTo).toList();
+        return orderRepository
+                .findByUserId(id)
+                .stream()
+                .sorted(Order::compareTo)
+                .toList();
     }
 }

@@ -19,7 +19,7 @@ public class BucketDetailDTO {
 
     private String title;
     private Long productId;
-    private BigDecimal price;
+    private Double price;
     private BigDecimal amount;
     private Double sum;
 

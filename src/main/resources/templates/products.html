@@ -7,6 +7,21 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <style>
+        .dropdown {
+            display: inline-block;
+            position: relative;
+        }
+
+        .dropdown-content {
+            display: none;
+            overflow: auto;
+        }
+
+        .dropdown:hover .dropdown-content {
+            display: block;
+        }
+    </style>
 </head>
 <body>
 
@@ -15,6 +30,27 @@
 <div class="mt-3 ml-5" style="font-size:18px">
     Catalog
 </div>
+<div th:unless="${#arrays.isEmpty(products)}" class="dropdown mt-3 ml-5">
+    <button class="btn btn-outline-secondary">Sort</button>
+    <div class="dropdown-content mt-1">
+        <form action="/" method="get">
+            <input type="hidden" th:value="NEW" name="sort">
+            <button type="submit" class="btn btn-light mt-1">New</button>
+        </form>
+        <form action="/" method="get">
+            <input type="hidden" th:value="ASCENDING" name="sort">
+            <button type="submit" class="btn btn-light mt-1">Cheap</button>
+        </form>
+        <form action="/" method="get">
+            <input type="hidden" th:value="REDUCING" name="sort">
+            <button type="submit" class="btn btn-light mt-1">Expensive</button>
+        </form>
+    </div>
+</div>
+<div th:if="${title}" class="mt-3 ml-5">
+    <div th:if="${#arrays.isEmpty(products)}">No such products like '<span th:utext="${title}">title</span>'</div>
+</div>
+
 <div>
     <div class="row row-cols-1 row-cols-md-3 g-4 ml-4 mr-4 mb-4">
         <div class="col" th:each="product : ${products}">
@@ -28,6 +64,12 @@
                 <form th:action="@{/{id}/bucket(id=${product.id})}">
                     <div class="card-body">
                         <h5 class="card-title" th:utext="${product.title}">Card title</h5>
+                        <div class="card-text" style="display: inline-block">Price:
+                            <div th:utext="${product.price}" style="display: inline-block; font-weight:bold">
+                                price
+                            </div>
+                            BYN
+                        </div>
                         <p class="card-text" th:utext="${product.description}">Des</p>
                         <a th:href="@{/product/{id}(id=${product.id})}">More detailed</a>
                         <button th:if="${product.isProductAvailable()}" type="submit"

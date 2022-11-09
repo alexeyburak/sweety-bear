@@ -3,6 +3,7 @@ package by.bsuir.sweetybear.controller;
 import by.bsuir.sweetybear.dto.ProductDTO;
 import by.bsuir.sweetybear.model.Product;
 import by.bsuir.sweetybear.model.User;
+import by.bsuir.sweetybear.model.enums.SortType;
 import by.bsuir.sweetybear.service.ProductServiceImpl;
 import by.bsuir.sweetybear.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -33,10 +34,14 @@ public class ProductController {
     private final ModelMapper modelMapper;
 
     @GetMapping("/")
-    public String products(@RequestParam(name = "title", required = false) String title, Principal principal, Model model) {
-        model.addAttribute("products", productService.listProducts(title));
+    public String products(@RequestParam(name = "title", required = false) String title,
+                           @RequestParam(name = "sort", required = false) SortType type,
+                           Principal principal,
+                           Model model) {
+        model.addAttribute("products", productService.listProducts(title, type));
         model.addAttribute("user", userService.getUserByPrincipal(principal));
         model.addAttribute("product", new ProductDTO());
+        model.addAttribute("title", title);
         return "products";
     }
 

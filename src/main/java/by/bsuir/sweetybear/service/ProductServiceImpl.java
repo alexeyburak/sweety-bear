@@ -4,6 +4,7 @@ import by.bsuir.sweetybear.model.Bucket;
 import by.bsuir.sweetybear.model.Image;
 import by.bsuir.sweetybear.model.Product;
 import by.bsuir.sweetybear.model.User;
+import by.bsuir.sweetybear.model.enums.SortType;
 import by.bsuir.sweetybear.repository.ImageRepository;
 import by.bsuir.sweetybear.repository.ProductRepository;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.util.Collections;
+import java.util.Comparator;
 import java.util.List;
 
 import static by.bsuir.sweetybear.utils.Utils.toImageEntity;
@@ -36,7 +38,31 @@ public class ProductServiceImpl implements ProductService {
     private final ImageRepository imageRepository;
 
     @Override
-    public List<Product> listProducts(String title) {
+    public List<Product> listProducts(String title, SortType type) {
+        if (type == SortType.ASCENDING) {
+            return productRepository
+                    .findAll()
+                    .stream()
+                    .sorted(Comparator.comparing(Product::getPrice))
+                    .toList();
+        }
+        if (type == SortType.REDUCING) {
+            return productRepository
+                    .findAll()
+                    .stream()
+                    .sorted(Comparator.comparing(Product::getPrice)
+                            .reversed())
+                    .toList();
+
+        }
+        if (type == SortType.NEW) {
+            return productRepository
+                    .findAll()
+                    .stream()
+                    .sorted(Comparator.comparing(Product::getDateOfCreated)
+                            .reversed())
+                    .toList();
+        }
         if (title != null) return productRepository.findByTitle(title);
         return productRepository.findAll();
     }

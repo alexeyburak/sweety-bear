@@ -1,6 +1,7 @@
 package by.bsuir.sweetybear.service;
 
 import by.bsuir.sweetybear.model.Product;
+import by.bsuir.sweetybear.model.enums.SortType;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
@@ -15,7 +16,7 @@ import java.util.List;
 public interface ProductService {
 
     // Return all products, and search by title
-    List<Product> listProducts(String title);
+    List<Product> listProducts(String title, SortType type);
     // Save product with images
     void saveProduct(Product product, MultipartFile file1, MultipartFile file2) throws IOException;
     // Delete product by id
