@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
@@ -59,7 +60,8 @@ public class ProductController {
     public String createProduct(@RequestParam("file1") MultipartFile file1,
                                 @RequestParam("file2") MultipartFile file2,
                                 @ModelAttribute("product") @Valid ProductDTO product,
-                                BindingResult bindingResult) throws IOException {
+                                BindingResult bindingResult,
+                                HttpServletRequest request) throws IOException {
         if (bindingResult.hasErrors()) {
             return "products";
         }
@@ -67,7 +69,9 @@ public class ProductController {
         Product productDb = this.modelMapper.map(product, Product.class);
 
         productService.saveProduct(productDb, file1, file2);
-        return "redirect:/";
+
+        String referer = request.getHeader("Referer");
+        return "redirect:"+ referer;
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
@@ -103,13 +107,17 @@ public class ProductController {
     }
 
     @GetMapping("/{id}/bucket")
-    public String addBucket(@PathVariable Long id, Principal principal) {
+    public String addBucket(@PathVariable Long id,
+                            Principal principal,
+                            HttpServletRequest request) {
         User user = userService.getUserByPrincipal(principal);
         if (principal == null) {
             return "redirect:/";
         }
         productService.addToUserBucket(id, user.getEmail());
-        return "redirect:/";
+
+        String referer = request.getHeader("Referer");
+        return "redirect:"+ referer;
     }
 
 }
