@@ -1,16 +1,16 @@
 package by.bsuir.sweetybear.controller;
 
 import by.bsuir.sweetybear.dto.BucketDTO;
+import by.bsuir.sweetybear.model.Product;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.service.BucketServiceImpl;
 import by.bsuir.sweetybear.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
+import javax.validation.Valid;
 import java.security.Principal;
 
 /**
@@ -47,10 +47,10 @@ public class BucketController {
     }
 
     @PostMapping("/bucket")
-    public String commitBucket(Principal principal) {
-        User user = userService.getUserByPrincipal(principal);
-        if (user != null) {
-            bucketService.addBucketToOrder(user.getEmail());
+    public String commitBucket(@RequestParam("address") String address, Principal principal) {
+        User userFromDB = userService.getUserByPrincipal(principal);
+        if (userFromDB != null) {
+            bucketService.addBucketToOrder(userFromDB.getEmail(), address);
         }
         return "redirect:/bucket";
     }

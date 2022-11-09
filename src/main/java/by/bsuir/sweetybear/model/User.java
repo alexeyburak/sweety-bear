@@ -47,6 +47,8 @@ public class User extends IdentifiedModel implements UserDetails {
     private Set<Role> roles = new HashSet<>();
     @Column(name = "date_Of_Created")
     private LocalDateTime dateOfCreated;
+    @Column(name = "address")
+    private String address;
 
     @OneToOne(cascade = CascadeType.REMOVE)
     private Bucket bucket;

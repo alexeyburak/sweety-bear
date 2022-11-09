@@ -98,10 +98,12 @@ public class BucketServiceImpl implements BucketService {
 
     @Override
     @Transactional
-    public void addBucketToOrder(String email) {
+    public void addBucketToOrder(String email, String address) {
         User user = userService.getUserByEmail(email);
         if (user == null)
             throw new IllegalStateException("User is not found");
+        user.setAddress(address);
+        userService.save(user);
         Bucket bucket = user.getBucket();
         if (bucket == null || bucket.getProducts().isEmpty())
             throw new IllegalStateException("Bucket is empty");
@@ -122,7 +124,7 @@ public class BucketServiceImpl implements BucketService {
 
         order.setDetails(orderDetails);
         order.setSum(total);
-        order.setAddress("test");
+        order.setAddress(address);
         log.info("Add bucket to order. Bucket id: {}. Order id: {}", bucket.getId(), order.getId());
         orderService.saveOrder(order);
         bucket.getProducts().clear();
