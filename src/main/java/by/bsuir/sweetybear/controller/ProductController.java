@@ -55,14 +55,21 @@ public class ProductController {
         return "product-info";
     }
 
+    private void fillUserToModelAfterBindingResultError(Model model, Principal principal) {
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
+    }
+
     @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
     @PostMapping("/product/create")
     public String createProduct(@RequestParam("file1") MultipartFile file1,
                                 @RequestParam("file2") MultipartFile file2,
                                 @ModelAttribute("product") @Valid ProductDTO product,
                                 BindingResult bindingResult,
-                                HttpServletRequest request) throws IOException {
+                                HttpServletRequest request,
+                                Model model,
+                                Principal principal) throws IOException {
         if (bindingResult.hasErrors()) {
+            fillUserToModelAfterBindingResultError(model, principal);
             return "products";
         }
 
@@ -93,16 +100,17 @@ public class ProductController {
     @PostMapping("/product/edit/{id}")
     public String productUpdate(@RequestParam("file1") MultipartFile file1,
                                 @RequestParam("file2") MultipartFile file2,
-                                @ModelAttribute("product") @Valid ProductDTO product,
+                                @ModelAttribute("product") @Valid Product product,
                                 BindingResult bindingResult,
-                                @PathVariable("id") Long id) throws IOException {
+                                @PathVariable("id") Long id,
+                                Model model,
+                                Principal principal) throws IOException {
         if (bindingResult.hasErrors()) {
+            fillUserToModelAfterBindingResultError(model, principal);
             return "product-edit";
         }
 
-        Product productDb = this.modelMapper.map(product, Product.class);
-
-        productService.updateProductById(id, productDb, file1, file2);
+        productService.updateProductById(id, product, file1, file2);
         return "redirect:/product/{id}";
     }
 

@@ -48,7 +48,7 @@ public class BucketController {
     }
 
     @PostMapping("/bucket")
-    public String commitBucket(@RequestParam("address") String address, Principal principal) {
+    public String commitBucket(@RequestParam(value = "address") String address, Principal principal) {
         User userFromDB = userService.getUserByPrincipal(principal);
         if (userFromDB != null) {
             bucketService.addBucketToOrder(userFromDB.getEmail(), address);

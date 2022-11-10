@@ -103,6 +103,7 @@ public class BucketServiceImpl implements BucketService {
         if (user == null)
             throw new IllegalStateException("User is not found");
         user.setAddress(address);
+        log.info("Set address to user. User id: {}", user.getId());
         userService.save(user);
         Bucket bucket = user.getBucket();
         if (bucket == null || bucket.getProducts().isEmpty())

@@ -17,8 +17,8 @@ import javax.validation.constraints.Size;
 @NoArgsConstructor
 public class UserDTO {
 
-    @Size(min = 5, max = 30, message = "Name must be between 5 and 30 characters")
-    @NotBlank(message = "name is required")
+    @Size(min = 3, max = 30, message = "Name must be between 3 and 30 characters")
+    @NotBlank(message = "Name is required")
     private String name;
     @Email(message = "Email must be valid")
     @NotBlank(message = "Email is required")

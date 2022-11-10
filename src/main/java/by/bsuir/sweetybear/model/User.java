@@ -30,8 +30,8 @@ public class User extends IdentifiedModel implements UserDetails {
     @NotBlank(message = "Email is required")
     private String email;
     @Column(name = "name")
-    @Size(min = 5, max = 30, message = "Name must be between 5 and 30 characters")
-    @NotBlank(message = "name is required")
+    @Size(min = 3, max = 30, message = "Name must be between 3 and 30 characters")
+    @NotBlank(message = "Name is required")
     private String name;
     @Column(name = "active")
     private boolean active;
@@ -39,7 +39,7 @@ public class User extends IdentifiedModel implements UserDetails {
     @JoinColumn(name = "image_id")
     private Image avatar;
     @Column(name = "password", length = 1000)
-    @NotBlank(message = "password is required")
+    @NotBlank(message = "Password is required")
     private String password;
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))

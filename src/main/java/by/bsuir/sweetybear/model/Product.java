@@ -6,10 +6,7 @@ import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
+import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
@@ -28,19 +25,21 @@ import java.util.List;
 public class Product extends IdentifiedModel {
 
     @Column(name = "title")
-    @Size(min = 3, max = 30, message = "title must be between 3 and 30 characters")
-    @NotEmpty(message = "title is required")
+    @Size(min = 3, max = 30, message = "Title must be between 3 and 30 characters")
+    @NotEmpty(message = "Title is required")
     private String title;
     @Column(name = "description", columnDefinition = "text")
-    @Length(min = 5, max = 1000, message = "description must be between 5 and 1000 characters")
-    @NotEmpty(message = "description is required")
+    @Length(min = 5, max = 300, message = "Description must be between 5 and 300 characters")
+    @NotEmpty(message = "Description is required")
     private String description;
     @Column(name = "price")
-    @NotNull(message = "price is required")
+    @NotNull(message = "Price is required")
+    @Digits(integer = 8, fraction = 2)
+    @Positive(message = "Price should be positive")
     private Double price;
-    @Column(name = "weight")
-    @NotNull(message = "weight is required")
-    @Min(value = 10, message = "weight must be min 10")
+    @Column(name = "Weight")
+    @NotNull(message = "Weight is required")
+    @Min(value = 10, message = "Weight must be min 10")
     private int weight;
     @Column(name = "availability")
     @NotNull(message = "availability is required")

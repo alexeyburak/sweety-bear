@@ -4,11 +4,7 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 import org.hibernate.validator.constraints.Length;
 
-import javax.validation.constraints.Min;
-import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-import java.math.BigDecimal;
+import javax.validation.constraints.*;
 
 /**
  * sweety-bear
@@ -20,14 +16,16 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class ProductDTO {
 
-    @Size(min = 3, max = 30, message = "title must be between 3 and 30 characters")
+    @Size(min = 3, max = 30, message = "Title must be between 3 and 30 characters")
     @NotEmpty(message = "Title is required")
     private String title;
-    @Length(min = 5, max = 1000, message = "Description must be between 5 and 1000 characters")
+    @Length(min = 5, max = 300, message = "Description must be between 5 and 300 characters")
     @NotEmpty(message = "Description is required")
     private String description;
     @NotNull(message = "Price is required")
-    private BigDecimal price;
+    @Digits(integer = 8, fraction = 2)
+    @Positive(message = "Price should be positive")
+    private Double price;
     @NotNull(message = "Weight is required")
     @Min(value = 10, message = "Weight must be min 10")
     private int weight;

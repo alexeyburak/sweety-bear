@@ -93,28 +93,32 @@
             <span class="input-group-text" id="inputGroup-sizing-default">Title</span>
             <input type="text" th:field="*{title}" class="form-control" aria-label="Sizing example input"
                    aria-describedby="inputGroup-sizing-default">
+            <div style="color:red" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">title error</div>
         </div>
 
         <div class="input-group mb-3 mt-4 col-sm-3">
             <span class="input-group-text">BYN</span>
-            <input type="number" th:field="*{price}" class="form-control" aria-label="Amount (to the nearest dollar)">
+            <input type="number" step="0.01" th:field="*{price}" class="form-control" aria-label="Amount (to the nearest dollar)">
             <span class="input-group-text">.00</span>
+            <div style="color:red" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
         </div>
 
         <div class="input-group mb-3 mt-4 col-md-3">
             <span class="input-group-text">Weight</span>
             <input type="number" th:field="*{weight}" class="form-control" aria-label="Amount (to the nearest dollar)">
             <span class="input-group-text">.00</span>
+            <div style="color:red" th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}"></div>
         </div>
 
         <div class="input-group mb-3 col-md-12">
             <span class="input-group-text">Description</span>
             <textarea th:field="*{description}" class="form-control" aria-label="With textarea"></textarea>
+            <div style="color:red" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
         </div>
 
         <div class="input-group mb-3 col-md-3">
             <label for="formFile1" class="form-label">First image </label>
-            <input class="form-control" type="file" name="file1" id="formFile1">
+            <input required class="form-control" type="file" name="file1" id="formFile1">
         </div>
 
         <div class="input-group mb-3 col-md-3">
@@ -128,6 +132,7 @@
                 <option value="true">
                 <option value="false">
             </datalist>
+            <div style="color:red" th:if="${#fields.hasErrors('availability')}" th:errors="*{availability}"></div>
         </div>
 
         <button type="submit" class="btn btn-outline-secondary input-group col-md-2 ml-3 mb-5">Add product</button>

@@ -33,7 +33,9 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public String createUser(@ModelAttribute("user") @Valid UserDTO user, BindingResult bindingResult, Model model) {
+    public String createUser(@ModelAttribute("user") @Valid UserDTO user,
+                             BindingResult bindingResult,
+                             Model model) {
         if (bindingResult.hasErrors()) {
             return "registration";
         }
@@ -60,12 +62,14 @@ public class UserController {
 
     @PostMapping("/user/edit/{id}")
     public String update(@RequestParam("file1") MultipartFile file1,
-                         @ModelAttribute("user") UserDTO user,
+                         @ModelAttribute("user") @Valid User user,
+                         BindingResult bindingResult,
                          @PathVariable("id") Long id) throws IOException {
+        if (bindingResult.hasErrors()) {
+            return "account-edit";
+        }
 
-        User userDb = this.modelMapper.map(user, User.class);
-
-        userService.updateUserById(id, userDb, file1);
+        userService.updateUserById(id, user, file1);
         return "redirect:/";
     }
 
