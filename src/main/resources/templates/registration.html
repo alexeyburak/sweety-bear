@@ -17,25 +17,25 @@
         <div class="mb-3 ml-5 mt-4" >
             <label for="name" class="form-label">Enter name: </label>
             <input type="text" th:field="*{name}" class="form-control"  id="name"/>
-            <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+            <div class="alert alert-danger mt-1" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
         </div>
 
         <div class="mb-3 ml-5 mt-2" >
             <label for="email" class="form-label">Enter email: </label>
             <input type="email" th:field="*{email}" class="form-control" id="email"/>
-            <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+            <div class="alert alert-danger mt-1" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
         </div>
 
         <div class="mb-3 ml-5 mt-2">
             <label for="password1" class="form-label">Enter password: </label>
             <input type="password"  th:field="*{password}" class="form-control" id="password1"/>
-            <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
+            <div class="alert alert-danger mt-1" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
         </div>
 
         <div class="mb-3 ml-5 mt-2">
             <label for="confirmPassword" class="form-label">Confirm password: </label>
             <input type="password"  th:field="*{confirmPassword}" class="form-control" id="confirmPassword"/>
-            <div style="color:red" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
+            <div class="alert alert-danger mt-1" th:if="${#fields.hasErrors('confirmPassword')}" th:errors="*{confirmPassword}"></div>
         </div>
         <div class= "ml-5 mt-2" th:if="passwordError">
             <h6 style="color:red" th:utext="${passwordError}">password error</h6>

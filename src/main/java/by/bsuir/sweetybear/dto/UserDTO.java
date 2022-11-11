@@ -5,6 +5,7 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 
 /**
@@ -19,6 +20,8 @@ public class UserDTO {
 
     @Size(min = 3, max = 30, message = "Name must be between 3 and 30 characters")
     @NotBlank(message = "Name is required")
+    @Pattern(regexp = "^[a-zA-Z0-9]$",
+            message = "Name must be with no special characters")
     private String name;
     @Email(message = "Email must be valid")
     @NotBlank(message = "Email is required")
