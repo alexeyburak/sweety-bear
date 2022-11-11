@@ -2,6 +2,7 @@ package by.bsuir.sweetybear.service;
 
 import by.bsuir.sweetybear.dto.BucketDTO;
 import by.bsuir.sweetybear.dto.BucketDetailDTO;
+import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.*;
 import by.bsuir.sweetybear.model.enums.OrderStatus;
 import by.bsuir.sweetybear.repository.BucketRepository;
@@ -39,7 +40,8 @@ public class BucketServiceImpl implements BucketService {
 
     @Override
     @Transactional
-    public Bucket createBucket(User user, List<Long> productIds) {
+    public Bucket createBucket(User user,
+                               List<Long> productIds) {
         Bucket bucket = new Bucket();
         bucket.setUser(user);
         log.info("Create bucket. User: {}", user.getEmail());
@@ -49,11 +51,15 @@ public class BucketServiceImpl implements BucketService {
     }
 
     private List<Product> getCollectRefProductsByIds(List<Long> productIds) {
-        return productIds.stream().map(productRepository::getOne).collect(Collectors.toList());
+        return productIds
+                .stream()
+                .map(productRepository::getOne)
+                .collect(Collectors.toList());
     }
 
     @Override
-    public void addProducts(Bucket bucket, List<Long> productIds) {
+    public void addProducts(Bucket bucket,
+                            List<Long> productIds) {
         List<Product> products = bucket.getProducts();
         List<Product> newProductList = products == null ? new ArrayList<>() : new ArrayList<>(products);
         newProductList.addAll(getCollectRefProductsByIds(productIds));
@@ -63,7 +69,8 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
-    public void deleteProductFromBucket(Bucket bucket, Long id) {
+    public void deleteProductFromBucket(Bucket bucket,
+                                        Long id) {
         List<Long> productIdsInBucket = bucket.getProducts().stream().map(Product::getId).toList();
         List<Long> productWithRemovedId = removeOnlyOneIdFromList(productIdsInBucket, id);
         bucket.setProducts(new ArrayList<>(getCollectRefProductsByIds(productWithRemovedId)));
@@ -98,16 +105,17 @@ public class BucketServiceImpl implements BucketService {
 
     @Override
     @Transactional
-    public void addBucketToOrder(String email, String address) {
+    public void addBucketToOrder(String email,
+                                 String address) {
         User user = userService.getUserByEmail(email);
         if (user == null)
-            throw new IllegalStateException("User is not found");
+            throw new ApiRequestException("User is not found");
         user.setAddress(address);
         log.info("Set address to user. User id: {}", user.getId());
         userService.save(user);
         Bucket bucket = user.getBucket();
         if (bucket == null || bucket.getProducts().isEmpty())
-            throw new IllegalStateException("Bucket is empty");
+            throw new ApiRequestException("Bucket is empty");
         Order order = new Order();
         order.setStatus(OrderStatus.NEW);
         order.setUser(user);

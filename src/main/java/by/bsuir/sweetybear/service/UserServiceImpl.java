@@ -1,5 +1,6 @@
 package by.bsuir.sweetybear.service;
 
+import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.Image;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.model.enums.Role;
@@ -75,18 +76,18 @@ public class UserServiceImpl implements UserService {
     @Override
     public void banUser(Long id) {
         User user = userRepository.findById(id).orElse(null);
-        if (user != null) {
-            user.setActive(!user.isActive());
-            log.info("Ban/Unban user. Id: {}, Email: {}", user.getId(), user.getEmail());
-        }
-        assert user != null;
+        if (user == null)
+            throw new ApiRequestException("User not found");
+        user.setActive(!user.isActive());
+        log.info("Ban/Unban user. Id: {}, Email: {}", user.getId(), user.getEmail());
         userRepository.save(user);
     }
 
     @Override
     public void updateUserById(Long id, User userUpdate, MultipartFile file1) throws IOException {
         User user = getUserById(id);
-        assert user != null;
+        if (user == null)
+            throw new ApiRequestException("User not found");
         Image image1;
         if (file1.getSize() != 0) {
             if (user.isAvatarNull()) {

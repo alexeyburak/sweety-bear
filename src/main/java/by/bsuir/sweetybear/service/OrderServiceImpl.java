@@ -1,5 +1,6 @@
 package by.bsuir.sweetybear.service;
 
+import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.Order;
 import by.bsuir.sweetybear.model.enums.OrderStatus;
 import by.bsuir.sweetybear.repository.OrderRepository;
@@ -47,8 +48,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void updateOrderStatusById(Long id, OrderStatus status) {
+    public void updateOrderStatusById(Long id,
+                                      OrderStatus status) {
         Order order = this.getOrderById(id);
+        if (order == null)
+            throw new ApiRequestException("Order not found");
         log.info("Change order status. Id: {}. Status: {}. New status: {}", id, order.getStatus(), status);
         order.setStatus(status);
         orderRepository.save(order);

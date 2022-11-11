@@ -1,5 +1,6 @@
 package by.bsuir.sweetybear.service;
 
+import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.Bucket;
 import by.bsuir.sweetybear.model.Image;
 import by.bsuir.sweetybear.model.Product;
@@ -87,7 +88,9 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findById(id).orElse(null);
     }
 
-    private void addImages(Product product, MultipartFile file1, MultipartFile file2) throws IOException {
+    private void addImages(Product product,
+                           MultipartFile file1,
+                           MultipartFile file2) throws IOException {
         Image image1;
         Image image2;
         if (file1.getSize() != 0) {
@@ -109,9 +112,15 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void updateProductById(Long id, Product productUpdate, MultipartFile file1, MultipartFile file2) throws IOException {
+    public void updateProductById(Long id,
+                                  Product productUpdate,
+                                  MultipartFile file1,
+                                  MultipartFile file2) throws IOException {
         Product product = productRepository.findById(id).orElse(null);
-        assert product != null;
+        if (product == null) {
+            log.error("Product not found. Id: " + id);
+            throw new ApiRequestException("Product not found. Id: " + id);
+        }
         addImages(product, file1, file2);
         product.setTitle(productUpdate.getTitle());
         product.setDescription(productUpdate.getDescription());
@@ -126,10 +135,12 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     @Transactional
-    public void addToUserBucket(Long productId, String email) {
+    public void addToUserBucket(Long productId,
+                                String email) {
         User user = userService.getUserByEmail(email);
         if (user == null) {
-            throw new IllegalStateException("User not found. Email: " + email);
+            log.error("User not found. Email: " + email);
+            throw new ApiRequestException("User not found. Email: " + email);
         }
 
         Bucket bucket = user.getBucket();
