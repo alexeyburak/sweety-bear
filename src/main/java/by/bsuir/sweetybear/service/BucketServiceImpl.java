@@ -13,10 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import static by.bsuir.sweetybear.utils.Utils.removeOnlyOneIdFromList;
@@ -139,5 +136,10 @@ public class BucketServiceImpl implements BucketService {
         bucket.getProducts().clear();
         log.info("Clear bucket after adding to bucket. Bucket id: {}", bucket.getId());
         bucketRepository.save(bucket);
+    }
+
+    public void deleteProduct(Long id) {
+        log.warn("Delete product from bucket. Product id: {}", id);
+        bucketRepository.deleteByProductId(id);
     }
 }

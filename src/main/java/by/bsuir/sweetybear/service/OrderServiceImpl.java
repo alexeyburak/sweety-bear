@@ -66,4 +66,9 @@ public class OrderServiceImpl implements OrderService {
                 .sorted(Order::compareTo)
                 .toList();
     }
+
+    public void deleteProduct(Long id) {
+        log.warn("Delete product from order. Product id: {}", id);
+        orderRepository.deleteByProductId(id);
+    }
 }

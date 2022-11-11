@@ -23,4 +23,6 @@ public interface OrderService {
     void updateOrderStatusById(Long id, OrderStatus status);
     // Return user orders
     List<Order> getUserOrders(Long id);
+    // Delete product from database
+    void deleteProduct(Long id);
 }

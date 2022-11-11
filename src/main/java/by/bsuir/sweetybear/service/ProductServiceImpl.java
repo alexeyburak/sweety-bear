@@ -36,6 +36,7 @@ public class ProductServiceImpl implements ProductService {
     private final ProductRepository productRepository;
     private final UserServiceImpl userService;
     private final BucketServiceImpl bucketService;
+    private final OrderServiceImpl orderService;
     private final ImageRepository imageRepository;
 
     @Override
@@ -77,9 +78,12 @@ public class ProductServiceImpl implements ProductService {
         productRepository.save(product);
     }
 
+    @Transactional
     @Override
     public void deleteProduct(Long id) {
         log.info("Delete product. Id: {}", id);
+        bucketService.deleteProduct(id);
+        orderService.deleteProduct(id);
         productRepository.deleteById(id);
     }
 

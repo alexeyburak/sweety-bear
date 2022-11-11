@@ -24,4 +24,6 @@ public interface BucketService {
     BucketDTO getBucketByUser(String email);
     // Add bucket to order
     void addBucketToOrder(String email, String address);
+    // Delete product from database
+    void deleteProduct(Long id);
 }

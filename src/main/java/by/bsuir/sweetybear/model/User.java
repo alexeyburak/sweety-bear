@@ -33,8 +33,6 @@ public class User extends IdentifiedModel implements UserDetails {
     @Column(name = "name")
     @Size(min = 3, max = 30, message = "Name must be between 3 and 30 characters")
     @NotBlank(message = "Name is required")
-    @Pattern(regexp = "^[a-zA-Z0-9]$",
-            message = "Name must be with no special characters")
     private String name;
     @Column(name = "active")
     private boolean active;
