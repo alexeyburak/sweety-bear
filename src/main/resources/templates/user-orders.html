@@ -33,6 +33,9 @@
                     <div class="mt-1">
                         Products:
                     </div>
+                    <div class="card-text mt-1" style="color: red"
+                         th:if="${order.sum} > ${order.countCurrentlyProductsPrice()}">Products have been removed
+                    </div>
                     <div th:each="details : ${order.details}">
                         <a th:href="@{/product/{id}(id=${details.product.id})}">
                             <div th:utext="${details.product.title}" style="font-style: italic">Title</div>
@@ -43,6 +46,7 @@
                         <div class="card-text" style="display: inline-block">Price:
                             <div th:utext="${details.price}" style="display: inline-block">Price</div>
                         </div>
+
                     </div>
                 </div>
                 <div class="btn-group ml-3" role="group" th:unless="${order.isOrderCanceled()}"

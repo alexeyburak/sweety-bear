@@ -48,6 +48,14 @@ public class Order extends IdentifiedModel implements Comparable<Order>{
         return status == OrderStatus.APPROVED;
     }
 
+    public Double countCurrentlyProductsPrice() {
+        return details
+                .stream()
+                .map(OrderDetails::getPrice)
+                .mapToDouble(BigDecimal::doubleValue)
+                .sum();
+    }
+
     @PrePersist
     private void init() {
         dateOfCreated = LocalDateTime.now();
