@@ -138,6 +138,7 @@ public class BucketServiceImpl implements BucketService {
         bucketRepository.save(bucket);
     }
 
+    @Override
     public void deleteProduct(Long id) {
         log.warn("Delete product from bucket. Product id: {}", id);
         bucketRepository.deleteByProductId(id);

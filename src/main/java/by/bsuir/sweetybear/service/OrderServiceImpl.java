@@ -67,6 +67,7 @@ public class OrderServiceImpl implements OrderService {
                 .toList();
     }
 
+    @Override
     public void deleteProduct(Long id) {
         log.warn("Delete product from order. Product id: {}", id);
         orderRepository.deleteByProductId(id);

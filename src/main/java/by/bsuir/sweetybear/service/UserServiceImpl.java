@@ -53,7 +53,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public List<User> userList(String email) {
-        if (email != null) return Collections.singletonList(userRepository.findByEmail(email));
+        if (email != null) return userRepository.findAllByEmail(email);
         return userRepository.findAll();
     }
 

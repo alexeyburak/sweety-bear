@@ -25,7 +25,11 @@
     </form>
 </div>
 
-<table class="table table-hover mt-4 mb-5 ml-5" style="width: 95%;">
+<div th:if="${email}" class="mt-3 ml-5">
+    <div th:if="${#arrays.isEmpty(users)}">No users with email '<span th:utext="${email}">email</span>'</div>
+</div>
+
+<table th:unless="${#arrays.isEmpty(users)}" class="table table-hover mt-4 mb-5 ml-5" style="width: 95%;">
     <tr>
         <th scope="col" class="ml-3">Id</th>
         <th scope="col" class="col-sm-4">Email</th>
@@ -61,10 +65,6 @@
             <th scope="row"><a th:unless="${user.isOwner()}" th:href="@{/admin/user/edit/{id}(id=${user.id})}">Editing</a></th>
             <th scope="row"><a th:href="@{/user/{id}(id=${user.id})}">View information</a></th>
         </tr>
-
-        <div class="mt-3 ml-5" th:unless="${user.email}">
-            There are no users
-        </div>
     </div>
 </table>
 

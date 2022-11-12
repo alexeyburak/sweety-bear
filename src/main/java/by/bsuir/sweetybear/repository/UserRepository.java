@@ -1,7 +1,12 @@
 package by.bsuir.sweetybear.repository;
 
+import by.bsuir.sweetybear.model.Product;
 import by.bsuir.sweetybear.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
+
+import java.util.List;
 
 /**
  * sweety-bear
@@ -11,4 +16,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(String email);
+    @Modifying
+    @Query(value = "SELECT * FROM users WHERE email LIKE ?1" + "%", nativeQuery = true)
+    List<User> findAllByEmail(String email);
 }

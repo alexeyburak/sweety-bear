@@ -28,6 +28,7 @@ public class AdminController {
     public String admin(@RequestParam(name = "email", required = false) String email, Model model, Principal principal) {
         model.addAttribute("user", userService.getUserByPrincipal(principal));
         model.addAttribute("users", userService.userList(email));
+        model.addAttribute("email", email);
         return "admin";
     }
 
