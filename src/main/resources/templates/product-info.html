@@ -7,81 +7,90 @@
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
     <script>
         window.onload = function () {
             let preloader = document.getElementById('preloader');
             preloader.style.display = 'none';
         }
+
+        function deleteConfig(message) {
+            return confirm("Are you sure you want to " + message + " this product?\n" +
+                "The product will be removed from all shopping carts and orders!");
+        }
     </script>
 </head>
 <body>
-
 <div class="parent">
     <div class="loader" id="preloader"></div>
 </div>
-
 <header th:insert="blocks/header :: header"></header>
-
-<div class="card mb-3 mt-4 " style="display: block;
-                        margin-left: auto; margin-right: auto; width: 60%">
-    <div id="carouselExampleControls" class="carousel slide" data-bs-ride="carousel">
-        <div class="carousel-inner">
-            <div class="carousel-item active">
-                <img src="..." class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="...." class="d-block w-100" alt="...">
-            </div>
-            <div class="carousel-item">
-                <img src="..." class="d-block w-100" alt="...">
-            </div>
-        </div>
-        <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="prev">
-            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Previous</span>
-        </button>
-        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleControls" data-bs-slide="next">
-            <span class="carousel-control-next-icon" aria-hidden="true"></span>
-            <span class="visually-hidden">Next</span>
-        </button>
-    </div>
-    <div class="card-body">
-        <h5 class="card-title" th:utext="${product.title}">Card title</h5>
-        <p class="card-text" th:utext="${product.description}">Description</p>
-        <div class="card-text" style="display: inline-block">Price:
-            <div th:utext="${product.price}" style="display: inline-block; font-weight:bold">
-                Price
+<div class="card mb-3 mt-4" style="display: block;
+                        margin-left: auto; margin-right: auto; width: 70%">
+    <div class="row g-0">
+        <div class="col-md-7 ml-4 mt-2">
+            <div id="carousel" class="carousel slide" data-ride="carousel">
+                <div class="carousel-inner justify-content-center">
+                    <div th:each="image : ${images}" th:if="${image.id} == ${product.previewImageId}"
+                         class="carousel-item active">
+                        <img height="550px" class="d-block" th:src="@{/images/{id}(id=${image.id})}" alt="First Image">
+                    </div>
+                    <div th:each="image : ${images}" th:if="${image.id} != ${product.previewImageId}"
+                         class="carousel-item">
+                        <img height="550px" class="d-block" th:src="@{/images/{id}(id=${image.id})}" alt="Second Image">
+                    </div>
+                </div>
+                <a class="carousel-control-prev" href="#carousel" role="button" data-slide="prev">
+                    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Previous</span>
+                </a>
+                <a class="carousel-control-next" href="#carousel" role="button" data-slide="next">
+                    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                    <span class="sr-only">Next</span>
+                </a>
             </div>
         </div>
-        <div class="card-text" style="display: inline-block">Weight:
-            <div th:utext="${product.weight}" style="display: inline-block;">
-                Weight
+        <div class="col-md-4">
+            <div class="card-body">
+                <h5 class="card-title" th:utext="${product.title}" style="font-size:26px">Card title</h5>
+                <p class="card-text" th:utext="${product.description}">Description</p>
+                <div class="card-text mt-2" style="display: inline-block">Price:
+                    <div th:utext="${product.price}" style="display: inline-block; font-weight:bold">
+                        price
+                    </div>
+                    BYN
+                </div>
+                <div class="card-text mt-2" style="display: inline-block">Availability:
+                    <div th:utext="${product.availability}" style="display: inline-block; font-weight:bold">
+                        Availability
+                    </div>
+                </div>
+                <p class="card-text mt-2" style="display: inline-block">Product weight:
+                    <span th:utext="${product.weight}" style="display: inline-block;">
+                        Weight
+                    </span>
+                    gr
+                </p>
+                <form th:action="@{/{id}/bucket(id=${product.id})}">
+                    <button th:if="${product.isProductAvailable()}" type="submit"
+                            class="mt-2 btn btn-outline-secondary">Add to bucket
+                    </button>
+                    <p th:unless="${product.isProductAvailable()}" class="card-text"
+                       style="color:gray">Is not available now</p>
+                </form>
+                <div th:if="${user.isAdmin()}">
+                    <form th:action="@{/product/delete/{id}(id=${product.id})}" method="post">
+                        <input onclick="return deleteConfig('delete')" class="btn btn-outline-danger mt-3 mb-2"
+                               type="submit" value="Delete product">
+                    </form>
+                    <a class="link-secondary" th:href="@{/product/edit/{id}(id=${product.id})}">Edit product</a>
+                </div>
+                <p class="card-text mt-5"><small class="text-muted"
+                                                 th:utext="${product.dateOfCreated}">dateOfCreated</small></p>
             </div>
         </div>
-        <div class="card-text" style="display: inline-block">Availability:
-            <div th:utext="${product.availability}" style="display: inline-block;">
-                Availability
-            </div>
-        </div>
-        <p class="card-text"><small class="text-muted" th:utext="${product.dateOfCreated}">dateOfCreated</small></p>
     </div>
 </div>
-
-<tr th:each="image : ${images}">
-    <!--/*@thymesVar id="image" type="image"*/-->
-    <img th:src="@{/images/{id}(id=${image.id})}" height="60px"/><br><br>
-</tr>
-
-<div th:if="${user.isAdmin()}">
-    Delete Product
-    <!--/*@thymesVar id="product" type="product"*/-->
-    <form th:action="@{/product/delete/{id}(id=${product.id})}" method="post">
-        <input type="submit" value="delete">
-    </form>
-
-    Edit product
-    <a th:href="@{/product/edit/{id}(id=${product.id})}">EDIT</a>
-</div>
-
 </body>
 </html>
