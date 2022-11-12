@@ -1,6 +1,5 @@
 package by.bsuir.sweetybear.repository;
 
-import by.bsuir.sweetybear.model.Product;
 import by.bsuir.sweetybear.model.User;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

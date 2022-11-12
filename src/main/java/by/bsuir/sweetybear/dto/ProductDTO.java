@@ -22,12 +22,12 @@ public class ProductDTO {
     @Length(min = 5, max = 300, message = "Description must be between 5 and 300 characters")
     @NotEmpty(message = "Description is required")
     private String description;
-    @NotNull(message = "Price is required")
+    @NotNull(message = "It's required")
     @Digits(integer = 8, fraction = 2)
-    @Positive(message = "Price should be positive")
+    @Positive(message = "Should be positive")
     private Double price;
-    @NotNull(message = "Weight is required")
-    @Min(value = 10, message = "Weight must be min 10")
+    @NotNull(message = "It's required")
+    @Min(value = 10, message = "Minimum of 10")
     private int weight;
     @NotNull(message = "Availability is required")
     private boolean availability;

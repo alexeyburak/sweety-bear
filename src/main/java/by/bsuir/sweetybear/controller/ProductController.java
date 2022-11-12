@@ -77,8 +77,7 @@ public class ProductController {
 
         productService.saveProduct(productDb, file1, file2);
 
-        String referer = request.getHeader("Referer");
-        return "redirect:"+ referer;
+        return "redirect:/";
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
@@ -125,7 +124,7 @@ public class ProductController {
         productService.addToUserBucket(id, user.getEmail());
 
         String referer = request.getHeader("Referer");
-        return "redirect:"+ referer;
+        return "redirect:" + referer;
     }
 
 }

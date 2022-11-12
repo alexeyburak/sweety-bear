@@ -115,7 +115,6 @@
         <div class="input-group mb-3 mt-4 col-md-3">
             <span class="input-group-text">Weight</span>
             <input type="number" th:field="*{weight}" class="form-control" aria-label="Amount (to the nearest dollar)">
-            <span class="input-group-text">.00</span>
             <div class="alert alert-danger mt-1" th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}"></div>
         </div>
 
