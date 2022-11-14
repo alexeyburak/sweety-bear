@@ -15,7 +15,6 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
-import java.util.Collections;
 import java.util.List;
 
 import static by.bsuir.sweetybear.utils.Utils.toImageEntity;
@@ -110,10 +109,10 @@ public class UserServiceImpl implements UserService {
     public void changeUserRole(User user) {
         if (user.isAdmin()) {
             user.getRoles().clear();
-            user.getRoles().add(Role.valueOf("ROLE_USER"));
+            user.getRoles().add(Role.ROLE_USER);
         } else {
             user.getRoles().clear();
-            user.getRoles().add(Role.valueOf("ROLE_ADMIN"));
+            user.getRoles().add(Role.ROLE_ADMIN);
         }
         log.info("Change role. User email: {}", user.getEmail());
         userRepository.save(user);

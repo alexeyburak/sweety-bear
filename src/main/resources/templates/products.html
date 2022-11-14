@@ -6,13 +6,14 @@
     <link rel="stylesheet" href="../static/css/preloader.css" th:href="@{/css/preloader.css}">
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
           integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
+          integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <style>
         .dropdown {
             display: inline-block;
             position: relative;
         }
-
         .dropdown-content {
             display: none;
             overflow: auto;
@@ -20,6 +21,13 @@
 
         .dropdown:hover .dropdown-content {
             display: block;
+        }
+        .card_link {
+            text-decoration: none !important;
+            color: inherit !important;
+        }
+        .card:hover {
+            background-color: rgba(245, 245, 245, 0.99);
         }
     </style>
     <script>
@@ -64,32 +72,34 @@
 <div>
     <div class="row row-cols-1 row-cols-md-3 g-4 ml-4 mr-4 mb-4">
         <div class="col" th:each="product : ${products}">
-            <div class="card h-10 mt-4">
-                <tr th:each="image : ${product.images}">
-                    <div th:if="${image.id} == ${product.previewImageId}">
-                        <img class="card-img-top mt-1" style="height:250px; width:250px; display: block;
+            <a class="card_link" th:href="@{/product/{id}(id=${product.id})}">
+                <div class="card h-10 mt-4">
+                    <tr th:each="image : ${product.images}">
+                        <div th:if="${image.id} == ${product.previewImageId}">
+                            <img class="card-img-top mt-1" style="height:250px; width:250px; display: block;
                         margin-left: auto; margin-right: auto " th:src="@{/images/{id}(id=${image.id})}"/>
-                    </div>
-                </tr>
-                <form th:action="@{/{id}/bucket(id=${product.id})}">
-                    <div class="card-body">
-                        <h5 class="card-title" th:utext="${product.title}">Card title</h5>
-                        <div class="card-text" style="display: inline-block">Price:
-                            <div th:utext="${product.price}" style="display: inline-block; font-weight:bold">
-                                price
-                            </div>
-                            BYN
                         </div>
-                        <p class="card-text" th:utext="${product.description}">Des</p>
-                        <a th:href="@{/product/{id}(id=${product.id})}">More detailed</a>
-                        <button th:if="${product.isProductAvailable()}" type="submit"
-                                class="ml-3 btn btn-outline-secondary">Add to bucket
-                        </button>
-                        <p th:unless="${product.isProductAvailable()}" class="card-text"
-                           style="color:gray">Is not available now</p>
-                    </div>
-                </form>
-            </div>
+                    </tr>
+                    <form th:action="@{/{id}/bucket(id=${product.id})}">
+                        <div class="card-body">
+                            <h5 class="card-title" th:utext="${product.title}">Card title</h5>
+                            <div class="card-text" style="display: inline-block">Price:
+                                <div th:utext="${product.price}" style="display: inline-block; font-weight:bold">
+                                    price
+                                </div>
+                                BYN
+                            </div>
+                            <p class="card-text" th:utext="${product.description}">Des</p>
+                            <a th:href="@{/product/{id}(id=${product.id})}">More detailed</a>
+                            <button th:if="${product.isProductAvailable()}" type="submit"
+                                    class="ml-3 btn btn-outline-secondary">Add to bucket
+                            </button>
+                            <p th:unless="${product.isProductAvailable()}" class="card-text"
+                               style="color:gray">Is not available now</p>
+                        </div>
+                    </form>
+                </div>
+            </a>
         </div>
     </div>
 </div>
@@ -99,52 +109,57 @@
     </div>
     <form th:action="@{/product/create}" th:method="post" th:object="${product}" enctype="multipart/form-data"
           class="row g-3">
-        <div class="input-group mb-3 mt-4 col-md-6">
+        <div class="input-group mt-4 col-md-6">
             <span class="input-group-text" id="inputGroup-sizing-default">Title</span>
             <input type="text" th:field="*{title}" class="form-control" aria-label="Sizing example input"
                    aria-describedby="inputGroup-sizing-default">
-            <div class="alert alert-danger mt-1" th:if="${#fields.hasErrors('title')}" th:errors="*{title}">title error</div>
         </div>
-
-        <div class="input-group mb-3 mt-4 col-sm-3">
-            <span class="input-group-text">BYN</span>
-            <input type="number" step="0.01" th:field="*{price}" class="form-control" aria-label="Amount (to the nearest dollar)">
-            <div class="alert alert-danger mt-1" th:if="${#fields.hasErrors('price')}" th:errors="*{price}"></div>
+        <div class="alert alert-danger col-md-auto ml-2 mt-1" th:if="${#fields.hasErrors('title')}"
+             th:errors="*{title}">title error
         </div>
-
-        <div class="input-group mb-3 mt-4 col-md-3">
-            <span class="input-group-text">Weight</span>
-            <input type="number" th:field="*{weight}" class="form-control" aria-label="Amount (to the nearest dollar)">
-            <div class="alert alert-danger mt-1" th:if="${#fields.hasErrors('weight')}" th:errors="*{weight}"></div>
-        </div>
-
-        <div class="input-group mb-3 col-md-12">
+        <div class="input-group mt-2 col-md-12">
             <span class="input-group-text">Description</span>
             <textarea th:field="*{description}" class="form-control" aria-label="With textarea"></textarea>
-            <div class="alert alert-danger mt-1" th:if="${#fields.hasErrors('description')}" th:errors="*{description}"></div>
         </div>
-
-        <div class="input-group mb-3 col-md-3">
+        <div class="alert alert-danger col-md-auto ml-2 mt-1" th:if="${#fields.hasErrors('description')}"
+             th:errors="*{description}"></div>
+        <div class="input-group mb-2 mt-2 col-md-3">
             <label for="formFile1" class="form-label">First image </label>
             <input required class="form-control" type="file" name="file1" id="formFile1">
         </div>
-
-        <div class="input-group mb-3 col-md-3">
+        <div class="input-group col-md-3">
             <label for="formFile2" class="form-label">Second image </label>
             <input class="form-control" type="file" name="file2" id="formFile2">
         </div>
-        <div class="input-group mb-3 col-md-6">
-            <input class="form-control mb-3 col-md-3" th:field="*{availability}" list="datalistOptions"
-                   placeholder="Availability">
-            <datalist id="datalistOptions">
-                <option value="true">
-                <option value="false">
-            </datalist>
-            <div class="alert alert-danger mt-1" th:if="${#fields.hasErrors('availability')}" th:errors="*{availability}"></div>
+        <div class=" input-group mt-3">
+            <div class="input-group col-md-3">
+                <span class="input-group-text">BYN</span>
+                <input type="number" step="0.01" th:field="*{price}" class="form-control"
+                       aria-label="Amount (to the nearest dollar)">
+                <div class="alert alert-danger col-md-auto mt-1 ml-1" th:if="${#fields.hasErrors('price')}"
+                     th:errors="*{price}"></div>
+            </div>
+            <div class="input-group col-md-3">
+                <span class="input-group-text">Weight</span>
+                <input type="number" th:field="*{weight}" class="form-control"
+                       aria-label="Amount (to the nearest dollar)">
+                <div class="alert alert-danger col-md-auto mt-1 ml-1" th:if="${#fields.hasErrors('weight')}"
+                     th:errors="*{weight}"></div>
+            </div>
+            <div class="input-group col-md-6">
+                <input required class="form-control col-md-3" th:field="*{availability}" list="datalistOptions"
+                       placeholder="Availability">
+                <datalist id="datalistOptions">
+                    <option value="true">
+                    <option value="false">
+                </datalist>
+                <div class="alert alert-danger col-md-auto ml-2 mt-1" th:if="${#fields.hasErrors('availability')}"
+                     th:errors="*{availability}"></div>
+            </div>
         </div>
-
-        <button type="submit" class="btn btn-outline-secondary input-group col-md-2 ml-3 mb-5">Add product</button>
-
+        <div>
+            <button type="submit" class="btn btn-outline-secondary col-md-3 mb-5">Add product</button>
+        </div>
     </form>
 </div>
 </body>

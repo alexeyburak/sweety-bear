@@ -16,7 +16,7 @@ import javax.validation.constraints.*;
 @NoArgsConstructor
 public class ProductDTO {
 
-    @Size(min = 3, max = 30, message = "Title must be between 3 and 30 characters")
+    @Size(min = 3, max = 100, message = "Title must be between 3 and 100 characters")
     @NotEmpty(message = "Title is required")
     private String title;
     @Length(min = 5, max = 300, message = "Description must be between 5 and 300 characters")

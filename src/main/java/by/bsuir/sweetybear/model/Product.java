@@ -25,7 +25,7 @@ import java.util.List;
 public class Product extends IdentifiedModel {
 
     @Column(name = "title")
-    @Size(min = 3, max = 30, message = "Title must be between 3 and 30 characters")
+    @Size(min = 3, max = 100, message = "Title must be between 3 and 100 characters")
     @NotEmpty(message = "Title is required")
     private String title;
     @Column(name = "description", columnDefinition = "text")

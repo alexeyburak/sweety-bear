@@ -13,6 +13,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
 import java.io.IOException;
+import java.security.Principal;
 
 /**
  * sweety-bear
@@ -55,22 +56,27 @@ public class UserController {
     }
 
     @GetMapping("/user/edit/{id}")
-    public String edit(@PathVariable("id") Long id, Model model) {
-        model.addAttribute("user", userService.getUserById(id));
+    public String edit(@PathVariable("id") Long id,
+                       Model model,
+                       Principal principal) {
+        model.addAttribute("userUpdate", userService.getUserById(id));
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
         return "account-edit";
     }
 
     @PostMapping("/user/edit/{id}")
     public String update(@RequestParam("file1") MultipartFile file1,
-                         @ModelAttribute("user") @Valid User user,
+                         @ModelAttribute("userUpdate") @Valid User user,
                          BindingResult bindingResult,
-                         @PathVariable("id") Long id) throws IOException {
+                         @PathVariable("id") Long id,
+                         Model model,
+                         Principal principal) throws IOException {
         if (bindingResult.hasErrors()) {
+            model.addAttribute("user", userService.getUserByPrincipal(principal));
             return "account-edit";
         }
 
         userService.updateUserById(id, user, file1);
         return "redirect:/";
     }
-
 }

@@ -5,6 +5,17 @@
     <title>Registration</title>
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <style>
+        input:invalid {
+            animation: shake .3s;
+        }
+
+        @keyframes shake {
+            25% {transform: translateX(4px) }
+            50% {transform: translateX(-4px) }
+            75% {transform: translateX(4px) }
+        }
+    </style>
 </head>
 <body>
 
@@ -16,7 +27,7 @@
     <div  style="margin-right:700px">
         <div class="mb-3 ml-5 mt-4" >
             <label for="name" class="form-label">Enter name: </label>
-            <input type="text" th:field="*{name}" class="form-control"  id="name"/>
+            <input type="text" pattern="[a-zA-Z]*" th:field="*{name}" class="form-control"  id="name"/>
             <div class="alert alert-danger mt-1" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
         </div>
 
