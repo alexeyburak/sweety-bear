@@ -10,6 +10,9 @@
 <div class="mt-3 ml-5" style="font-size:18px">
     Your orders
 </div>
+<div class="mt-3 ml-5" th:if="${#arrays.isEmpty(orders)}">
+    You have never ordered on our website. Make purchases in our <a href="/">catalog</a>
+</div>
 <div class="row row-cols-1 row-cols-md-3 g-4 ml-4 mr-4 mb-4">
     <div class="col" th:each="order : ${orders}">
         <div class="card h-10 mt-4">

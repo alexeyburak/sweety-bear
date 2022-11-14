@@ -65,11 +65,11 @@ public class ProductController {
                                 @RequestParam("file2") MultipartFile file2,
                                 @ModelAttribute("product") @Valid ProductDTO product,
                                 BindingResult bindingResult,
-                                HttpServletRequest request,
                                 Model model,
                                 Principal principal) throws IOException {
         if (bindingResult.hasErrors()) {
             fillUserToModelAfterBindingResultError(model, principal);
+            model.addAttribute("error", "error");
             return "products";
         }
 
