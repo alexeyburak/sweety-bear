@@ -95,7 +95,7 @@
                             </div>
                             <p class="card-text" th:utext="${product.description}">Des</p>
                             <button th:if="${product.isProductAvailable()}" type="submit"
-                                    class="ml-3 btn btn-outline-secondary">Add to bucket
+                                    class="btn btn-outline-secondary">Add to bucket
                             </button>
                             <p th:unless="${product.isProductAvailable()}" class="card-text"
                                style="color:gray">Is not available now</p>
@@ -152,13 +152,12 @@
                          th:errors="*{weight}"></div>
                 </div>
                 <div class="input-group mt-3">
-                    <span class="input-group-text">Availability</span>
-                    <input required class="form-control col-md-3" th:field="*{availability}" list="datalistOptions"
-                           placeholder="Availability">
-                    <datalist id="datalistOptions">
-                        <option value="true">
-                        <option value="false">
-                    </datalist>
+                    <div class="form-check form-switch">
+                        <input class="form-check-input col-md-3" type="checkbox" th:field="*{availability}"
+                               role="switch" id="flexSwitchCheckChecked"
+                               checked>
+                        <label class="form-check-label" for="flexSwitchCheckChecked">Product availability</label>
+                    </div>
                     <div class="alert alert-danger col-md-auto ml-2 mt-1" th:if="${#fields.hasErrors('availability')}"
                          th:errors="*{availability}"></div>
                 </div>
@@ -206,14 +205,13 @@
                 <input type="number" th:field="*{weight}" class="form-control"
                        aria-label="Amount (to the nearest dollar)">
             </div>
-            <div class="input-group mt-2 col-md-6">
-                <span class="input-group-text">Availability</span>
-                <input required class="form-control col-md-6" th:field="*{availability}" list="datalistOptions"
-                       placeholder="Availability">
-                <datalist id="datalistOptions">
-                    <option value="true">
-                    <option value="false">
-                </datalist>
+            <div class="input-group mt-3">
+                <div class="form-check form-switch">
+                    <input class="form-check-input col-md-3" type="checkbox" th:field="*{availability}"
+                           role="switch" id="flexSwitchCheckChecked"
+                           checked>
+                    <label class="form-check-label" for="flexSwitchCheckChecked">Product availability</label>
+                </div>
             </div>
             <div>
                 <button type="submit" class="btn btn-outline-secondary col-md-6 mb-5">Add product</button>

@@ -51,13 +51,12 @@
                      th:errors="*{weight}"></div>
             </div>
             <div class="input-group mt-3">
-                <span class="input-group-text">Availability</span>
-                <input required class="form-control col-md-3" th:field="*{availability}" list="datalistOptions"
-                       placeholder="Availability">
-                <datalist id="datalistOptions">
-                    <option value="true">
-                    <option value="false">
-                </datalist>
+                <div class="form-check form-switch">
+                    <input class="form-check-input col-md-3" type="checkbox" th:field="*{availability}"
+                           role="switch" id="flexSwitchCheckChecked"
+                           checked>
+                    <label class="form-check-label" for="flexSwitchCheckChecked">Product availability</label>
+                </div>
                 <div class="alert alert-danger col-md-auto ml-2 mt-1" th:if="${#fields.hasErrors('availability')}"
                      th:errors="*{availability}"></div>
             </div>
