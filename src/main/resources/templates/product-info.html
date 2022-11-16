@@ -30,7 +30,14 @@
 <div class="card mb-3 mt-4" style="display: block;
                         margin-left: auto; margin-right: auto; width: 70%">
     <div class="row g-0">
-        <div class="col-md-7 ml-4 mt-2">
+        <div th:if="${product.isOnlyOneImage()}" class="col-md-7 ml-4 mt-2 mb-2">
+            <div class="justify-content-center">
+                <div th:each="image : ${images}" class="carousel-item active">
+                    <img height="550px" width="550px" class="d-block" th:src="@{/images/{id}(id=${image.id})}" alt="First Image">
+                </div>
+            </div>
+        </div>
+        <div th:unless="${product.isOnlyOneImage()}" class="col-md-7 ml-4 mt-2 mb-2">
             <div id="carouselExampleIndicators" class="carousel carousel-dark slide" data-ride="carousel"
                  data-bs-ride="true">
                 <div class="carousel-indicators">

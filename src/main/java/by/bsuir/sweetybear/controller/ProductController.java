@@ -57,6 +57,7 @@ public class ProductController {
 
     private void fillUserToModelAfterBindingResultError(Model model, Principal principal) {
         model.addAttribute("user", userService.getUserByPrincipal(principal));
+        model.addAttribute("error", "error");
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
@@ -69,7 +70,6 @@ public class ProductController {
                                 Principal principal) throws IOException {
         if (bindingResult.hasErrors()) {
             fillUserToModelAfterBindingResultError(model, principal);
-            model.addAttribute("error", "error");
             return "products";
         }
 

@@ -55,6 +55,10 @@ public class Product extends IdentifiedModel {
         return availability;
     }
 
+    public boolean isOnlyOneImage() {
+        return images.size() == 1;
+    }
+
     @PrePersist
     private void init() {
         dateOfCreated = LocalDateTime.now();
