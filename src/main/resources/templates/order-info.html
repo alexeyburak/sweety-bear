@@ -21,9 +21,10 @@
         <h6 class="card-subtitle mb-2 text-muted" th:utext="${order.status}">Status</h6>
         <p class="card-text"></p>
         <div class="card-text" style="display: inline-block">User:
-            <a th:href="@{/user/{id}(id=${order.user.id})}">
+            <a th:if="${order.user}" th:href="@{/user/{id}(id=${order.user.id})}">
                 <div th:utext="${order.user.name}" style="display: inline-block">User name</div>
             </a>
+            <p style="color: #6e0001" th:unless="${order.user}">DELETED</p>
         </div>
         <div class="card-text" style="display: inline-block; font-weight:bold">Sum:
             <div th:utext="${order.sum}" style="display: inline-block">Sum</div>

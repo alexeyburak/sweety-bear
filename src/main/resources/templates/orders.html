@@ -32,10 +32,13 @@
         <tr>
             <th scope="row" class="ml-3" th:utext="${order.id}">Id</th>
             <th scope="row" th:utext="${order.address}">Address</th>
-            <th scope="row">
+            <th th:if="${order.user}" scope="row">
                 <a th:href="@{/user/{id}(id=${order.user.id})}">
                     <p th:utext="${order.user.name}">User</p>
                 </a>
+            </th>
+            <th th:unless="${order.user}" scope="row">
+                <p style="color: #6e0001">DELETED</p>
             </th>
             <th scope="row" th:utext="${order.dateOfCreated}">Date</th>
             <th scope="row" th:utext="${order.sum}">Sum</th>

@@ -16,7 +16,7 @@ import java.util.List;
 @Data
 public class Bucket extends IdentifiedModel{
 
-    @OneToOne
+    @OneToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
     @ManyToMany(cascade = CascadeType.ALL)

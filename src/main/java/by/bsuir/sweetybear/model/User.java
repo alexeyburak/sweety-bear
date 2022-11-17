@@ -52,7 +52,7 @@ public class User extends IdentifiedModel implements UserDetails {
     @Column(name = "activation_code")
     private String activationCode;
 
-    @OneToOne(cascade = CascadeType.REMOVE)
+    @OneToOne(cascade = CascadeType.ALL)
     private Bucket bucket;
 
     public boolean isAdmin() {

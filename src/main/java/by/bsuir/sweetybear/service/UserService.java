@@ -35,4 +35,6 @@ public interface UserService {
     void save(User user);
     // Activate user email after registration
     boolean activateUser(String code);
+    // Delete user account with saving his orders and bucket
+    void deleteUserAccount(Long id);
 }

@@ -4,7 +4,9 @@ import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.Image;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.model.enums.Role;
+import by.bsuir.sweetybear.repository.BucketRepository;
 import by.bsuir.sweetybear.repository.ImageRepository;
+import by.bsuir.sweetybear.repository.OrderRepository;
 import by.bsuir.sweetybear.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -36,6 +38,8 @@ public class UserServiceImpl implements UserService {
     private final ImageRepository imageRepository;
     private final PasswordEncoder passwordEncoder;
     private final MailSenderImpl mailSender;
+    private final BucketRepository bucketRepository;
+    private final OrderRepository orderRepository;
 
     @Override
     public boolean createUser(User user) {
@@ -49,7 +53,7 @@ public class UserServiceImpl implements UserService {
 
         String message = String.format(
                 "%s, we hope that we will not quarrel! " +
-                        "\nActivate your email: http://localhost:4000/activate/%s",
+                        "\nActivate your email: http://localhost:4000/activate/%s ",
                 user.getName(),
                 user.getActivationCode()
         );
@@ -140,5 +144,15 @@ public class UserServiceImpl implements UserService {
         user.setActive(true);
         userRepository.save(user);
         return true;
+    }
+
+    public void deleteUserAccount(Long id) {
+        User user = this.getUserById(id);
+        user.setBucket(null);
+        userRepository.save(user);
+        bucketRepository.deleteByUserId(id);
+        orderRepository.deleteByUserId(id);
+        userRepository.deleteById(id);
+        log.warn("Delete user account. User id: {}", id);
     }
 }

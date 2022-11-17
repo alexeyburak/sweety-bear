@@ -25,7 +25,7 @@ public class Order extends IdentifiedModel implements Comparable<Order>{
 
     private static final Long DELIVERY_TIME = 5L;
 
-    @ManyToOne
+    @ManyToOne(cascade = CascadeType.ALL)
     @JoinColumn(name = "user_id")
     private User user;
     @Column(name = "sum")
