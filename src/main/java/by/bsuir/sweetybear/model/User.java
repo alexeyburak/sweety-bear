@@ -49,6 +49,7 @@ public class User extends IdentifiedModel implements UserDetails {
     private LocalDateTime dateOfCreated;
     @Column(name = "address")
     private String address;
+    private String activationCode;
 
     @OneToOne(cascade = CascadeType.REMOVE)
     private Bucket bucket;

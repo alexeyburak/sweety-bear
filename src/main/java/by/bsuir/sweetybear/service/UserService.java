@@ -33,4 +33,6 @@ public interface UserService {
     void changeUserRole(User user);
     // Save user to database
     void save(User user);
+    // Activate user email after registration
+    boolean activateUser(String code);
 }

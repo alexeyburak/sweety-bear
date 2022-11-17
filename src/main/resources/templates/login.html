@@ -11,6 +11,9 @@
 </div>
 <form th:action="@{/login}" method="post">
     <div style="margin-right:700px">
+        <div th:if="${message}" class="mb-3 ml-5 mt-4">
+            <div th:text="${message}">message</div>
+        </div>
         <div class="mb-3 ml-5 mt-4">
             <label for="exampleInputEmail1" class="form-label">Email address</label>
             <input autofocus type="email" name="username" class="form-control" id="exampleInputEmail1"

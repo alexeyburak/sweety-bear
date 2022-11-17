@@ -16,6 +16,7 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.security.Principal;
 import java.util.List;
+import java.util.UUID;
 
 import static by.bsuir.sweetybear.utils.Utils.toImageEntity;
 
@@ -40,13 +41,20 @@ public class UserServiceImpl implements UserService {
     public boolean createUser(User user) {
         String email = user.getEmail();
         if (userRepository.findByEmail(email) != null) return false;
-        user.setActive(true);
+        user.setActive(false);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
-        user.getRoles().add(Role.ROLE_OWNER);
+        user.getRoles().add(Role.ROLE_USER);
+        user.setActivationCode(UUID.randomUUID().toString());
         log.info("Saving User. Email {}", email);
-//        mailSender.send(email, "Thanks for registration!", user.getName() +
-//                ", we hope that we will not quarrel! \nStart using our sait now: http://localhost:8085/");
+
+        String message = String.format(
+                "%s, we hope that we will not quarrel! " +
+                        "\nActivate your email: http://localhost:4000/activate/%s",
+                user.getName(),
+                user.getActivationCode()
+        );
         userRepository.save(user);
+        mailSender.send(email, "Thanks for registration!", message);
         return true;
     }
 
@@ -122,5 +130,15 @@ public class UserServiceImpl implements UserService {
     public void save(User user) {
         log.info("Save user. Id: {}", user.getId());
         userRepository.save(user);
+    }
+
+    @Override
+    public boolean activateUser(String code) {
+        User user = userRepository.findByActivationCode(code);
+        if (user == null) return false;
+        user.setActivationCode(null);
+        user.setActive(true);
+        userRepository.save(user);
+        return true;
     }
 }

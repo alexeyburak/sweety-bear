@@ -55,6 +55,16 @@ public class UserController {
         return "redirect:/login";
     }
 
+    @GetMapping("/activate/{code}")
+    public String activateUserAccount(Model model, @PathVariable String code) {
+        boolean isActivated = userService.activateUser(code);
+
+        if (isActivated) model.addAttribute("message", "You successfully confirm your email");
+        else model.addAttribute("message", "Activation code is not available");
+
+        return "login";
+    }
+
     @GetMapping("/user/edit/{id}")
     public String edit(@PathVariable("id") Long id,
                        Model model,

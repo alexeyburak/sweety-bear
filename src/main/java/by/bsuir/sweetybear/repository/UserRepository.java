@@ -18,4 +18,5 @@ public interface UserRepository extends JpaRepository<User, Long> {
     @Modifying
     @Query(value = "SELECT * FROM users WHERE email LIKE ?1" + "%", nativeQuery = true)
     List<User> findAllByEmail(String email);
+    User findByActivationCode(String code);
 }
