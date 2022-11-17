@@ -29,15 +29,15 @@
     Registration
 </div>
 <form th:method="post" th:action="@{/registration}" th:object="${user}">
-    <div style="margin-right:700px">
+    <div style="width: 60%">
         <div class="mb-3 ml-5 mt-4">
             <label for="name" class="form-label">Enter name: </label>
             <input autofocus type="text" pattern="[a-zA-Z]*" th:field="*{name}" class="form-control" id="name"/>
             <div class="alert alert-danger mt-1" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
         </div>
         <div class="mb-3 ml-5 mt-2">
-            <label for="email" class="form-label">Enter email: </label>
-            <input type="email" th:field="*{email}" class="form-control" id="email"/>
+            <label for="exampleInputEmail1" class="form-label">Enter email: </label>
+            <input type="email" th:field="*{email}"  aria-describedby="emailHelp" class="form-control" id="exampleInputEmail1"/>
             <div class="alert alert-danger mt-1" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
         </div>
         <div class="mb-3 ml-5 mt-2">

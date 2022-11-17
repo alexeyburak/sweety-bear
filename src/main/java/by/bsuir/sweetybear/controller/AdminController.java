@@ -9,6 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
+import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
 /**
@@ -33,9 +34,12 @@ public class AdminController {
     }
 
     @PostMapping("/admin/user/ban/{id}")
-    public String userBan(@PathVariable("id") Long id) {
+    public String userBan(@PathVariable("id") Long id,
+                          HttpServletRequest request) {
         userService.banUser(id);
-        return "redirect:/admin";
+
+        String referer = request.getHeader("Referer");
+        return "redirect:" + referer;
     }
 
     @GetMapping("/user/{id}")

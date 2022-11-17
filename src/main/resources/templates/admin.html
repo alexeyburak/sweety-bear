@@ -15,7 +15,7 @@
 <div class="mt-3 ml-5 d-flex" style="font-size:18px">
     Admin panel
     <form class="d-flex ml-4" role="search" action="/admin" method="get">
-        <input class="form-control me-2" name="email" type="search" placeholder="admin@example"
+        <input class="form-control me-2" name="email" type="search" th:value="${email}" placeholder="admin@example"
                aria-label="Search">
         <button class="btn btn-light ml-1" type="submit">Search</button>
     </form>
@@ -53,8 +53,11 @@
             <th scope="row">
                 <form th:action="@{/admin/user/ban/{id}(id=${user.id})}" th:unless="${user.isOwner()}" method="post">
                     <input type="hidden" name="_csrf" value="${_csrf.token}">
-                    <button onclick="return deleteConfig()" type="submit" th:value="Bun"
+                    <button th:if="${user.isEnabled()}" onclick="return deleteConfig()" type="submit" th:value="Bun"
                             class="btn btn-outline-secondary">Ban
+                    </button>
+                    <button th:unless="${user.isEnabled()}" onclick="return deleteConfig()" type="submit" th:value="Bun"
+                            class="btn btn-outline-secondary">Unban
                     </button>
                 </form>
             </th>
