@@ -15,9 +15,9 @@ import java.util.List;
 public interface BucketService {
 
     // Create bucket
-    Bucket createBucket(User user, List<Long> productIds);
+    Bucket createUserBucket(User user, List<Long> productIds);
     // Add products to user bucket
-    void addProducts(Bucket bucket, List<Long> productIds);
+    void addProductsToUserBucket(Bucket bucket, List<Long> productIds);
     // Delete one product from bucket
     void deleteProductFromBucket(Bucket bucket, Long id);
     // Count bucket price
@@ -25,5 +25,5 @@ public interface BucketService {
     // Add bucket to order
     void addBucketToOrder(String email, String address);
     // Delete product from database
-    void deleteProduct(Long id);
+    void deleteProductByIdFromBucket(Long id);
 }

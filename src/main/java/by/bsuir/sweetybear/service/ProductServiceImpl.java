@@ -70,20 +70,21 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public void saveProduct(Product product, MultipartFile file1, MultipartFile file2) throws IOException {
-        addImages(product, file1, file2);
+    public void addProductToDatabase(Product product,
+                                     MultipartFile file1,
+                                     MultipartFile file2) throws IOException {
+        addImagesToProduct(product, file1, file2);
         Product productFromDb = productRepository.save(product);
         productFromDb.setPreviewImageId(productFromDb.getImages().get(0).getId());
         log.info("Saving new Product. Id: {}, Title: {} ", product.getId(), product.getTitle());
         productRepository.save(product);
     }
 
-    @Transactional
     @Override
-    public void deleteProduct(Long id) {
+    public void deleteProductById(Long id) {
         log.info("Delete product. Id: {}", id);
-        bucketService.deleteProduct(id);
-        orderService.deleteProduct(id);
+        bucketService.deleteProductByIdFromBucket(id);
+        orderService.deleteProductById(id);
         productRepository.deleteById(id);
     }
 
@@ -92,9 +93,9 @@ public class ProductServiceImpl implements ProductService {
         return productRepository.findById(id).orElse(null);
     }
 
-    private void addImages(Product product,
-                           MultipartFile file1,
-                           MultipartFile file2) throws IOException {
+    private void addImagesToProduct(Product product,
+                                    MultipartFile file1,
+                                    MultipartFile file2) throws IOException {
         Image image1;
         Image image2;
         if (file1.getSize() != 0) {
@@ -125,7 +126,7 @@ public class ProductServiceImpl implements ProductService {
             log.error("Product not found. Id: " + id);
             throw new ApiRequestException("Product not found. Id: " + id);
         }
-        addImages(product, file1, file2);
+        addImagesToProduct(product, file1, file2);
         product.setTitle(productUpdate.getTitle());
         product.setDescription(productUpdate.getDescription());
         product.setPrice(productUpdate.getPrice());
@@ -138,9 +139,8 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    @Transactional
-    public void addToUserBucket(Long productId,
-                                String email) {
+    public void addProductIdToUserBucket(Long productId,
+                                         String email) {
         User user = userService.getUserByEmail(email);
         if (user == null) {
             log.error("User not found. Email: " + email);
@@ -149,12 +149,12 @@ public class ProductServiceImpl implements ProductService {
 
         Bucket bucket = user.getBucket();
         if (bucket == null) {
-            Bucket newBucket = bucketService.createBucket(user, Collections.singletonList(productId));
+            Bucket newBucket = bucketService.createUserBucket(user, Collections.singletonList(productId));
             user.setBucket(newBucket);
             log.info("Create new bucket for user. User id: {}", user.getId());
             userService.save(user);
         } else {
-            bucketService.addProducts(bucket, Collections.singletonList(productId));
+            bucketService.addProductsToUserBucket(bucket, Collections.singletonList(productId));
         }
     }
 }

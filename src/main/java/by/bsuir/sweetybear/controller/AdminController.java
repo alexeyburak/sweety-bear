@@ -36,7 +36,7 @@ public class AdminController {
     @PostMapping("/admin/user/ban/{id}")
     public String userBan(@PathVariable("id") Long id,
                           HttpServletRequest request) {
-        userService.banUser(id);
+        userService.banUserAccountById(id);
 
         String referer = request.getHeader("Referer");
         return "redirect:" + referer;

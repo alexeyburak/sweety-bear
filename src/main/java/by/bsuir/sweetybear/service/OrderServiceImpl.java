@@ -25,13 +25,13 @@ public class OrderServiceImpl implements OrderService {
     private final OrderRepository orderRepository;
 
     @Override
-    public void saveOrder(Order order) {
+    public void save(Order order) {
         log.info("Save order. Id: {}", order.getId());
         orderRepository.save(order);
     }
 
     @Override
-    public List<Order> orderList(OrderStatus status) {
+    public List<Order> orderListFindByStatus(OrderStatus status) {
         return orderRepository
                 .findByStatus(status)
                 .stream()
@@ -59,7 +59,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getUserOrders(Long id) {
+    public List<Order> getUserOrdersById(Long id) {
         return orderRepository
                 .findByUserId(id)
                 .stream()
@@ -68,7 +68,7 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void deleteProduct(Long id) {
+    public void deleteProductById(Long id) {
         log.warn("Delete product from order. Product id: {}", id);
         orderRepository.deleteByProductId(id);
     }

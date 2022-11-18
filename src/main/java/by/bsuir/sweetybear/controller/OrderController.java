@@ -31,7 +31,7 @@ public class OrderController {
     @GetMapping("/orders/new")
     public String aboutOrderNew(Model model, Principal principal) {
         model.addAttribute("user", userService.getUserByPrincipal(principal));
-        model.addAttribute("orders", orderService.orderList(OrderStatus.NEW));
+        model.addAttribute("orders", orderService.orderListFindByStatus(OrderStatus.NEW));
         return "orders";
     }
 
@@ -39,7 +39,7 @@ public class OrderController {
     @GetMapping("/orders/approved")
     public String aboutOrderApproved(Model model, Principal principal) {
         model.addAttribute("user", userService.getUserByPrincipal(principal));
-        model.addAttribute("orders", orderService.orderList(OrderStatus.APPROVED));
+        model.addAttribute("orders", orderService.orderListFindByStatus(OrderStatus.APPROVED));
         return "orders";
     }
 
@@ -47,7 +47,7 @@ public class OrderController {
     @GetMapping("/orders/canceled")
     public String aboutOrderCanceled(Model model, Principal principal) {
         model.addAttribute("user", userService.getUserByPrincipal(principal));
-        model.addAttribute("orders", orderService.orderList(OrderStatus.CANCELED));
+        model.addAttribute("orders", orderService.orderListFindByStatus(OrderStatus.CANCELED));
         return "orders";
     }
 
@@ -55,7 +55,7 @@ public class OrderController {
     @GetMapping("/orders/closed")
     public String aboutOrderClosed(Model model, Principal principal) {
         model.addAttribute("user", userService.getUserByPrincipal(principal));
-        model.addAttribute("orders", orderService.orderList(OrderStatus.CLOSED));
+        model.addAttribute("orders", orderService.orderListFindByStatus(OrderStatus.CLOSED));
         return "orders";
     }
 
@@ -87,7 +87,7 @@ public class OrderController {
     @GetMapping("/orders/user/{id}")
     public String userOrderInfo(@PathVariable("id") Long id, Model model, Principal principal) {
         model.addAttribute("user", userService.getUserByPrincipal(principal));
-        model.addAttribute("orders", orderService.getUserOrders(id));
+        model.addAttribute("orders", orderService.getUserOrdersById(id));
         return "user-orders";
     }
 

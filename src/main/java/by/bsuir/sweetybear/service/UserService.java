@@ -16,7 +16,7 @@ import java.util.List;
 public interface UserService {
 
     // Registration user
-    boolean createUser(User user);
+    boolean addUserToDatabase(User user);
     // Return user list, if email != null, return users with email
     List<User> userList(String email);
     // Find user by id
@@ -26,7 +26,7 @@ public interface UserService {
     // Find user by principal
     User getUserByPrincipal(Principal principal);
     // Ban user logic
-    void banUser(Long id);
+    void banUserAccountById(Long id);
     // Update user info
     void updateUserById(Long id, User userUpdate, MultipartFile file1) throws IOException;
     // Change user roles
@@ -34,7 +34,7 @@ public interface UserService {
     // Save user to database
     void save(User user);
     // Activate user email after registration
-    boolean activateUser(String code);
+    boolean activateUserAccountAfterRegistration(String code);
     // Delete user account with saving his orders and bucket
-    void deleteUserAccount(Long id);
+    void deleteUserAccountById(Long id);
 }

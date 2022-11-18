@@ -75,7 +75,7 @@ public class ProductController {
 
         Product productDb = this.modelMapper.map(product, Product.class);
 
-        productService.saveProduct(productDb, file1, file2);
+        productService.addProductToDatabase(productDb, file1, file2);
 
         return "redirect:/";
     }
@@ -83,7 +83,7 @@ public class ProductController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
     @PostMapping("/product/delete/{id}")
     public String deleteProduct(@PathVariable Long id) {
-        productService.deleteProduct(id);
+        productService.deleteProductById(id);
         return "redirect:/";
     }
 
@@ -121,7 +121,7 @@ public class ProductController {
         if (principal == null) {
             return "redirect:/";
         }
-        productService.addToUserBucket(id, user.getEmail());
+        productService.addProductIdToUserBucket(id, user.getEmail());
 
         String referer = request.getHeader("Referer");
         return "redirect:" + referer;

@@ -34,7 +34,7 @@ public class Product extends IdentifiedModel {
     private String description;
     @Column(name = "price")
     @NotNull(message = "It's required")
-    @Digits(integer = 8, fraction = 2)
+    @Digits(integer = 8, fraction = 2, message = "It's too much")
     @Positive(message = "Should be positive")
     private Double price;
     @Column(name = "Weight")

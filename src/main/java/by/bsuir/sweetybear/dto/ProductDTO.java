@@ -23,7 +23,7 @@ public class ProductDTO {
     @NotEmpty(message = "Description is required")
     private String description;
     @NotNull(message = "It's required")
-    @Digits(integer = 8, fraction = 2)
+    @Digits(integer = 8, fraction = 2, message = "It's too much")
     @Positive(message = "Should be positive")
     private Double price;
     @NotNull(message = "It's required")

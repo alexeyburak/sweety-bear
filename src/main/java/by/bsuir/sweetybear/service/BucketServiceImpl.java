@@ -37,8 +37,8 @@ public class BucketServiceImpl implements BucketService {
 
     @Override
     @Transactional
-    public Bucket createBucket(User user,
-                               List<Long> productIds) {
+    public Bucket createUserBucket(User user,
+                                   List<Long> productIds) {
         Bucket bucket = new Bucket();
         bucket.setUser(user);
         log.info("Create bucket. User: {}", user.getEmail());
@@ -55,8 +55,8 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
-    public void addProducts(Bucket bucket,
-                            List<Long> productIds) {
+    public void addProductsToUserBucket(Bucket bucket,
+                                        List<Long> productIds) {
         List<Product> products = bucket.getProducts();
         List<Product> newProductList = products == null ? new ArrayList<>() : new ArrayList<>(products);
         newProductList.addAll(getCollectRefProductsByIds(productIds));
@@ -132,14 +132,14 @@ public class BucketServiceImpl implements BucketService {
         order.setSum(total);
         order.setAddress(address);
         log.info("Add bucket to order. Bucket id: {}. Order id: {}", bucket.getId(), order.getId());
-        orderService.saveOrder(order);
+        orderService.save(order);
         bucket.getProducts().clear();
         log.info("Clear bucket after adding to bucket. Bucket id: {}", bucket.getId());
         bucketRepository.save(bucket);
     }
 
     @Override
-    public void deleteProduct(Long id) {
+    public void deleteProductByIdFromBucket(Long id) {
         log.warn("Delete product from bucket. Product id: {}", id);
         bucketRepository.deleteByProductId(id);
     }

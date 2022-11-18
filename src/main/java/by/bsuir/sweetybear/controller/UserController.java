@@ -48,7 +48,7 @@ public class UserController {
 
         User userDb = this.modelMapper.map(user, User.class);
 
-        if (!userService.createUser(userDb)) {
+        if (!userService.addUserToDatabase(userDb)) {
             model.addAttribute("errorMessage", "User with email " + user.getEmail() + " is already exists");
             return "registration";
         }
@@ -57,7 +57,7 @@ public class UserController {
 
     @GetMapping("/activate/{code}")
     public String activateUserAccount(Model model, @PathVariable String code) {
-        boolean isActivated = userService.activateUser(code);
+        boolean isActivated = userService.activateUserAccountAfterRegistration(code);
 
         if (isActivated) model.addAttribute("message", "You successfully confirm your email");
         else model.addAttribute("message", "Activation code is not available");
@@ -92,7 +92,7 @@ public class UserController {
 
     @PostMapping("/user/delete/{id}")
     public String deleteUserAccount(@PathVariable Long id) {
-        userService.deleteUserAccount(id);
+        userService.deleteUserAccountById(id);
         return "redirect:/login";
     }
 }

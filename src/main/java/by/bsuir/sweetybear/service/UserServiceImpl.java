@@ -42,7 +42,7 @@ public class UserServiceImpl implements UserService {
     private final OrderRepository orderRepository;
 
     @Override
-    public boolean createUser(User user) {
+    public boolean addUserToDatabase(User user) {
         String email = user.getEmail();
         if (userRepository.findByEmail(email) != null) return false;
         user.setActive(false);
@@ -85,7 +85,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void banUser(Long id) {
+    public void banUserAccountById(Long id) {
         User user = userRepository.findById(id).orElse(null);
         if (user == null)
             throw new ApiRequestException("User not found");
@@ -137,7 +137,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public boolean activateUser(String code) {
+    public boolean activateUserAccountAfterRegistration(String code) {
         User user = userRepository.findByActivationCode(code);
         if (user == null) return false;
         user.setActivationCode(null);
@@ -146,7 +146,8 @@ public class UserServiceImpl implements UserService {
         return true;
     }
 
-    public void deleteUserAccount(Long id) {
+    @Override
+    public void deleteUserAccountById(Long id) {
         User user = this.getUserById(id);
         user.setBucket(null);
         userRepository.save(user);
