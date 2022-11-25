@@ -38,4 +38,8 @@ public class OrderDetails extends IdentifiedModel {
         this.price = new BigDecimal(String.valueOf(product.getPrice()));
     }
 
+    public BigDecimal getProductPriceWithAmount() {
+        return price.multiply(amount);
+    }
+
 }

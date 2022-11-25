@@ -48,10 +48,14 @@ public class Order extends IdentifiedModel implements Comparable<Order>{
         return status == OrderStatus.APPROVED;
     }
 
-    public Double countCurrentlyProductsPrice() {
+    public boolean isTotalProductsPriceNotChanged() {
+        return sum.compareTo(BigDecimal.valueOf(countCurrentlyProductsPrice())) == 0;
+    }
+
+    private Double countCurrentlyProductsPrice() {
         return details
                 .stream()
-                .map(OrderDetails::getPrice)
+                .map(OrderDetails::getProductPriceWithAmount)
                 .mapToDouble(BigDecimal::doubleValue)
                 .sum();
     }

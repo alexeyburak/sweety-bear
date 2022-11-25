@@ -35,7 +35,7 @@
                         Products:
                     </div>
                     <div class="card-text mt-1" style="color: red"
-                         th:if="${order.sum} > ${order.countCurrentlyProductsPrice()}">Products have been removed
+                         th:unless="${order.isTotalProductsPriceNotChanged()}">Products have been removed
                     </div>
                     <div th:each="details : ${order.details}">
                         <a th:href="@{/product/{id}(id=${details.product.id})}">
