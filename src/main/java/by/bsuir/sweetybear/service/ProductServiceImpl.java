@@ -41,32 +41,38 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public List<Product> listProducts(String title, SortType type) {
-        if (type == SortType.ASCENDING) {
-            return productRepository
-                    .findAll()
-                    .stream()
-                    .sorted(Comparator.comparing(Product::getPrice))
-                    .toList();
-        }
-        if (type == SortType.REDUCING) {
-            return productRepository
-                    .findAll()
-                    .stream()
-                    .sorted(Comparator.comparing(Product::getPrice)
-                            .reversed())
-                    .toList();
-
-        }
-        if (type == SortType.NEW) {
-            return productRepository
-                    .findAll()
-                    .stream()
-                    .sorted(Comparator.comparing(Product::getDateOfCreated)
-                            .reversed())
-                    .toList();
-        }
+        if (type != null) return listProductsWithSortingType(type);
         if (title != null) return productRepository.findByTitle(title);
         return productRepository.findAll();
+    }
+
+    private List<Product> listProductsWithSortingType(SortType type) {
+        switch (type) {
+            case ASCENDING -> {
+                return productRepository
+                        .findAll()
+                        .stream()
+                        .sorted(Comparator.comparing(Product::getPrice))
+                        .toList();
+            }
+            case REDUCING -> {
+                return productRepository
+                        .findAll()
+                        .stream()
+                        .sorted(Comparator.comparing(Product::getPrice)
+                                .reversed())
+                        .toList();
+            }
+            case NEW -> {
+                return productRepository
+                        .findAll()
+                        .stream()
+                        .sorted(Comparator.comparing(Product::getDateOfCreated)
+                                .reversed())
+                        .toList();
+            }
+        }
+        return null;
     }
 
     @Override
@@ -90,15 +96,17 @@ public class ProductServiceImpl implements ProductService {
 
     @Override
     public Product getProductById(Long id) {
-        return productRepository.findById(id).orElse(null);
+        return productRepository
+                .findById(id)
+                .orElse(null);
     }
 
     private void addImagesToProduct(Product product,
-                                    MultipartFile file1,
-                                    MultipartFile file2) throws IOException {
-        Image image1;
-        Image image2;
-        if (file1.getSize() != 0) {
+                                    MultipartFile multipartPreviewFile,
+                                    MultipartFile multipartFile) throws IOException {
+        Image productPreviewImage;
+        Image productImage;
+        if (multipartPreviewFile.getSize() != 0) {
             if (product.getImages() != null) {
                 imageRepository.markToDeleteByProductId(product.getId(), "toDelete");
                 imageRepository.deleteByName("toDelete");
@@ -106,27 +114,27 @@ public class ProductServiceImpl implements ProductService {
                 product.setPreviewImageId(null);
                 product.getImages().clear();
             }
-            image1 = toImageEntity(file1);
-            image1.setPreviewImage(true);
-            product.addImageToProduct(image1);
+            productPreviewImage = toImageEntity(multipartPreviewFile);
+            productPreviewImage.setPreviewImage(true);
+            product.addImageToProduct(productPreviewImage);
         }
-        if (file2.getSize() != 0) {
-            image2 = toImageEntity(file2);
-            product.addImageToProduct(image2);
+        if (multipartFile.getSize() != 0) {
+            productImage = toImageEntity(multipartFile);
+            product.addImageToProduct(productImage);
         }
     }
 
     @Override
     public void updateProductById(Long id,
                                   Product productUpdate,
-                                  MultipartFile file1,
-                                  MultipartFile file2) throws IOException {
-        Product product = productRepository.findById(id).orElse(null);
+                                  MultipartFile multipartPreviewFile,
+                                  MultipartFile multipartFile) throws IOException {
+        Product product = this.getProductById(id);
         if (product == null) {
             log.error("Product not found. Id: " + id);
             throw new ApiRequestException("Product not found. Id: " + id);
         }
-        addImagesToProduct(product, file1, file2);
+        addImagesToProduct(product, multipartPreviewFile, multipartFile);
         product.setTitle(productUpdate.getTitle());
         product.setDescription(productUpdate.getDescription());
         product.setPrice(productUpdate.getPrice());

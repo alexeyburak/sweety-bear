@@ -45,22 +45,30 @@ public class UserServiceImpl implements UserService {
     public boolean addUserToDatabase(User user) {
         String email = user.getEmail();
         if (userRepository.findByEmail(email) != null) return false;
+
         user.setActive(false);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getRoles().add(Role.ROLE_USER);
         user.setActivationCode(UUID.randomUUID().toString());
-        log.info("Saving User. Email {}", email);
 
+        log.info("Saving User. Email {}", email);
+        userRepository.save(user);
+        sendEmailMessageToUser(user);
+        return true;
+    }
+
+    private void sendEmailMessageToUser(final User user) {
         String message = String.format(
                 "%s, we hope that we will not quarrel! " +
                         "\nActivate your email: http://localhost:4000/activate/%s ",
                 user.getName(),
                 user.getActivationCode()
         );
-        userRepository.save(user);
-        mailSender.send(email, "Thanks for registration!", message);
-        return true;
+        String title = "Thanks for registration!";
+
+        mailSender.send(user.getEmail(), title, message);
     }
+
 
     @Override
     public List<User> userList(String email) {
@@ -86,7 +94,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void banUserAccountById(Long id) {
-        User user = userRepository.findById(id).orElse(null);
+        User user = this.getUserById(id);
         if (user == null)
             throw new ApiRequestException("User not found");
         user.setActive(!user.isActive());
@@ -95,26 +103,43 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserById(Long id, User userUpdate, MultipartFile file1) throws IOException {
-        User user = getUserById(id);
+    public void setAddressToUser(final User user,
+                                 final String address) {
+        user.setAddress(address);
+        log.info("Set address to user. User email: {}", user.getEmail());
+        this.save(user);
+    }
+
+    @Override
+    public void updateUserById(Long id,
+                               User userUpdate,
+                               MultipartFile multipartFile) throws IOException {
+        User user = this.getUserById(id);
         if (user == null)
             throw new ApiRequestException("User not found");
-        Image image1;
-        if (file1.getSize() != 0) {
-            if (user.isAvatarNull()) {
-                imageRepository.markToDeleteByUserId(id, "toDelete");
-                imageRepository.deleteByName("toDelete");
-                log.warn("Delete photo.");
-            }
-            image1 = toImageEntity(file1);
-            image1.setPreviewImage(true);
-            user.addAvatarToUser(image1);
-        }
+
+        if (multipartFile.getSize() != 0)
+            addAvatarToUser(user, multipartFile);
+
         user.setName(userUpdate.getName());
         user.setEmail(userUpdate.getEmail());
         user.setPassword(passwordEncoder.encode(userUpdate.getPassword()));
         log.info("Update user. Id: {}", id);
         userRepository.save(user);
+    }
+
+    private void addAvatarToUser(final User user,
+                                 MultipartFile multipartFile) throws IOException {
+        Image userAvatar;
+        if (user.isAvatarNull()) {
+            imageRepository.markToDeleteByUserId(user.getId(), "toDelete");
+            imageRepository.deleteByName("toDelete");
+            log.warn("Delete photo.");
+        }
+        userAvatar = toImageEntity(multipartFile);
+        userAvatar.setPreviewImage(true);
+        user.addAvatarToUser(userAvatar);
+
     }
 
     @Override
@@ -143,6 +168,7 @@ public class UserServiceImpl implements UserService {
         user.setActivationCode(null);
         user.setActive(true);
         userRepository.save(user);
+        log.info("User activate account. User email: {}", user.getEmail());
         return true;
     }
 

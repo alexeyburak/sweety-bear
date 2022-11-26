@@ -37,7 +37,7 @@ public class BucketServiceImpl implements BucketService {
 
     @Override
     @Transactional
-    public Bucket createUserBucket(User user,
+    public Bucket createUserBucket(final User user,
                                    List<Long> productIds) {
         Bucket bucket = new Bucket();
         bucket.setUser(user);
@@ -54,10 +54,14 @@ public class BucketServiceImpl implements BucketService {
                 .collect(Collectors.toList());
     }
 
+    private List<Product> getProductsFromBucket(Bucket bucket) {
+        return bucket.getProducts();
+    }
+
     @Override
     public void addProductsToUserBucket(Bucket bucket,
                                         List<Long> productIds) {
-        List<Product> products = bucket.getProducts();
+        List<Product> products = getProductsFromBucket(bucket);
         List<Product> newProductList = products == null ? new ArrayList<>() : new ArrayList<>(products);
         newProductList.addAll(getCollectRefProductsByIds(productIds));
         bucket.setProducts(newProductList);
@@ -68,7 +72,10 @@ public class BucketServiceImpl implements BucketService {
     @Override
     public void deleteProductFromBucket(Bucket bucket,
                                         Long id) {
-        List<Long> productIdsInBucket = bucket.getProducts().stream().map(Product::getId).toList();
+        List<Long> productIdsInBucket = getProductsFromBucket(bucket)
+                .stream()
+                .map(Product::getId)
+                .toList();
         List<Long> productWithRemovedId = removeOnlyOneIdFromList(productIdsInBucket, id);
         bucket.setProducts(new ArrayList<>(getCollectRefProductsByIds(productWithRemovedId)));
         log.info("Delete product from bucket. Bucket id: {}. Product id: {}", bucket.getId(), id);
@@ -76,7 +83,7 @@ public class BucketServiceImpl implements BucketService {
     }
 
     @Override
-    public BucketDTO getBucketByUser(String email) {
+    public BucketDTO getBucketByUser(final String email) {
         User user = userService.getUserByEmail(email);
         if (user == null || user.getBucket() == null) {
             return new BucketDTO();
@@ -102,40 +109,57 @@ public class BucketServiceImpl implements BucketService {
 
     @Override
     @Transactional
-    public void addBucketToOrder(String email,
-                                 String address) {
+    public void addBucketToOrder(final String email,
+                                 final String address) {
         User user = userService.getUserByEmail(email);
         if (user == null)
             throw new ApiRequestException("User is not found");
-        user.setAddress(address);
-        log.info("Set address to user. User id: {}", user.getId());
-        userService.save(user);
+        userService.setAddressToUser(user, address);
         Bucket bucket = user.getBucket();
-        if (bucket == null || bucket.getProducts().isEmpty())
+        if (bucket == null || getProductsFromBucket(bucket).isEmpty())
             throw new ApiRequestException("Bucket is empty");
         Order order = new Order();
         order.setStatus(OrderStatus.NEW);
         order.setUser(user);
 
-        Map<Product, Long> productWithAmount = bucket.getProducts().stream()
-                .collect(Collectors.groupingBy(product -> product, Collectors.counting()));
+        Map<Product, Long> productsWithAmount = getProductsWithAmountsFromBucket(bucket);
 
-        List<OrderDetails> orderDetails = productWithAmount.entrySet().stream()
-                .map(pair -> new OrderDetails(order, pair.getKey(), pair.getValue()))
-                .toList();
+        List<OrderDetails> orderDetails = fillOrderDetailsToOrder(productsWithAmount, order);
 
-        BigDecimal total = BigDecimal.valueOf(orderDetails.stream()
-                .map(detail -> detail.getPrice().multiply(detail.getAmount()))
-                .mapToDouble(BigDecimal::doubleValue).sum());
+        BigDecimal totalSum = countOrderTotalSum(orderDetails);
 
         order.setDetails(orderDetails);
-        order.setSum(total);
+        order.setSum(totalSum);
         order.setAddress(address);
-        log.info("Add bucket to order. Bucket id: {}. Order id: {}", bucket.getId(), order.getId());
+        log.info("Add bucket to order. Bucket id: {}.", bucket.getId());
         orderService.save(order);
-        bucket.getProducts().clear();
+
+        clearProductsFromBucket(bucket);
+    }
+
+    private void clearProductsFromBucket(Bucket bucket) {
+        getProductsFromBucket(bucket).clear();
         log.info("Clear bucket after adding to bucket. Bucket id: {}", bucket.getId());
         bucketRepository.save(bucket);
+    }
+
+    private Map<Product, Long> getProductsWithAmountsFromBucket(Bucket bucket) {
+        return getProductsFromBucket(bucket).stream()
+                .collect(Collectors.groupingBy(product -> product, Collectors.counting()));
+    }
+
+    private List<OrderDetails> fillOrderDetailsToOrder(Map<Product, Long> productWithAmount,
+                                                       Order order) {
+        return productWithAmount.entrySet()
+                .stream()
+                .map(pair -> new OrderDetails(order, pair.getKey(), pair.getValue()))
+                .toList();
+    }
+
+    private BigDecimal countOrderTotalSum(List<OrderDetails> orderDetails) {
+        return BigDecimal.valueOf(orderDetails.stream()
+                .map(detail -> detail.getPrice().multiply(detail.getAmount()))
+                .mapToDouble(BigDecimal::doubleValue).sum());
     }
 
     @Override

@@ -28,7 +28,7 @@ public interface UserService {
     // Ban user logic
     void banUserAccountById(Long id);
     // Update user info
-    void updateUserById(Long id, User userUpdate, MultipartFile file1) throws IOException;
+    void updateUserById(Long id, User userUpdate, MultipartFile multipartFile) throws IOException;
     // Change user roles
     void changeUserRole(User user);
     // Save user to database
@@ -37,4 +37,6 @@ public interface UserService {
     boolean activateUserAccountAfterRegistration(String code);
     // Delete user account with saving his orders and bucket
     void deleteUserAccountById(Long id);
+    // Set address to user after making order
+    void setAddressToUser(final User user, final String address);
 }

@@ -43,7 +43,7 @@
         <div class="mt-1">
             Products:
         </div>
-        <div class="card-text mt-1" style="color: red" th:if="${order.sum} > ${order.countCurrentlyProductsPrice()}">
+        <div class="card-text mt-1" style="color: red" th:unless="${order.isTotalProductsPriceNotChanged()}">
             Products have been removed
         </div>
         <div class="card-text" th:each="details : ${order.details}">
