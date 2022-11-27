@@ -1,6 +1,7 @@
 package by.bsuir.sweetybear.controller;
 
 import by.bsuir.sweetybear.dto.UserDTO;
+import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -14,6 +15,7 @@ import org.springframework.web.multipart.MultipartFile;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Objects;
 
 /**
  * sweety-bear
@@ -69,8 +71,13 @@ public class UserController {
     public String edit(@PathVariable("id") Long id,
                        Model model,
                        Principal principal) {
+        User userFromPrincipal = userService.getUserByPrincipal(principal);
+
+        if(!Objects.equals(id, userFromPrincipal.getId()))
+            return "redirect:/";
+
         model.addAttribute("userUpdate", userService.getUserById(id));
-        model.addAttribute("user", userService.getUserByPrincipal(principal));
+        model.addAttribute("user", userFromPrincipal);
         return "account-edit";
     }
 
