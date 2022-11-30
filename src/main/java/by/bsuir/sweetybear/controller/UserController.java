@@ -59,13 +59,13 @@ public class UserController {
     @PostMapping("/login/error")
     public String loginError(@ModelAttribute("username") String email,
                              Model model) {
-        User user = userService.getUserByEmail(email);
+        model.addAttribute("messageError", "Invalid username or password.");
 
+        User user = userService.getUserByEmail(email);
         if (!Objects.requireNonNull(user).isActive()) {
             model.addAttribute("messageError", "Your account was banned");
-        } else {
-            model.addAttribute("messageError", "Invalid username or password.");
         }
+
         return "login";
     }
 
