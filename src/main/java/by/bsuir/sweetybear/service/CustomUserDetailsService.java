@@ -1,5 +1,7 @@
 package by.bsuir.sweetybear.service;
 
+import by.bsuir.sweetybear.exception.ApiRequestException;
+import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -21,6 +23,13 @@ public class CustomUserDetailsService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepository.findByEmail(email);
+        User user = userRepository.findByEmail(email);
+
+        if (user == null)
+            throw new ApiRequestException("User is null");
+        if (!user.isActive())
+            throw new ApiRequestException("User is banned");
+
+        return user;
     }
 }

@@ -57,12 +57,26 @@ public class UserController {
         return "redirect:/login";
     }
 
+    @PostMapping("/login/error")
+    public String loginError(@ModelAttribute("username") String email,
+                             Model model) {
+        User user = userService.getUserByEmail(email);
+
+        if (!Objects.requireNonNull(user).isActive()) {
+            model.addAttribute("messageError", "Your account was banned");
+        }
+        else {
+            model.addAttribute("messageError", "Invalid username or password.");
+        }
+        return "login";
+    }
+
     @GetMapping("/activate/{code}")
     public String activateUserAccount(Model model, @PathVariable String code) {
         boolean isActivated = userService.activateUserAccountAfterRegistration(code);
 
-        if (isActivated) model.addAttribute("message", "You successfully confirm your email");
-        else model.addAttribute("message", "Activation code is not available");
+        if (isActivated) model.addAttribute("messageSuccess", "You successfully confirm your email");
+        else model.addAttribute("messageSuccess", "Activation code is not available");
 
         return "login";
     }
@@ -73,7 +87,7 @@ public class UserController {
                        Principal principal) {
         User userFromPrincipal = userService.getUserByPrincipal(principal);
 
-        if(!Objects.equals(id, userFromPrincipal.getId()))
+        if (!Objects.equals(id, userFromPrincipal.getId()))
             return "redirect:/";
 
         model.addAttribute("userUpdate", userService.getUserById(id));
