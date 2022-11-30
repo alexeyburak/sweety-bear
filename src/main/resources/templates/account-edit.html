@@ -23,7 +23,7 @@
     </style>
     <script>
         function deleteConfig(message) {
-            return confirm("Are you sure you want to " + message + " your account?");
+            return confirm("Are you sure you want to " + message);
         }
     </script>
 </head>
@@ -36,14 +36,15 @@
 </div>
 
 <div style="margin-right:700px">
-    <div class="mb-3 ml-5 mt-3" th:if="${userUpdate.isAvatarNull()}">
+    <div class="mb-3 ml-5 mt-3" th:if="${user.isAvatarNull()}">
         <img th:src="@{/images/{id}(id=${user.avatar.id})} " class="img-thumbnail" style="height:200px"
              alt="Without avatar">
         <form th:method="post" th:action="@{/user/delete/image/{id}(id=${userUpdate.getId()})}">
-            <input class="btn btn-outline-danger" type="submit" value="Delete avatar">
+            <input onclick="return deleteConfig('delete this avatar?');" class="btn btn-outline-danger mt-1"
+                   type="submit" value="Delete avatar">
         </form>
     </div>
-    <div class="mb-3 ml-5 mt-5" th:unless="${userUpdate.isAvatarNull()}">
+    <div class="mb-3 ml-5 mt-5" th:unless="${user.isAvatarNull()}">
         <p class="card-text">Without avatar</p>
     </div>
     <form th:method="post" th:action="@{/user/edit/{id}(id=${userUpdate.getId()})}" th:object="${userUpdate}"
@@ -62,18 +63,18 @@
             <input type="email" th:field="*{email}" class="form-control" id="email"/>
             <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
         </div>
-        <div class="mb-3 ml-5 mt-2">
+        <div class="ml-5 mt-2">
             <label for="password1" class="form-label">Enter password: </label>
             <input type="password" th:field="*{password}" class="form-control" id="password1"/>
             <div style="color:red" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
         </div>
         <input type="hidden" name="_csrf" value="${_csrf.token}"><br>
-        <button type="submit" class="btn btn-primary ml-5 mt-0 mb-2">Update account</button>
+        <button type="submit" class="btn btn-primary ml-5 mt-1 mb-2">Update account</button>
     </form>
 </div>
 
 <form th:unless="${user.isOwner()}" th:action="@{/user/delete/{id}(id=${user.id})}" method="post">
-    <input onclick="return deleteConfig('delete')" class="btn btn-outline-danger ml-5 mt-3 mb-2"
+    <input onclick="return deleteConfig('delete your account?')" class="btn btn-outline-danger ml-5 mt-2 mb-2"
            type="submit" value="Delete account">
 </form>
 </body>

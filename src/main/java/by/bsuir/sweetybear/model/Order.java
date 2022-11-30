@@ -1,5 +1,6 @@
 package by.bsuir.sweetybear.model;
 
+import by.bsuir.sweetybear.model.enums.DeliveryType;
 import by.bsuir.sweetybear.model.enums.OrderStatus;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -36,9 +37,15 @@ public class Order extends IdentifiedModel implements Comparable<Order>{
     @JoinColumn(name = "details_id")
     private List<OrderDetails> details;
     @Enumerated(EnumType.STRING)
+    private DeliveryType delivery;
+    @Enumerated(EnumType.STRING)
     private OrderStatus status;
     private LocalDateTime dateOfCreated;
     private LocalDateTime dateOfDelivery;
+
+    public boolean isOrderDeliveryPickup() {
+        return delivery == DeliveryType.PICKUP;
+    }
 
     public boolean isOrderCanceled() {
         return status == OrderStatus.CANCELED || status == OrderStatus.CLOSED;

@@ -19,7 +19,9 @@
             <form th:method="post" th:action="@{/orders/edit/{id}(id=${order.id})}">
                 <div class="card-body">
                     <h5 class="card-title" th:utext="${order.sum}">Sum</h5>
-                    <p class="card-text" th:utext="${order.address}">Address</p>
+                    <p class="card-text" th:unless="${order.isOrderDeliveryPickup()}" th:utext="${order.address}">
+                        Address</p>
+                    <p class="card-text" th:if="${order.isOrderDeliveryPickup()}">PICKUP</p>
                     <div class="card-text" style="display: inline-block">Status:
                         <div th:utext="${order.status}" style="display: inline-block; font-weight:bold">Status</div>
                     </div>

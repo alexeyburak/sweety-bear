@@ -4,6 +4,7 @@ import by.bsuir.sweetybear.dto.BucketDTO;
 import by.bsuir.sweetybear.dto.BucketDetailDTO;
 import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.*;
+import by.bsuir.sweetybear.model.enums.DeliveryType;
 import by.bsuir.sweetybear.model.enums.OrderStatus;
 import by.bsuir.sweetybear.repository.BucketRepository;
 import by.bsuir.sweetybear.repository.ProductRepository;
@@ -107,14 +108,32 @@ public class BucketServiceImpl implements BucketService {
         return bucketDTO;
     }
 
+    private void addDeliveryStatusToOrder(final Order order,
+                                          final String address) {
+        if (address.isEmpty())
+            order.setDelivery(DeliveryType.PICKUP);
+        else
+            order.setDelivery(DeliveryType.DELIVERY);
+    }
+
+    private User getUserForOrderAndSetAddress(final String email,
+                                              final String address) {
+        User user = userService.getUserByEmail(email);
+        if (user == null)
+            throw new ApiRequestException("User is not found");
+
+        if (!address.isEmpty())
+            userService.setAddressToUser(user, address);
+
+        return user;
+    }
+
     @Override
     @Transactional
     public void addBucketToOrder(final String email,
                                  final String address) {
-        User user = userService.getUserByEmail(email);
-        if (user == null)
-            throw new ApiRequestException("User is not found");
-        userService.setAddressToUser(user, address);
+        User user = this.getUserForOrderAndSetAddress(email, address);
+
         Bucket bucket = user.getBucket();
         if (bucket == null || getProductsFromBucket(bucket).isEmpty())
             throw new ApiRequestException("Bucket is empty");
@@ -128,6 +147,7 @@ public class BucketServiceImpl implements BucketService {
 
         BigDecimal totalSum = countOrderTotalSum(orderDetails);
 
+        addDeliveryStatusToOrder(order, address);
         order.setDetails(orderDetails);
         order.setSum(totalSum);
         order.setAddress(address);

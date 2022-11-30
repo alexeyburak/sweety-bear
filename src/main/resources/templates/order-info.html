@@ -30,7 +30,11 @@
             <div th:utext="${order.sum}" style="display: inline-block">Sum</div>
         </div>
         <div class="card-text" style="display: inline-block">Address:
-            <div th:utext="${order.address}" style="display: inline-block; font-weight:bold">Address</div>
+            <div th:utext="${order.address}" th:unless="${order.isOrderDeliveryPickup()}"
+                 style="display: inline-block; font-weight:bold">Address
+            </div>
+            <p class="card-text" th:if="${order.isOrderDeliveryPickup()}"
+               style="display: inline-block; font-weight:bold">PICKUP</p>
         </div>
         <div class="card-text" style="display: inline-block">Order date:
             <div th:utext="${order.dateOfCreated}" style="display: inline-block;">dateOfCreated</div>
