@@ -128,6 +128,17 @@ public class UserServiceImpl implements UserService {
         userRepository.save(user);
     }
 
+    public void deleteUserAvatarById(Long id) {
+        User user = this.getUserById(id);
+        if (user == null)
+            throw new ApiRequestException("User not found");
+
+        user.setAvatar(null);
+        imageRepository.markToDeleteByUserId(id, "toDelete");
+        imageRepository.deleteByName("toDelete");
+        log.info("Delete user avatar. User email: {}", user.getEmail());
+    }
+
     private void addAvatarToUser(final User user,
                                  MultipartFile multipartFile) throws IOException {
         Image userAvatar;

@@ -39,4 +39,6 @@ public interface UserService {
     void deleteUserAccountById(Long id);
     // Set address to user after making order
     void setAddressToUser(final User user, final String address);
+    // Delete user avatar
+    void deleteUserAvatarById(Long id);
 }

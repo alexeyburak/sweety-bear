@@ -116,4 +116,10 @@ public class UserController {
         userService.deleteUserAccountById(id);
         return "redirect:/login";
     }
+
+    @PostMapping("/user/delete/image/{id}")
+    public String deleteUserAvatar(@PathVariable Long id) {
+        userService.deleteUserAvatarById(id);
+        return "redirect:/user/edit/{id}";
+    }
 }
