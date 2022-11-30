@@ -1,7 +1,6 @@
 package by.bsuir.sweetybear.controller;
 
 import by.bsuir.sweetybear.dto.UserDTO;
-import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -64,8 +63,7 @@ public class UserController {
 
         if (!Objects.requireNonNull(user).isActive()) {
             model.addAttribute("messageError", "Your account was banned");
-        }
-        else {
+        } else {
             model.addAttribute("messageError", "Invalid username or password.");
         }
         return "login";
@@ -102,13 +100,18 @@ public class UserController {
                          @PathVariable("id") Long id,
                          Model model,
                          Principal principal) throws IOException {
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
+
         if (bindingResult.hasErrors()) {
-            model.addAttribute("user", userService.getUserByPrincipal(principal));
+            return "account-edit";
+        }
+        if (userService.getUserByEmail(user.getEmail()) != null) {
+            model.addAttribute("messageError", "Email is already exists.");
             return "account-edit";
         }
 
         userService.updateUserById(id, user, file1);
-        return "redirect:/";
+        return "redirect:/user/edit/{id}";
     }
 
     @PostMapping("/user/delete/{id}")

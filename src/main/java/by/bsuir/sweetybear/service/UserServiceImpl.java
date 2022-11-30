@@ -10,6 +10,8 @@ import by.bsuir.sweetybear.repository.OrderRepository;
 import by.bsuir.sweetybear.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -124,10 +126,21 @@ public class UserServiceImpl implements UserService {
         user.setName(userUpdate.getName());
         user.setEmail(userUpdate.getEmail());
         user.setPassword(passwordEncoder.encode(userUpdate.getPassword()));
+
+        changeSecurityAuthenticationEmail(user);
+
         log.info("Update user. Id: {}", id);
         userRepository.save(user);
     }
 
+    private void changeSecurityAuthenticationEmail(final User user) {
+        User userDetails = (User) SecurityContextHolder.getContext()
+                .getAuthentication()
+                .getPrincipal();
+        userDetails.setEmail(user.getEmail());
+    }
+
+    @Override
     public void deleteUserAvatarById(Long id) {
         User user = this.getUserById(id);
         if (user == null)
