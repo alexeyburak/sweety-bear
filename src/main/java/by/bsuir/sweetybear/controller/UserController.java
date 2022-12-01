@@ -100,12 +100,15 @@ public class UserController {
                          @PathVariable("id") Long id,
                          Model model,
                          Principal principal) throws IOException {
-        model.addAttribute("user", userService.getUserByPrincipal(principal));
+        User principalUser = userService.getUserByPrincipal(principal);
+        model.addAttribute("user", principalUser);
 
         if (bindingResult.hasErrors()) {
             return "account-edit";
         }
-        if (userService.getUserByEmail(user.getEmail()) != null) {
+
+        User userDb = userService.getUserByEmail(user.getEmail());
+        if (userDb != null && userDb != principalUser) {
             model.addAttribute("messageError", "Email is already exists.");
             return "account-edit";
         }
