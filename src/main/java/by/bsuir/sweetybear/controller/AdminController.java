@@ -26,7 +26,9 @@ public class AdminController {
     private final UserServiceImpl userService;
 
     @GetMapping("/admin")
-    public String admin(@RequestParam(name = "email", required = false) String email, Model model, Principal principal) {
+    public String adminMenu(@RequestParam(name = "email", required = false) String email,
+                            Model model,
+                            Principal principal) {
         model.addAttribute("user", userService.getUserByPrincipal(principal));
         model.addAttribute("users", userService.userList(email));
         model.addAttribute("email", email);
@@ -34,8 +36,8 @@ public class AdminController {
     }
 
     @PostMapping("/admin/user/ban/{id}")
-    public String userBan(@PathVariable("id") Long id,
-                          HttpServletRequest request) {
+    public String banUserById(@PathVariable("id") Long id,
+                              HttpServletRequest request) {
         userService.banUserAccountById(id);
 
         String referer = request.getHeader("Referer");
@@ -43,14 +45,18 @@ public class AdminController {
     }
 
     @GetMapping("/user/{id}")
-    public String userInfo(@PathVariable("id") Long id, Model model, Principal principal) {
+    public String aboutUserById(@PathVariable("id") Long id,
+                                Model model,
+                                Principal principal) {
         model.addAttribute("userInfo", userService.getUserById(id));
         model.addAttribute("user", userService.getUserByPrincipal(principal));
         return "user-info";
     }
 
     @GetMapping("/admin/user/edit/{user}")
-    public String userEdit(@PathVariable("user") User user, Model model, Principal principal) {
+    public String editUserRole(@PathVariable("user") User user,
+                               Model model,
+                               Principal principal) {
         model.addAttribute("userToChange", user);
         model.addAttribute("user", userService.getUserByPrincipal(principal));
         model.addAttribute("roles", Role.values());
@@ -58,7 +64,7 @@ public class AdminController {
     }
 
     @PostMapping("/admin/user/edit")
-    public String userUpdate(@RequestParam("userId") User user) {
+    public String editUserRole(@RequestParam("userId") User user) {
         userService.changeUserRole(user);
         return "redirect:/admin";
     }

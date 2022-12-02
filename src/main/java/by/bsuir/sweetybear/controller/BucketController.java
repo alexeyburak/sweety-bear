@@ -41,18 +41,19 @@ public class BucketController {
     }
 
     @PostMapping("/bucket/delete/{id}")
-    public String deleteProduct(@PathVariable Long id, Principal principal) {
+    public String deleteProductByIdFromBucket(@PathVariable Long id, Principal principal) {
         User user = userService.getUserByPrincipal(principal);
         bucketService.deleteProductFromBucket(user.getBucket(), id);
         return "redirect:/bucket";
     }
 
     @PostMapping("/bucket")
-    public String commitBucket(@RequestParam(value = "address") String address, Principal principal) {
+    public String commitBucketToOrder(@RequestParam(value = "address") String address, Principal principal) {
         User userFromDB = userService.getUserByPrincipal(principal);
-        if (userFromDB != null) {
+
+        if (userFromDB != null)
             bucketService.addBucketToOrder(userFromDB.getEmail(), address);
-        }
+
         return "redirect:/bucket";
     }
 }

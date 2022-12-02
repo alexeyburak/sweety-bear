@@ -14,7 +14,8 @@ import org.springframework.data.jpa.repository.Query;
 public interface ImageRepository extends JpaRepository<Image, Long> {
     @Modifying
     @Query(value = "UPDATE images SET name = ?2 where user_id = ?1", nativeQuery = true)
-    void markToDeleteByUserId(Long id, String task);@Modifying
+    void markToDeleteByUserId(Long id, String task);
+    @Modifying
     @Query(value = "UPDATE images SET name = ?2 where product_id = ?1", nativeQuery = true)
     void markToDeleteByProductId(Long id, String task);
     void deleteByName(String name);

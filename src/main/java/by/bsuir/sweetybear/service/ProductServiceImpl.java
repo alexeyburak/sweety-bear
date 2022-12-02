@@ -108,11 +108,7 @@ public class ProductServiceImpl implements ProductService {
         Image productImage;
         if (multipartPreviewFile.getSize() != 0) {
             if (product.getImages() != null) {
-                imageRepository.markToDeleteByProductId(product.getId(), "toDelete");
-                imageRepository.deleteByName("toDelete");
-                log.warn("Delete product images.");
-                product.setPreviewImageId(null);
-                product.getImages().clear();
+                deleteProductImagesFromDatabase(product);
             }
             productPreviewImage = toImageEntity(multipartPreviewFile);
             productPreviewImage.setPreviewImage(true);
@@ -122,6 +118,14 @@ public class ProductServiceImpl implements ProductService {
             productImage = toImageEntity(multipartFile);
             product.addImageToProduct(productImage);
         }
+    }
+
+    private void deleteProductImagesFromDatabase(Product product) {
+        imageRepository.markToDeleteByProductId(product.getId(), "toDelete");
+        imageRepository.deleteByName("toDelete");
+        log.warn("Delete product images.");
+        product.setPreviewImageId(null);
+        product.getImages().clear();
     }
 
     @Override

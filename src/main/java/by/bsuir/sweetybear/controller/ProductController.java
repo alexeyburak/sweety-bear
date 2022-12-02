@@ -47,7 +47,7 @@ public class ProductController {
     }
 
     @GetMapping("/product/{id}")
-    public String productInfo(@PathVariable Long id, Model model, Principal principal) {
+    public String aboutProduct(@PathVariable Long id, Model model, Principal principal) {
         Product product = productService.getProductById(id);
         model.addAttribute("product", product);
         model.addAttribute("images", product.getImages());
@@ -62,8 +62,8 @@ public class ProductController {
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
     @PostMapping("/product/create")
-    public String createProduct(@RequestParam("file1") MultipartFile file1,
-                                @RequestParam("file2") MultipartFile file2,
+    public String createProduct(@RequestParam("file1") MultipartFile previewProductImage,
+                                @RequestParam("file2") MultipartFile productImage,
                                 @ModelAttribute("product") @Valid ProductDTO product,
                                 BindingResult bindingResult,
                                 Model model,
@@ -75,21 +75,21 @@ public class ProductController {
 
         Product productDb = this.modelMapper.map(product, Product.class);
 
-        productService.addProductToDatabase(productDb, file1, file2);
+        productService.addProductToDatabase(productDb, previewProductImage, productImage);
 
         return "redirect:/";
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
     @PostMapping("/product/delete/{id}")
-    public String deleteProduct(@PathVariable Long id) {
+    public String deleteProductById(@PathVariable Long id) {
         productService.deleteProductById(id);
         return "redirect:/";
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
     @GetMapping("/product/edit/{id}")
-    public String productEdit(@PathVariable("id") Long id, Model model, Principal principal) {
+    public String editProductById(@PathVariable("id") Long id, Model model, Principal principal) {
         model.addAttribute("product", productService.getProductById(id));
         model.addAttribute("user", userService.getUserByPrincipal(principal));
         return "product-edit";
@@ -97,8 +97,8 @@ public class ProductController {
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
     @PostMapping("/product/edit/{id}")
-    public String productUpdate(@RequestParam("file1") MultipartFile file1,
-                                @RequestParam("file2") MultipartFile file2,
+    public String updateProductById(@RequestParam("file1") MultipartFile previewProductImage,
+                                @RequestParam("file2") MultipartFile productImage,
                                 @ModelAttribute("product") @Valid Product product,
                                 BindingResult bindingResult,
                                 @PathVariable("id") Long id,
@@ -109,12 +109,12 @@ public class ProductController {
             return "product-edit";
         }
 
-        productService.updateProductById(id, product, file1, file2);
+        productService.updateProductById(id, product, previewProductImage, productImage);
         return "redirect:/product/{id}";
     }
 
     @GetMapping("/{id}/bucket")
-    public String addBucket(@PathVariable Long id,
+    public String addProductToBucket(@PathVariable Long id,
                             Principal principal,
                             HttpServletRequest request) {
         User user = userService.getUserByPrincipal(principal);

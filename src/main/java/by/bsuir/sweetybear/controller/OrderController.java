@@ -69,15 +69,15 @@ public class OrderController {
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_USER') || hasAuthority('ROLE_OWNER')")
     @PostMapping("/orders/edit/{id}")
-    public String orderUpdate(@PathVariable("id") Long id,
-                              @RequestParam("status") OrderStatus status) {
+    public String updateOrderById(@PathVariable("id") Long id,
+                                  @RequestParam("status") OrderStatus status) {
         orderService.updateOrderStatusById(id, status);
         return "redirect:/";
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
     @PostMapping("/admin/orders/edit/{id}")
-    public String orderUpdateByAdmin(@PathVariable("id") Long id,
+    public String updateOrderByIdByAdmin(@PathVariable("id") Long id,
                               @RequestParam("status") OrderStatus status) {
         orderService.updateOrderStatusById(id, status);
         return "redirect:/orders/{id}";
@@ -85,7 +85,7 @@ public class OrderController {
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_USER') || hasAuthority('ROLE_OWNER')")
     @GetMapping("/orders/user/{id}")
-    public String userOrderInfo(@PathVariable("id") Long id, Model model, Principal principal) {
+    public String aboutUserOrder(@PathVariable("id") Long id, Model model, Principal principal) {
         model.addAttribute("user", userService.getUserByPrincipal(principal));
         model.addAttribute("orders", orderService.getUserOrdersById(id));
         return "user-orders";

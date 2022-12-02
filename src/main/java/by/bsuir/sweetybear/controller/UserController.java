@@ -35,7 +35,7 @@ public class UserController {
     }
 
     @PostMapping("/registration")
-    public String createUser(@ModelAttribute("user") @Valid UserDTO user,
+    public String registration(@ModelAttribute("user") @Valid UserDTO user,
                              BindingResult bindingResult,
                              Model model) {
         if (bindingResult.hasErrors()) {
@@ -70,19 +70,22 @@ public class UserController {
     }
 
     @GetMapping("/activate/{code}")
-    public String activateUserAccount(Model model, @PathVariable String code) {
+    public String activateUserAccountByCode(Model model,
+                                            @PathVariable String code) {
         boolean isActivated = userService.activateUserAccountAfterRegistration(code);
 
-        if (isActivated) model.addAttribute("messageSuccess", "You successfully confirm your email");
-        else model.addAttribute("messageSuccess", "Activation code is not available");
+        if (isActivated)
+            model.addAttribute("messageSuccess", "You successfully confirm your email");
+        else
+            model.addAttribute("messageSuccess", "Activation code is not available");
 
         return "login";
     }
 
     @GetMapping("/user/edit/{id}")
-    public String edit(@PathVariable("id") Long id,
-                       Model model,
-                       Principal principal) {
+    public String editUserAccount(@PathVariable("id") Long id,
+                                  Model model,
+                                  Principal principal) {
         User userFromPrincipal = userService.getUserByPrincipal(principal);
 
         if (!Objects.equals(id, userFromPrincipal.getId()))
@@ -94,12 +97,12 @@ public class UserController {
     }
 
     @PostMapping("/user/edit/{id}")
-    public String update(@RequestParam("file1") MultipartFile file1,
-                         @ModelAttribute("userUpdate") @Valid User user,
-                         BindingResult bindingResult,
-                         @PathVariable("id") Long id,
-                         Model model,
-                         Principal principal) throws IOException {
+    public String updateUserAccount(@RequestParam("file1") MultipartFile userAvatar,
+                                    @ModelAttribute("userUpdate") @Valid User user,
+                                    BindingResult bindingResult,
+                                    @PathVariable("id") Long id,
+                                    Model model,
+                                    Principal principal) throws IOException {
         User principalUser = userService.getUserByPrincipal(principal);
         model.addAttribute("user", principalUser);
 
@@ -113,7 +116,7 @@ public class UserController {
             return "account-edit";
         }
 
-        userService.updateUserById(id, user, file1);
+        userService.updateUserById(id, user, userAvatar);
         return "redirect:/user/edit/{id}";
     }
 

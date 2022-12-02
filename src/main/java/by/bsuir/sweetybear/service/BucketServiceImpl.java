@@ -48,17 +48,6 @@ public class BucketServiceImpl implements BucketService {
         return bucketRepository.save(bucket);
     }
 
-    private List<Product> getCollectRefProductsByIds(List<Long> productIds) {
-        return productIds
-                .stream()
-                .map(productRepository::getOne)
-                .collect(Collectors.toList());
-    }
-
-    private List<Product> getProductsFromBucket(Bucket bucket) {
-        return bucket.getProducts();
-    }
-
     @Override
     public void addProductsToUserBucket(Bucket bucket,
                                         List<Long> productIds) {
@@ -68,6 +57,17 @@ public class BucketServiceImpl implements BucketService {
         bucket.setProducts(newProductList);
         log.info("Add products to bucket. Id: {}", bucket.getId());
         bucketRepository.save(bucket);
+    }
+
+    private List<Product> getCollectRefProductsByIds(List<Long> productIds) {
+        return productIds
+                .stream()
+                .map(productRepository::getOne)
+                .collect(Collectors.toList());
+    }
+
+    private List<Product> getProductsFromBucket(Bucket bucket) {
+        return bucket.getProducts();
     }
 
     @Override
@@ -93,6 +93,16 @@ public class BucketServiceImpl implements BucketService {
         Map<Long, BucketDetailDTO> mapByProductId = new HashMap<>();
 
         List<Product> products = user.getBucket().getProducts();
+
+        completionOfBucketDetails(mapByProductId, products);
+
+        bucketDTO.setBucketDetails(new ArrayList<>(mapByProductId.values()));
+        bucketDTO.aggregate();
+        return bucketDTO;
+    }
+
+    private void completionOfBucketDetails(Map<Long, BucketDetailDTO> mapByProductId,
+                                           List<Product> products) {
         for (Product product : products) {
             BucketDetailDTO detail = mapByProductId.get(product.getId());
             if (detail == null) {
@@ -102,30 +112,6 @@ public class BucketServiceImpl implements BucketService {
                 detail.setSum(detail.getSum() + Double.parseDouble(product.getPrice().toString()));
             }
         }
-
-        bucketDTO.setBucketDetails(new ArrayList<>(mapByProductId.values()));
-        bucketDTO.aggregate();
-        return bucketDTO;
-    }
-
-    private void addDeliveryStatusToOrder(final Order order,
-                                          final String address) {
-        if (address.isEmpty())
-            order.setDelivery(DeliveryType.PICKUP);
-        else
-            order.setDelivery(DeliveryType.DELIVERY);
-    }
-
-    private User getUserForOrderAndSetAddress(final String email,
-                                              final String address) {
-        User user = userService.getUserByEmail(email);
-        if (user == null)
-            throw new ApiRequestException("User is not found");
-
-        if (!address.isEmpty())
-            userService.setAddressToUser(user, address);
-
-        return user;
     }
 
     @Override
@@ -155,6 +141,25 @@ public class BucketServiceImpl implements BucketService {
         orderService.save(order);
 
         clearProductsFromBucket(bucket);
+    }
+
+    private void addDeliveryStatusToOrder(final Order order,
+                                          final String address) {
+        if (address.isEmpty())
+            order.setDelivery(DeliveryType.PICKUP);
+        else
+            order.setDelivery(DeliveryType.DELIVERY);
+    }
+
+    private User getUserForOrderAndSetAddress(final String email,
+                                              final String address) {
+        User user = userService.getUserByEmail(email);
+        if (user == null)
+            throw new ApiRequestException("User is not found");
+        if (!address.isEmpty())
+            userService.setAddressToUser(user, address);
+
+        return user;
     }
 
     private void clearProductsFromBucket(Bucket bucket) {

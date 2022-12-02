@@ -10,6 +10,7 @@ import by.bsuir.sweetybear.repository.OrderRepository;
 import by.bsuir.sweetybear.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,8 @@ import static by.bsuir.sweetybear.utils.Utils.toImageEntity;
 @Transactional
 public class UserServiceImpl implements UserService {
 
+    @Value("${server.port}")
+    private String serverPort;
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;
     private final PasswordEncoder passwordEncoder;
@@ -61,7 +64,7 @@ public class UserServiceImpl implements UserService {
     private void sendEmailMessageToUser(final User user) {
         String message = String.format(
                 "%s, we hope that we will not quarrel! " +
-                        "\nActivate your email: http://localhost:4000/activate/%s ",
+                        "\nActivate your email: http://localhost:" + serverPort + "/activate/%s ",
                 user.getName(),
                 user.getActivationCode()
         );
@@ -98,6 +101,7 @@ public class UserServiceImpl implements UserService {
         User user = this.getUserById(id);
         if (user == null)
             throw new ApiRequestException("User not found");
+
         user.setActive(!user.isActive());
         log.info("Ban/Unban user. Id: {}, Email: {}", user.getId(), user.getEmail());
         userRepository.save(user);
