@@ -1,11 +1,13 @@
 package by.bsuir.sweetybear.controller;
 
+import by.bsuir.sweetybear.dto.AddressDTO;
 import by.bsuir.sweetybear.dto.BucketDTO;
 import by.bsuir.sweetybear.model.Address;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.service.BucketServiceImpl;
 import by.bsuir.sweetybear.service.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
+import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -27,9 +29,10 @@ public class BucketController {
 
     private final BucketServiceImpl bucketService;
     private final UserServiceImpl userService;
+    private final ModelMapper modelMapper;
 
     @GetMapping("/bucket")
-    public String aboutBucket(@ModelAttribute("address") Address address,
+    public String aboutBucket(@ModelAttribute("address") AddressDTO address,
                               Model model,
                               Principal principal) {
         User user = userService.getUserByPrincipal(principal);
@@ -52,12 +55,14 @@ public class BucketController {
     }
 
     @PostMapping("/bucket")
-    public String commitBucketToOrder(@ModelAttribute("address") Address address,
+    public String commitBucketToOrder(@ModelAttribute("address") AddressDTO address,
                                       Principal principal) {
         User userFromDB = userService.getUserByPrincipal(principal);
 
+        Address addressDb = this.modelMapper.map(address, Address.class);
+
         if (userFromDB != null)
-            bucketService.addBucketToOrder(userFromDB.getEmail(), address);
+            bucketService.addBucketToOrder(userFromDB.getEmail(), addressDb);
 
         return "redirect:/bucket";
     }

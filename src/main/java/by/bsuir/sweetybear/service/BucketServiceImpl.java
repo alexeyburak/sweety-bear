@@ -146,7 +146,7 @@ public class BucketServiceImpl implements BucketService {
 
     private void addDeliveryStatusAndAddressToOrder(final Order order,
                                                     final Address address) {
-        if (address == null)
+        if (address.getStreet().isEmpty())
             order.setDelivery(DeliveryType.PICKUP);
         else {
             order.setAddress(address);
