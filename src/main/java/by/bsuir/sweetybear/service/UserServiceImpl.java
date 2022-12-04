@@ -1,6 +1,7 @@
 package by.bsuir.sweetybear.service;
 
 import by.bsuir.sweetybear.exception.ApiRequestException;
+import by.bsuir.sweetybear.model.Address;
 import by.bsuir.sweetybear.model.Image;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.model.enums.Role;
@@ -109,7 +110,7 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public void setAddressToUser(final User user,
-                                 final String address) {
+                                 final Address address) {
         user.setAddress(address);
         log.info("Set address to user. User email: {}", user.getEmail());
         this.save(user);

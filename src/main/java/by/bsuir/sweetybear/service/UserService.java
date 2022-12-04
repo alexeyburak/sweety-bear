@@ -1,5 +1,6 @@
 package by.bsuir.sweetybear.service;
 
+import by.bsuir.sweetybear.model.Address;
 import by.bsuir.sweetybear.model.User;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -38,7 +39,7 @@ public interface UserService {
     // Delete user account with saving his orders and bucket
     void deleteUserAccountById(Long id);
     // Set address to user after making order
-    void setAddressToUser(final User user, final String address);
+    void setAddressToUser(final User user, final Address address);
     // Delete user avatar
     void deleteUserAvatarById(Long id);
 }

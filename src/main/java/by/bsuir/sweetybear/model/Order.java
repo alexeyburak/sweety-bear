@@ -31,8 +31,8 @@ public class Order extends IdentifiedModel implements Comparable<Order>{
     private User user;
     @Column(name = "sum")
     private BigDecimal sum;
-    @Column(name = "address")
-    private String address;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Address address;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "details_id")
     private List<OrderDetails> details;

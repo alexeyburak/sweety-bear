@@ -117,12 +117,14 @@ public class BucketServiceImpl implements BucketService {
     @Override
     @Transactional
     public void addBucketToOrder(final String email,
-                                 final String address) {
-        User user = this.getUserForOrderAndSetAddress(email, address);
+                                 final Address address) {
+        User user = this.getUserForOrder(email);
+        address.setUser(user);
 
         Bucket bucket = user.getBucket();
-        if (bucket == null || getProductsFromBucket(bucket).isEmpty())
+        if (bucket == null || getProductsFromBucket(bucket).isEmpty()) {
             throw new ApiRequestException("Bucket is empty");
+        }
         Order order = new Order();
         order.setStatus(OrderStatus.NEW);
         order.setUser(user);
@@ -144,20 +146,17 @@ public class BucketServiceImpl implements BucketService {
     }
 
     private void addDeliveryStatusToOrder(final Order order,
-                                          final String address) {
-        if (address.isEmpty())
+                                          final Address address) {
+        if (address == null)
             order.setDelivery(DeliveryType.PICKUP);
         else
             order.setDelivery(DeliveryType.DELIVERY);
     }
 
-    private User getUserForOrderAndSetAddress(final String email,
-                                              final String address) {
+    private User getUserForOrder(final String email) {
         User user = userService.getUserByEmail(email);
         if (user == null)
             throw new ApiRequestException("User is not found");
-        if (!address.isEmpty())
-            userService.setAddressToUser(user, address);
 
         return user;
     }

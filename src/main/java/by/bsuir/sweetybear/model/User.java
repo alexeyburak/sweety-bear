@@ -47,13 +47,13 @@ public class User extends IdentifiedModel implements UserDetails {
     private Set<Role> roles = new HashSet<>();
     @Column(name = "date_Of_Created")
     private LocalDateTime dateOfCreated;
-    @Column(name = "address")
-    private String address;
     @Column(name = "activation_code")
     private String activationCode;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Bucket bucket;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Address address;
 
     public boolean isAdmin() {
         return roles.contains(Role.ROLE_ADMIN) || roles.contains(Role.ROLE_OWNER);
