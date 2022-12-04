@@ -58,38 +58,33 @@
                checked>
         <label class="form-check-label" for="flexSwitchCheckChecked">Pickup | Delivery</label>
     </div>
-    <div id="addressInput">
-        <div style="width: 40%" class="ml-4 mt-2 mb-2">
-            <span class="input-group-text">street</span>
-            <input th:field="*{street}" type="text" class="form-control" aria-label="Address">
-            <div class="alert alert-danger mt-1" th:if="${#fields.hasErrors('street')}" th:errors="*{street}"></div>
+    <div style="width: 80%" id="addressInput" class="row g-3 ml-2 mt-2">
+        <div class="input-group">
+            <div class="col-md-6">
+                <label for="Street" class="form-label">Street</label>
+                <input th:field="*{street}" id="Street" type="text" class="form-control" aria-label="Address">
+            </div>
+            <div class="col-md-6">
+                <label for="Street" class="form-label">House</label>
+                <input th:field="*{houseNumber}" type="number" class="form-control" aria-label="Address">
+            </div>
         </div>
-        <div style="width: 40%" class="ml-4 mt-2 mb-2">
-            <span class="input-group-text">apartmentNumber</span>
-            <input th:field="*{apartmentNumber}" type="number" class="form-control" aria-label="Address">
-            <div class="alert alert-danger mt-1" th:if="${#fields.hasErrors('apartmentNumber')}"
-                 th:errors="*{apartmentNumber}"></div>
-        </div>
-        <div style="width: 40%" class="ml-4 mt-2 mb-2">
-            <span class="input-group-text">houseNumber</span>
-            <input th:field="*{houseNumber}" type="number" class="form-control" aria-label="Address">
-            <div class="alert alert-danger mt-1" th:if="${#fields.hasErrors('houseNumber')}"
-                 th:errors="*{street}"></div>
-        </div>
-        <div style="width: 40%" class="ml-4 mt-2 mb-2">
-            <span class="input-group-text">caseNumber</span>
-            <input th:field="*{caseNumber}" type="number" class="form-control" aria-label="Address">
-            <div class="alert alert-danger mt-1" th:if="${#fields.hasErrors('caseNumber')}"
-                 th:errors="*{caseNumber}"></div>
-        </div>
-        <div style="width: 40%" class="ml-4 mt-2 mb-2">
-            <span class="input-group-text">postCode</span>
-            <input th:field="*{postCode}" type="number" class="form-control" aria-label="Address">
-            <div class="alert alert-danger mt-1" th:if="${#fields.hasErrors('postCode')}" th:errors="*{postCode}"></div>
+        <div class="input-group">
+            <div class="col-md-4">
+                <label for="Street" class="form-label">Apartment</label>
+                <input th:field="*{apartmentNumber}" type="number" class="form-control" aria-label="Address">
+            </div>
+            <div class="col-md-4">
+                <label for="Street" class="form-label">Case</label>
+                <input th:field="*{caseNumber}" type="number" class="form-control" aria-label="Address">
+            </div>
+            <div class="col-md-4">
+                <label for="Street" class="form-label">Post code</label>
+                <input th:field="*{postCode}" type="number" class="form-control" aria-label="Address">
+            </div>
         </div>
     </div>
-
-    <button type="submit" class="btn btn-outline-secondary ml-4 mt-2">Create order</button>
+    <button type="submit" class="btn btn-outline-secondary ml-4 mt-4">Create order</button>
 </form>
 </body>
 </html>
