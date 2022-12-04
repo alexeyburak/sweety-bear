@@ -118,7 +118,7 @@ public class BucketServiceImpl implements BucketService {
     @Transactional
     public void addBucketToOrder(final String email,
                                  final Address address) {
-        User user = this.getUserForOrder(email);
+        User user = this.getUserForOrderAndSetAddress(email, address);
         address.setUser(user);
 
         Bucket bucket = user.getBucket();
@@ -135,28 +135,31 @@ public class BucketServiceImpl implements BucketService {
 
         BigDecimal totalSum = countOrderTotalSum(orderDetails);
 
-        addDeliveryStatusToOrder(order, address);
+        addDeliveryStatusAndAddressToOrder(order, address);
         order.setDetails(orderDetails);
         order.setSum(totalSum);
-        order.setAddress(address);
         log.info("Add bucket to order. Bucket id: {}.", bucket.getId());
         orderService.save(order);
 
         clearProductsFromBucket(bucket);
     }
 
-    private void addDeliveryStatusToOrder(final Order order,
-                                          final Address address) {
+    private void addDeliveryStatusAndAddressToOrder(final Order order,
+                                                    final Address address) {
         if (address == null)
             order.setDelivery(DeliveryType.PICKUP);
-        else
+        else {
+            order.setAddress(address);
             order.setDelivery(DeliveryType.DELIVERY);
+        }
     }
 
-    private User getUserForOrder(final String email) {
+    private User getUserForOrderAndSetAddress(final String email,
+                                              final Address address) {
         User user = userService.getUserByEmail(email);
         if (user == null)
             throw new ApiRequestException("User is not found");
+        user.setAddress(address);
 
         return user;
     }
