@@ -31,7 +31,7 @@
     <div th:each="order : ${orders}">
         <tr>
             <th scope="row" class="ml-3" th:utext="${order.id}">Id</th>
-            <th scope="row" th:unless="${order.isOrderDeliveryPickup()}" th:utext="${order.address}">Address</th>
+            <th scope="row" th:unless="${order.isOrderDeliveryPickup()}" th:utext="${order.address.street}">Address</th>
             <th scope="row" th:if="${order.isOrderDeliveryPickup()}">PICKUP</th>
             <th th:if="${order.user}" scope="row">
                 <a th:href="@{/user/{id}(id=${order.user.id})}">
