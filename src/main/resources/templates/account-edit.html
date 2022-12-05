@@ -35,7 +35,7 @@
     Edit account
 </div>
 
-<div style="margin-right:700px">
+<div style="width: 60%">
     <div class="mb-3 ml-5 mt-3" th:if="${user.isAvatarNull()}">
         <img th:src="@{/images/{id}(id=${user.avatar.id})} " class="img-thumbnail" style="height:200px"
              alt="Without avatar">
