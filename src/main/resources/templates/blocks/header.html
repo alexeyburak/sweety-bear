@@ -17,7 +17,7 @@
                 </li>
                 <li class="nav-item" th:if="${user.email}">
                     <div>
-                        <a class="nav-link active position-relative mr-3 " th:href="@{/bucket}">
+                        <a th:if="${user.bucket != null}" class="nav-link active position-relative mr-3 " th:href="@{/bucket}">
                             Bucket
                             <span th:if="${user.bucket.getNumberOfProductsInBucket() != 0}"
                                   style="background-color: #a22c2c !important"
