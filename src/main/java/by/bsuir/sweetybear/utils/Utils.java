@@ -4,7 +4,10 @@ import by.bsuir.sweetybear.model.Image;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
@@ -37,6 +40,10 @@ public class Utils {
         }
         refactorList.remove(flag);
         return refactorList;
+    }
+
+    public static String getCurrentDateTime() {
+        return new SimpleDateFormat("yyyy-MM-dd:hh:mm:ss").format(new Date());
     }
 
 }

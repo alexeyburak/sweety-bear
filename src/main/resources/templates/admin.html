@@ -19,6 +19,10 @@
                aria-label="Search">
         <button class="btn btn-light ml-1" type="submit">Search</button>
     </form>
+    <form th:action="@{/admin/users/pdf/export}" method="GET">
+        <input type="hidden" name="_csrf" value="${_csrf.token}">
+        <button type="submit" class="btn btn-outline-secondary ml-5">Export to pdf</button>
+    </form>
 </div>
 <div th:if="${email}" class="mt-3 ml-5">
     <div th:if="${#arrays.isEmpty(users)}">No users with email '<span th:utext="${email}">email</span>'</div>
@@ -63,7 +67,7 @@
             </th>
             <th scope="row"><a th:unless="${user.isOwner()}"
                                th:href="@{/admin/user/edit/{id}(id=${user.id})}">Editing</a></th>
-            <th scope="row"><a th:href="@{/user/{id}(id=${user.id})}">View information</a></th>
+            <th scope="row"><a th:href="@{/admin/user/{id}(id=${user.id})}">View information</a></th>
         </tr>
     </div>
 </table>
