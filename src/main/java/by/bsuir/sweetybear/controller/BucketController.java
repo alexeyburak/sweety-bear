@@ -64,6 +64,6 @@ public class BucketController {
         if (userFromDB != null)
             bucketService.addBucketToOrder(userFromDB.getEmail(), addressDb);
 
-        return "redirect:/bucket";
+        return "redirect:/bucket?success";
     }
 }

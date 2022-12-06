@@ -1,10 +1,9 @@
 package by.bsuir.sweetybear.service;
 
 import by.bsuir.sweetybear.model.Order;
-import by.bsuir.sweetybear.model.OrderDetails;
 import by.bsuir.sweetybear.model.User;
-import com.lowagie.text.*;
 import com.lowagie.text.Font;
+import com.lowagie.text.*;
 import com.lowagie.text.alignment.HorizontalAlignment;
 import com.lowagie.text.pdf.PdfWriter;
 import lombok.RequiredArgsConstructor;
