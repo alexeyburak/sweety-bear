@@ -74,7 +74,6 @@ public class UserServiceImpl implements UserService {
         mailSender.send(user.getEmail(), title, message);
     }
 
-
     @Override
     public List<User> userList(String email) {
         if (email != null) return userRepository.findAllByEmail(email);

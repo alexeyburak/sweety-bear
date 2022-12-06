@@ -2,6 +2,7 @@ package by.bsuir.sweetybear.service;
 
 import by.bsuir.sweetybear.model.Order;
 import by.bsuir.sweetybear.model.OrderDetails;
+import by.bsuir.sweetybear.model.User;
 import com.lowagie.text.*;
 import com.lowagie.text.Font;
 import com.lowagie.text.alignment.HorizontalAlignment;
@@ -13,6 +14,7 @@ import org.springframework.stereotype.Service;
 import javax.servlet.http.HttpServletResponse;
 import java.awt.*;
 import java.io.IOException;
+import java.util.List;
 
 /**
  * sweety-bear
@@ -26,21 +28,38 @@ import java.io.IOException;
 public class PDFGeneratorServiceImpl implements PDFGeneratorService {
 
     private final OrderServiceImpl orderService;
+    private final UserServiceImpl userService;
 
     @Override
     public void exportUsersInPDF(HttpServletResponse response) {
 
+        List<User> userList = userService.userList(null);
+
         try (Document document = new Document(PageSize.A4)) {
             PdfWriter.getInstance(document, response.getOutputStream());
             document.open();
+
             Font fontTitle = FontFactory.getFont(FontFactory.HELVETICA_BOLDOBLIQUE);
-            fontTitle.setSize(18);
+            fontTitle.setSize(20);
+            Paragraph title = new Paragraph("'Sweety Bear' Users report", fontTitle);
+            title.setAlignment(Paragraph.ALIGN_RIGHT);
 
-            Paragraph paragraph = new Paragraph("Sweety Bear\nUsers report", fontTitle);
-            paragraph.setAlignment(Paragraph.ALIGN_CENTER);
-
-            document.add(paragraph);
-
+            Table table = new Table(5);
+            tableCustomization(table);
+            table.addCell("Id");
+            table.addCell("Email");
+            table.addCell("Name");
+            table.addCell("Role");
+            table.addCell("Joined");
+            userList.forEach(user -> {
+                table.addCell(String.valueOf(user.getId()));
+                table.addCell(user.getEmail());
+                table.addCell(user.getName());
+                table.addCell(String.valueOf(user.getRoles()));
+                table.addCell(String.valueOf(user.getDateOfCreated()));
+            });
+            document.add(title);
+            document.add(table);
         } catch (IOException e) {
             log.error("Error exporting users. {}", e.getMessage());
             e.printStackTrace();
@@ -72,18 +91,17 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
             Paragraph dateDescription = new Paragraph("Order date: " + order.getDateOfCreated() + "\nDelivery date: " + order.getDateOfDelivery(), fontParagraph);
 
             Table table = new Table(3);
-            table.setHorizontalAlignment(HorizontalAlignment.CENTER);
-            table.setPadding(2f);
+            tableCustomization(table);
             table.addCell("Product");
             table.addCell("Amount");
             table.addCell("Price");
-            table.setWidth(100f);
-            table.setBackgroundColor(Color.LIGHT_GRAY);
-            for (OrderDetails details : order.getDetails()) {
+
+            order.getDetails().forEach(details -> {
                 table.addCell(details.getProduct().getTitle());
                 table.addCell(String.valueOf(details.getAmount()));
                 table.addCell(String.valueOf(details.getPrice()));
-            }
+            });
+
             document.add(title);
             document.add(orderSum);
             document.add(orderAddress);
@@ -94,5 +112,12 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
             log.error("Error exporting users. {}", e.getMessage());
             e.printStackTrace();
         }
+    }
+
+    private void tableCustomization(Table table) {
+        table.setHorizontalAlignment(HorizontalAlignment.CENTER);
+        table.setPadding(2f);
+        table.setWidth(100f);
+        table.setBackgroundColor(Color.LIGHT_GRAY);
     }
 }
