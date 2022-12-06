@@ -11,4 +11,5 @@ import javax.servlet.http.HttpServletResponse;
 public interface PDFGeneratorService {
 
     void exportUsersInPDF(HttpServletResponse response);
+    void exportUserOrderInPDF(HttpServletResponse response, Long orderId);
 }
