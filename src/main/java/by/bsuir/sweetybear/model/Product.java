@@ -1,5 +1,6 @@
 package by.bsuir.sweetybear.model;
 
+import by.bsuir.sweetybear.utils.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -10,6 +11,8 @@ import javax.validation.constraints.*;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
+
+import static by.bsuir.sweetybear.utils.Utils.getYearMonthDayHourMinuteSecond;
 
 /**
  * sweety-bear
@@ -22,8 +25,11 @@ import java.util.List;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product extends IdentifiedModel {
+public class Product {
 
+    @Id
+    @Column(name = "id")
+    private Long id;
     @Column(name = "title")
     @Size(min = 3, max = 100, message = "Title must be between 3 and 100 characters")
     @NotEmpty(message = "Title is required")
@@ -62,6 +68,7 @@ public class Product extends IdentifiedModel {
     @PrePersist
     private void init() {
         dateOfCreated = LocalDateTime.now();
+        id = Long.valueOf(getYearMonthDayHourMinuteSecond());
     }
 
     public void addImageToProduct(Image image) {
