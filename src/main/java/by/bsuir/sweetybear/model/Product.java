@@ -1,6 +1,5 @@
 package by.bsuir.sweetybear.model;
 
-import by.bsuir.sweetybear.utils.Utils;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;

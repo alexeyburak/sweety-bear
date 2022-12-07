@@ -59,6 +59,7 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
             });
             document.add(title);
             document.add(table);
+            log.info("Generate users pdf report.");
         } catch (IOException e) {
             log.error("Error exporting users. {}", e.getMessage());
             e.printStackTrace();
@@ -107,8 +108,9 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
             document.add(userDescription);
             document.add(dateDescription);
             document.add(table);
+            log.info("Generate order pdf report. Order id: {}", orderId);
         } catch (IOException e) {
-            log.error("Error exporting users. {}", e.getMessage());
+            log.error("Error exporting order. {}", e.getMessage());
             e.printStackTrace();
         }
     }
