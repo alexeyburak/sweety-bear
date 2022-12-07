@@ -36,12 +36,18 @@ public class Order extends IdentifiedModel implements Comparable<Order>{
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "details_id")
     private List<OrderDetails> details;
+    @Column(name = "delivery")
     @Enumerated(EnumType.STRING)
     private DeliveryType delivery;
+    @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+    @Column(name = "date_of_created")
     private LocalDateTime dateOfCreated;
+    @Column(name = "date_of_delivery")
     private LocalDateTime dateOfDelivery;
+    @Column(name = "is_order_paid")
+    private boolean isOrderPaid;
 
     public boolean isOrderDeliveryPickup() {
         return delivery == DeliveryType.PICKUP;

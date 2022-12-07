@@ -11,9 +11,7 @@ import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 /**
  * sweety-bear
@@ -54,6 +52,8 @@ public class User extends IdentifiedModel implements UserDetails {
     private Bucket bucket;
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<BankCard> bankCards = new ArrayList<>();
 
     public boolean isAdmin() {
         return roles.contains(Role.ROLE_ADMIN) || roles.contains(Role.ROLE_OWNER);
