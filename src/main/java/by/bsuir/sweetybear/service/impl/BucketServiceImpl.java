@@ -1,4 +1,4 @@
-package by.bsuir.sweetybear.service;
+package by.bsuir.sweetybear.service.impl;
 
 import by.bsuir.sweetybear.dto.BucketDTO;
 import by.bsuir.sweetybear.dto.BucketDetailDTO;
@@ -8,6 +8,7 @@ import by.bsuir.sweetybear.model.enums.DeliveryType;
 import by.bsuir.sweetybear.model.enums.OrderStatus;
 import by.bsuir.sweetybear.repository.BucketRepository;
 import by.bsuir.sweetybear.repository.ProductRepository;
+import by.bsuir.sweetybear.service.BucketService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

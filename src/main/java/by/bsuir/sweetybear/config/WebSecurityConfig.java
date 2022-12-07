@@ -1,6 +1,6 @@
 package by.bsuir.sweetybear.config;
 
-import by.bsuir.sweetybear.service.CustomUserDetailsService;
+import by.bsuir.sweetybear.service.impl.CustomUserDetailsService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;

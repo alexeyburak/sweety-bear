@@ -2,8 +2,8 @@ package by.bsuir.sweetybear.controller;
 
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.model.enums.Role;
-import by.bsuir.sweetybear.service.PDFGeneratorServiceImpl;
-import by.bsuir.sweetybear.service.UserServiceImpl;
+import by.bsuir.sweetybear.service.impl.PDFGeneratorServiceImpl;
+import by.bsuir.sweetybear.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;

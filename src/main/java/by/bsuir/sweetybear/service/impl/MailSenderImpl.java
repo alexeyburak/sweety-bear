@@ -1,5 +1,6 @@
-package by.bsuir.sweetybear.service;
+package by.bsuir.sweetybear.service.impl;
 
+import by.bsuir.sweetybear.service.MailSender;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

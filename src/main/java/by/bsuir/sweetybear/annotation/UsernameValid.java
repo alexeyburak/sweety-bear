@@ -1,6 +1,6 @@
 package by.bsuir.sweetybear.annotation;
 
-import by.bsuir.sweetybear.validator.UsernameConstraintValidator;
+import by.bsuir.sweetybear.validator.impl.UsernameConstraintValidatorImpl;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -19,7 +19,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target({ TYPE, FIELD, ANNOTATION_TYPE })
 @Retention(RUNTIME)
-@Constraint(validatedBy = UsernameConstraintValidator.class)
+@Constraint(validatedBy = UsernameConstraintValidatorImpl.class)
 @Documented
 public @interface UsernameValid {
     String message() default "Invalid Username";

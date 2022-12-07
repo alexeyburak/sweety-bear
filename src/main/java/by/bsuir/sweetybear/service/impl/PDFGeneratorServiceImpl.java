@@ -1,7 +1,8 @@
-package by.bsuir.sweetybear.service;
+package by.bsuir.sweetybear.service.impl;
 
 import by.bsuir.sweetybear.model.Order;
 import by.bsuir.sweetybear.model.User;
+import by.bsuir.sweetybear.service.PDFGeneratorService;
 import com.lowagie.text.Font;
 import com.lowagie.text.*;
 import com.lowagie.text.alignment.HorizontalAlignment;

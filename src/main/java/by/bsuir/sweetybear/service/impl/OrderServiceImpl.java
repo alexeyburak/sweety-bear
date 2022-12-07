@@ -1,9 +1,10 @@
-package by.bsuir.sweetybear.service;
+package by.bsuir.sweetybear.service.impl;
 
 import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.Order;
 import by.bsuir.sweetybear.model.enums.OrderStatus;
 import by.bsuir.sweetybear.repository.OrderRepository;
+import by.bsuir.sweetybear.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

@@ -1,4 +1,4 @@
-package by.bsuir.sweetybear.service;
+package by.bsuir.sweetybear.service.impl;
 
 import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.User;

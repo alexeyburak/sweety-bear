@@ -1,4 +1,4 @@
-package by.bsuir.sweetybear.validator;
+package by.bsuir.sweetybear.validator.impl;
 
 import by.bsuir.sweetybear.annotation.UsernameValid;
 
@@ -11,7 +11,7 @@ import javax.validation.ConstraintValidatorContext;
  * Dec 2022
  */
 
-public class UsernameConstraintValidator implements ConstraintValidator<UsernameValid, String> {
+public class UsernameConstraintValidatorImpl implements ConstraintValidator<UsernameValid, String> {
 
     @Override
     public void initialize(UsernameValid constraintAnnotation) {

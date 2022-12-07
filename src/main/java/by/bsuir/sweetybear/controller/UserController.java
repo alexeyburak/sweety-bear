@@ -2,7 +2,7 @@ package by.bsuir.sweetybear.controller;
 
 import by.bsuir.sweetybear.dto.UserDTO;
 import by.bsuir.sweetybear.model.User;
-import by.bsuir.sweetybear.service.UserServiceImpl;
+import by.bsuir.sweetybear.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;

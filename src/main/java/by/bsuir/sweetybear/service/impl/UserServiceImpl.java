@@ -1,4 +1,4 @@
-package by.bsuir.sweetybear.service;
+package by.bsuir.sweetybear.service.impl;
 
 import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.Address;
@@ -9,6 +9,8 @@ import by.bsuir.sweetybear.repository.BucketRepository;
 import by.bsuir.sweetybear.repository.ImageRepository;
 import by.bsuir.sweetybear.repository.OrderRepository;
 import by.bsuir.sweetybear.repository.UserRepository;
+import by.bsuir.sweetybear.service.UserService;
+import by.bsuir.sweetybear.service.impl.MailSenderImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

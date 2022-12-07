@@ -1,4 +1,4 @@
-package by.bsuir.sweetybear.validator;
+package by.bsuir.sweetybear.validator.impl;
 
 import by.bsuir.sweetybear.annotation.PasswordValid;
 import lombok.SneakyThrows;
@@ -17,7 +17,7 @@ import java.util.Properties;
  * Dec 2022
  */
 
-public class PasswordConstraintValidator implements ConstraintValidator<PasswordValid, String> {
+public class PasswordConstraintValidatorImpl implements ConstraintValidator<PasswordValid, String> {
 
     @Override
     public void initialize(PasswordValid constraintAnnotation) {

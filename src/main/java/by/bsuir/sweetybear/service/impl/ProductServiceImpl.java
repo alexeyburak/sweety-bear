@@ -1,4 +1,4 @@
-package by.bsuir.sweetybear.service;
+package by.bsuir.sweetybear.service.impl;
 
 import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.Bucket;
@@ -8,6 +8,7 @@ import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.model.enums.SortType;
 import by.bsuir.sweetybear.repository.ImageRepository;
 import by.bsuir.sweetybear.repository.ProductRepository;
+import by.bsuir.sweetybear.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;

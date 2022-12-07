@@ -1,4 +1,4 @@
-package by.bsuir.sweetybear.validator;
+package by.bsuir.sweetybear.validator.impl;
 
 import by.bsuir.sweetybear.annotation.PasswordMatch;
 import by.bsuir.sweetybear.dto.UserDTO;
@@ -12,7 +12,7 @@ import javax.validation.ConstraintValidatorContext;
  * Dec 2022
  */
 
-public class PasswordMatchValidator implements ConstraintValidator<PasswordMatch, UserDTO> {
+public class PasswordMatchValidatorImpl implements ConstraintValidator<PasswordMatch, UserDTO> {
 
     @Override
     public void initialize(PasswordMatch constraintAnnotation) {
