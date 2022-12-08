@@ -17,9 +17,6 @@ import java.util.Locale;
 @Data
 public class Address extends IdentifiedModel {
 
-    @OneToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "user_id")
-    private User user;
     @Column(name = "street")
     private String street;
     @Column(name = "apartment_number")

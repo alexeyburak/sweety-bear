@@ -120,7 +120,6 @@ public class BucketServiceImpl implements BucketService {
     public void addBucketToOrder(final String email,
                                  final Address address) {
         User user = this.getUserForOrderAndSetAddress(email, address);
-        address.setUser(user);
 
         Bucket bucket = user.getBucket();
         if (bucket == null || getProductsFromBucket(bucket).isEmpty()) {

@@ -205,10 +205,11 @@ public class UserServiceImpl implements UserService {
     public void deleteUserAccountById(Long id) {
         User user = this.getUserById(id);
         user.setBucket(null);
+        user.setAddress(null);
         userRepository.save(user);
         bucketRepository.deleteByUserId(id);
         orderRepository.deleteByUserId(id);
-        userRepository.deleteById(id);
+        userRepository.delete(user);
         log.warn("Delete user account. User id: {}", id);
     }
 }
