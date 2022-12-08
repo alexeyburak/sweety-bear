@@ -36,7 +36,7 @@
                     <a class="nav-link active" th:href="@{/admin}">Admin menu</a>
                 </li>
                 <li class="nav-item" th:if="${user.isAdmin()}">
-                    <a class="nav-link active" th:href="@{/orders/new}">Orders</a>
+                    <a class="nav-link active" th:href="@{/orders(status=NEW)}">Orders</a>
                 </li>
                 <li class="nav-item" th:if="${user.email}">
                     <form class="d-flex" role="search" th:action="@{/logout}" method="post">

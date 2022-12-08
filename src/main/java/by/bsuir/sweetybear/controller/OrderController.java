@@ -34,46 +34,25 @@ public class OrderController {
     private final PDFGeneratorServiceImpl pdfGeneratorService;
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
-    @GetMapping("/orders/new")
-    public String aboutOrderNew(Model model, Principal principal) {
+    @GetMapping("/orders")
+    public String aboutOrders(@RequestParam("status") OrderStatus orderStatus,
+                                Model model,
+                                Principal principal) {
         model.addAttribute("user", userService.getUserByPrincipal(principal));
-        model.addAttribute("orders", orderService.orderListFindByStatus(OrderStatus.NEW));
-        return "orders";
-    }
-
-    @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
-    @GetMapping("/orders/approved")
-    public String aboutOrderApproved(Model model, Principal principal) {
-        model.addAttribute("user", userService.getUserByPrincipal(principal));
-        model.addAttribute("orders", orderService.orderListFindByStatus(OrderStatus.APPROVED));
-        return "orders";
-    }
-
-    @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
-    @GetMapping("/orders/canceled")
-    public String aboutOrderCanceled(Model model, Principal principal) {
-        model.addAttribute("user", userService.getUserByPrincipal(principal));
-        model.addAttribute("orders", orderService.orderListFindByStatus(OrderStatus.CANCELED));
-        return "orders";
-    }
-
-    @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
-    @GetMapping("/orders/closed")
-    public String aboutOrderClosed(Model model, Principal principal) {
-        model.addAttribute("user", userService.getUserByPrincipal(principal));
-        model.addAttribute("orders", orderService.orderListFindByStatus(OrderStatus.CLOSED));
+        model.addAttribute("orders", orderService.orderListFindByStatus(orderStatus));
         return "orders";
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
     @GetMapping("/orders/{id}")
-    public String orderInfo(@PathVariable("id") Long id, Model model, Principal principal) {
+    public String orderInfo(@PathVariable("id") Long id,
+                            Model model,
+                            Principal principal) {
         model.addAttribute("user", userService.getUserByPrincipal(principal));
         model.addAttribute("order", orderService.getOrderById(id));
         return "order-info";
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_USER') || hasAuthority('ROLE_OWNER')")
     @PostMapping("/orders/edit/{id}")
     public String updateOrderById(@PathVariable("id") Long id,
                                   @RequestParam("status") OrderStatus status) {
@@ -84,14 +63,15 @@ public class OrderController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
     @PostMapping("/admin/orders/edit/{id}")
     public String updateOrderByIdByAdmin(@PathVariable("id") Long id,
-                              @RequestParam("status") OrderStatus status) {
+                                         @RequestParam("status") OrderStatus status) {
         orderService.updateOrderStatusById(id, status);
         return "redirect:/orders/{id}";
     }
 
-    @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_USER') || hasAuthority('ROLE_OWNER')")
     @GetMapping("/orders/user/{id}")
-    public String aboutUserOrder(@PathVariable("id") Long id, Model model, Principal principal) {
+    public String aboutUserOrder(@PathVariable("id") Long id,
+                                 Model model,
+                                 Principal principal) {
         User userFromPrincipal = userService.getUserByPrincipal(principal);
 
         if (!Objects.equals(id, userFromPrincipal.getId()))
