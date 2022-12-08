@@ -45,15 +45,14 @@ public class OrderServiceImpl implements OrderService {
     public Order getOrderById(Long id) {
         return orderRepository
                 .findById(id)
-                .orElse(null);
+                .orElseThrow(() -> new ApiRequestException("Order not found. Id: " + id));
     }
 
     @Override
     public void updateOrderStatusById(Long id,
                                       OrderStatus status) {
         Order order = this.getOrderById(id);
-        if (order == null)
-            throw new ApiRequestException("Order not found");
+
         log.info("Change order status. Id: {}. Status: {}. New status: {}", id, order.getStatus(), status);
         order.setStatus(status);
         orderRepository.save(order);

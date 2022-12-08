@@ -73,7 +73,7 @@ public class ProductServiceImpl implements ProductService {
                         .toList();
             }
         }
-        return null;
+        return productRepository.findAll();
     }
 
     @Override
@@ -99,7 +99,7 @@ public class ProductServiceImpl implements ProductService {
     public Product getProductById(Long id) {
         return productRepository
                 .findById(id)
-                .orElse(null);
+                .orElseThrow(() -> new ApiRequestException("Product not found"));
     }
 
     private void addImagesToProduct(Product product,
@@ -135,10 +135,7 @@ public class ProductServiceImpl implements ProductService {
                                   MultipartFile multipartPreviewFile,
                                   MultipartFile multipartFile) throws IOException {
         Product product = this.getProductById(id);
-        if (product == null) {
-            log.error("Product not found. Id: " + id);
-            throw new ApiRequestException("Product not found. Id: " + id);
-        }
+
         addImagesToProduct(product, multipartPreviewFile, multipartFile);
         product.setTitle(productUpdate.getTitle());
         product.setDescription(productUpdate.getDescription());

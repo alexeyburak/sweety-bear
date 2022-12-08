@@ -10,7 +10,6 @@ import by.bsuir.sweetybear.repository.ImageRepository;
 import by.bsuir.sweetybear.repository.OrderRepository;
 import by.bsuir.sweetybear.repository.UserRepository;
 import by.bsuir.sweetybear.service.UserService;
-import by.bsuir.sweetybear.service.impl.MailSenderImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -84,7 +83,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
+        return userRepository
+                .findById(id)
+                .orElseThrow(() -> new ApiRequestException("User not found. Id: " + id));
     }
 
     @Override
@@ -101,8 +102,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void banUserAccountById(Long id) {
         User user = this.getUserById(id);
-        if (user == null)
-            throw new ApiRequestException("User not found");
 
         user.setActive(!user.isActive());
         log.info("Ban/Unban user. Id: {}, Email: {}", user.getId(), user.getEmail());
@@ -122,8 +121,6 @@ public class UserServiceImpl implements UserService {
                                User userUpdate,
                                MultipartFile multipartFile) throws IOException {
         User user = this.getUserById(id);
-        if (user == null)
-            throw new ApiRequestException("User not found");
 
         if (multipartFile.getSize() != 0)
             addAvatarToUser(user, multipartFile);
@@ -148,8 +145,6 @@ public class UserServiceImpl implements UserService {
     @Override
     public void deleteUserAvatarById(Long id) {
         User user = this.getUserById(id);
-        if (user == null)
-            throw new ApiRequestException("User not found");
 
         user.setAvatar(null);
         imageRepository.markToDeleteByUserId(id, "toDelete");
@@ -168,7 +163,6 @@ public class UserServiceImpl implements UserService {
         userAvatar = toImageEntity(multipartFile);
         userAvatar.setPreviewImage(true);
         user.addAvatarToUser(userAvatar);
-
     }
 
     @Override
