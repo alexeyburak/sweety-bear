@@ -1,5 +1,6 @@
 package by.bsuir.sweetybear.annotation;
 
+import by.bsuir.sweetybear.validator.ErrorMessage;
 import by.bsuir.sweetybear.validator.impl.PasswordMatchValidatorImpl;
 
 import javax.validation.Constraint;
@@ -22,7 +23,7 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Constraint(validatedBy= PasswordMatchValidatorImpl.class)
 @Documented
 public @interface PasswordMatch {
-    String message() default "Passwords should match";
+    String message() default ErrorMessage.PASSWORDS_NOT_MATCH;
 
     Class<?>[] groups() default {};
 

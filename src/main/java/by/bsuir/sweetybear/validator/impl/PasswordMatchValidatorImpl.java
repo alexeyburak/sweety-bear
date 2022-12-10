@@ -2,6 +2,7 @@ package by.bsuir.sweetybear.validator.impl;
 
 import by.bsuir.sweetybear.annotation.PasswordMatch;
 import by.bsuir.sweetybear.dto.UserDTO;
+import by.bsuir.sweetybear.validator.ErrorMessage;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -25,7 +26,7 @@ public class PasswordMatchValidatorImpl implements ConstraintValidator<PasswordM
         if (!isUserPasswordMatchingConfirmPassword) {
             constraintValidatorContext.disableDefaultConstraintViolation();
             constraintValidatorContext
-                    .buildConstraintViolationWithTemplate("Passwords should match")
+                    .buildConstraintViolationWithTemplate(ErrorMessage.PASSWORDS_NOT_MATCH)
                     .addPropertyNode("confirmPassword")
                     .addConstraintViolation();
         }

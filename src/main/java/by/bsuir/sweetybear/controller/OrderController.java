@@ -29,6 +29,9 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class OrderController {
 
+    private static final String PDF_CONTENT_TYPE  = "application/pdf";
+    private static final String PDF_HEADER_KEY  = "Content-Disposition";
+
     private final OrderServiceImpl orderService;
     private final UserServiceImpl userService;
     private final PDFGeneratorServiceImpl pdfGeneratorService;
@@ -92,9 +95,9 @@ public class OrderController {
             return;
         }
 
-        response.setContentType("application/pdf");
+        response.setContentType(PDF_CONTENT_TYPE);
         String headerValue = "attachment; filename=order_" + id + ".pdf";
-        response.setHeader("Content-Disposition", headerValue);
+        response.setHeader(PDF_HEADER_KEY, headerValue);
 
         pdfGeneratorService.exportUserOrderInPDF(response, id);
     }

@@ -118,7 +118,7 @@ public class ProductController {
                             Principal principal,
                             HttpServletRequest request) {
         User user = userService.getUserByPrincipal(principal);
-        if (principal == null) {
+        if (user == null) {
             return "redirect:/";
         }
         productService.addProductIdToUserBucket(id, user.getEmail());

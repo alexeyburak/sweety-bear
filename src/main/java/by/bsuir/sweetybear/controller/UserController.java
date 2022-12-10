@@ -3,6 +3,7 @@ package by.bsuir.sweetybear.controller;
 import by.bsuir.sweetybear.dto.UserDTO;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.service.impl.UserServiceImpl;
+import by.bsuir.sweetybear.validator.ErrorMessage;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
@@ -42,11 +43,6 @@ public class UserController {
             return "registration";
         }
 
-        if (!user.getPassword().equals(user.getConfirmPassword())) {
-            model.addAttribute("passwordError", "Passwords do not match");
-            return "registration";
-        }
-
         User userDb = this.modelMapper.map(user, User.class);
 
         if (!userService.addUserToDatabase(userDb)) {
@@ -59,11 +55,11 @@ public class UserController {
     @PostMapping("/login/error")
     public String loginError(@ModelAttribute("username") String email,
                              Model model) {
-        model.addAttribute("messageError", "Invalid username or password.");
+        model.addAttribute("messageError", ErrorMessage.USER_INVALID_DATA_INPUT);
 
         User user = userService.getUserByEmail(email);
         if (!Objects.requireNonNull(user).isActive()) {
-            model.addAttribute("messageError", "Your account was banned");
+            model.addAttribute("messageError", ErrorMessage.USER_ACCOUNT_BANNED);
         }
 
         return "login";
@@ -75,9 +71,9 @@ public class UserController {
         boolean isActivated = userService.activateUserAccountAfterRegistration(code);
 
         if (isActivated)
-            model.addAttribute("messageSuccess", "You successfully confirm your email");
+            model.addAttribute("messageSuccess", ErrorMessage.USER_CONFIRM_EMAIL);
         else
-            model.addAttribute("messageSuccess", "Activation code is not available");
+            model.addAttribute("messageSuccess", ErrorMessage.USER_INVALID_ACTIVATION_CODE);
 
         return "login";
     }
@@ -112,7 +108,7 @@ public class UserController {
 
         User userDb = userService.getUserByEmail(user.getEmail());
         if (userDb != null && userDb != principalUser) {
-            model.addAttribute("messageError", "Email is already exists.");
+            model.addAttribute("messageError", ErrorMessage.USER_EMAIL_EXISTS);
             return "account-edit";
         }
 

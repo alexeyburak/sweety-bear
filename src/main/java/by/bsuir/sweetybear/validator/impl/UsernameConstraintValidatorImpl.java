@@ -1,6 +1,7 @@
 package by.bsuir.sweetybear.validator.impl;
 
 import by.bsuir.sweetybear.annotation.UsernameValid;
+import by.bsuir.sweetybear.validator.ErrorMessage;
 
 import javax.validation.ConstraintValidator;
 import javax.validation.ConstraintValidatorContext;
@@ -27,7 +28,7 @@ public class UsernameConstraintValidatorImpl implements ConstraintValidator<User
         if (!isUsernameLengthValid) {
             constraintValidatorContext.disableDefaultConstraintViolation();
             constraintValidatorContext
-                    .buildConstraintViolationWithTemplate("Name must be between 2 and 15 characters")
+                    .buildConstraintViolationWithTemplate(ErrorMessage.USER_NAME_LENGTH_ERROR)
                     .addConstraintViolation();
         }
         return isUsernameLengthValid;
