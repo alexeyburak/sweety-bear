@@ -108,7 +108,7 @@ public class ProductServiceImpl implements ProductService {
         Image productPreviewImage;
         Image productImage;
         if (multipartPreviewFile.getSize() != 0) {
-            if (product.getImages() != null) {
+            if (!product.getImages().isEmpty()) {
                 deleteProductImagesFromDatabase(product);
             }
             productPreviewImage = toImageEntity(multipartPreviewFile);

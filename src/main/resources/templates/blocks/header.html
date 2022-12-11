@@ -10,14 +10,14 @@
         <div class="navbar-collapse collapse ml-3" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
                 <li class="nav-item">
-                    <a class="nav-link active" aria-current="page" href="/">Catalog</a>
+                    <a class="nav-link active" aria-current="page" href="/" th:text="#{menu.catalog}">Catalog</a>
                 </li>
                 <li class="nav-item" th:if="${user.email}">
-                    <a class="nav-link active" th:href="@{/user/edit/{id}(id=${user.id})}">Edit account</a>
+                    <a class="nav-link active" th:href="@{/user/edit/{id}(id=${user.id})}" th:text="#{menu.editAccount}">Edit account</a>
                 </li>
                 <li class="nav-item" th:if="${user.email}">
                     <div>
-                        <a th:if="${user.bucket != null}" class="nav-link active position-relative mr-3 " th:href="@{/bucket}">
+                        <a th:if="${user.bucket != null}" class="nav-link active position-relative mr-3 " th:href="@{/bucket}" th:text="#{menu.bucket}">
                             Bucket
                             <span th:if="${user.bucket.getNumberOfProductsInBucket() != 0}"
                                   style="background-color: #a22c2c !important"
@@ -30,28 +30,28 @@
                     </div>
                 </li>
                 <li class="nav-item" th:if="${user.email}">
-                    <a class="nav-link active" th:href="@{/orders/user/{id}(id=${user.id})}">My orders</a>
+                    <a class="nav-link active" th:href="@{/orders/user/{id}(id=${user.id})}" th:text="#{menu.myOrders}">My orders</a>
                 </li>
                 <li class="nav-item" th:if="${user.isAdmin()}">
-                    <a class="nav-link active" th:href="@{/admin}">Admin menu</a>
+                    <a class="nav-link active" th:href="@{/admin}" th:text="#{menu.adminMenu}">Admin menu</a>
                 </li>
                 <li class="nav-item" th:if="${user.isAdmin()}">
-                    <a class="nav-link active" th:href="@{/orders(status=NEW)}">Orders</a>
+                    <a class="nav-link active" th:href="@{/orders(status=NEW)}" th:text="#{menu.orders}">Orders</a>
                 </li>
                 <li class="nav-item" th:if="${user.email}">
                     <form class="d-flex" role="search" th:action="@{/logout}" method="post">
                         <input class="form-control me-2" type="hidden" name="_csrf" value="${_csrf.token}"><br>
-                        <button class="btn btn-primary" type="submit">Log Out</button>
+                        <button class="btn btn-primary" type="submit"><span th:text="#{menu.logout}"></span></button>
                     </form>
                 </li>
                 <li class="nav-item nav-pills" th:unless="${user.email}">
-                    <a class="nav-link active" aria-current="page" href="/login">Login</a>
+                    <a class="nav-link active" aria-current="page" href="/login"><span th:text="#{menu.login}"></span></a>
                 </li>
             </ul>
             <form class="d-flex" role="search" action="/" method="get">
-                <input class="form-control me-2" name="title" type="search" placeholder="Search"
+                <input class="form-control me-2" name="title" type="search" th:placeholder="#{menu.searchExample}"
                        aria-label="Search">
-                <button class="btn btn btn-outline-primary ml-1" type="submit">Search</button>
+                <button class="btn btn btn-outline-primary ml-1" type="submit"><span th:text="#{menu.search}"></span></button>
             </form>
         </div>
     </nav>

@@ -42,7 +42,7 @@ public class Product {
     @Digits(integer = 8, fraction = 2, message = "It's too much")
     @Positive(message = "Should be positive")
     private Double price;
-    @Column(name = "Weight")
+    @Column(name = "weight")
     @NotNull(message = "It's required")
     @Min(value = 10, message = "Minimum of 10")
     private int weight;
