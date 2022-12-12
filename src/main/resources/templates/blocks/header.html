@@ -13,24 +13,25 @@
                     <a class="nav-link active" aria-current="page" href="/" th:text="#{menu.catalog}">Catalog</a>
                 </li>
                 <li class="nav-item" th:if="${user.email}">
-                    <a class="nav-link active" th:href="@{/user/edit/{id}(id=${user.id})}" th:text="#{menu.editAccount}">Edit account</a>
+                    <a class="nav-link active" th:href="@{/user/edit/{id}(id=${user.id})}"
+                       th:text="#{menu.editAccount}">Edit account</a>
                 </li>
                 <li class="nav-item" th:if="${user.email}">
-                    <div>
-                        <a th:if="${user.bucket != null}" class="nav-link active position-relative mr-3 " th:href="@{/bucket}" th:text="#{menu.bucket}">
-                            Bucket
-                            <span th:if="${user.bucket.getNumberOfProductsInBucket() != 0}"
-                                  style="background-color: #a22c2c !important"
-                                  th:utext="${user.bucket.getNumberOfProductsInBucket()}"
-                                  class="position-absolute top-2 start-100 translate-middle badge rounded-pill bg-danger">
+                    <a th:if="${user.bucket != null}" class="nav-link active position-relative mr-3 "
+                       th:href="@{/bucket}" >
+                        <span th:text="#{menu.bucket}">Bucket</span>
+                        <span th:if="${user.bucket.getNumberOfProductsInBucket() != 0}"
+                              style="background-color: #a22c2c !important"
+                              th:utext="${user.bucket.getNumberOfProductsInBucket()}"
+                              class="position-absolute top-2 start-100 translate-middle badge rounded-pill bg-danger">
                                          99+
                                             <span class="visually-hidden mr-3 ">products</span>
-                                    </span>
-                        </a>
-                    </div>
+                            </span>
+                    </a>
                 </li>
                 <li class="nav-item" th:if="${user.email}">
-                    <a class="nav-link active" th:href="@{/orders/user/{id}(id=${user.id})}" th:text="#{menu.myOrders}">My orders</a>
+                    <a class="nav-link active" th:href="@{/orders/user/{id}(id=${user.id})}" th:text="#{menu.myOrders}">My
+                        orders</a>
                 </li>
                 <li class="nav-item" th:if="${user.isAdmin()}">
                     <a class="nav-link active" th:href="@{/admin}" th:text="#{menu.adminMenu}">Admin menu</a>
@@ -45,13 +46,15 @@
                     </form>
                 </li>
                 <li class="nav-item nav-pills" th:unless="${user.email}">
-                    <a class="nav-link active" aria-current="page" href="/login"><span th:text="#{menu.login}"></span></a>
+                    <a class="nav-link active" aria-current="page" href="/login"><span
+                            th:text="#{menu.login}"></span></a>
                 </li>
             </ul>
             <form class="d-flex" role="search" action="/" method="get">
                 <input class="form-control me-2" name="title" type="search" th:placeholder="#{menu.searchExample}"
                        aria-label="Search">
-                <button class="btn btn btn-outline-primary ml-1" type="submit"><span th:text="#{menu.search}"></span></button>
+                <button class="btn btn btn-outline-primary ml-1" type="submit"><span th:text="#{menu.search}"></span>
+                </button>
             </form>
             <div class="nav-item ml-2">
                 <a th:href="@{'?locale=ru'}">RU</a>
