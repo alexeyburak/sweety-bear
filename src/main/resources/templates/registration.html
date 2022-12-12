@@ -25,28 +25,28 @@
     </style>
 </head>
 <body>
-<div class="mt-4 ml-5" style="font-size:20px">
+<div class="mt-4 ml-5" style="font-size:20px" th:text="#{signUp.title}">
     Registration
 </div>
 <form th:method="post" th:action="@{/registration}" th:object="${user}">
     <div style="width: 60%">
         <div class="mb-3 ml-5 mt-4">
-            <label for="name" class="form-label">Enter name: </label>
+            <label for="name" class="form-label" th:text="#{signUp.name}">Enter name:</label>
             <input autofocus type="text" pattern="[a-zA-Z]*" th:field="*{name}" class="form-control" id="name"/>
             <div class="alert alert-danger mt-1" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
         </div>
         <div class="mb-3 ml-5 mt-2">
-            <label for="exampleInputEmail1" class="form-label">Enter email: </label>
+            <label for="exampleInputEmail1" class="form-label" th:text="#{signUp.email}">Enter email:</label>
             <input type="email" th:field="*{email}"  aria-describedby="emailHelp" class="form-control" id="exampleInputEmail1"/>
             <div class="alert alert-danger mt-1" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
         </div>
         <div class="mb-3 ml-5 mt-2">
-            <label for="password1" class="form-label">Enter password: </label>
+            <label for="password1" class="form-label" th:text="#{signUp.password}">Enter password:</label>
             <input type="password" th:field="*{password}" class="form-control" id="password1"/>
             <div class="alert alert-danger mt-1" th:if="${#fields.hasErrors('password')}" th:errors="*{password}"></div>
         </div>
         <div class="mb-3 ml-5 mt-2">
-            <label for="confirmPassword" class="form-label">Confirm password: </label>
+            <label for="confirmPassword" class="form-label" th:text="#{signUp.confirmPassword}">Confirm password:</label>
             <input type="password" th:field="*{confirmPassword}" class="form-control" id="confirmPassword"/>
             <div class="alert alert-danger mt-1" th:if="${#fields.hasErrors('confirmPassword')}"
                  th:errors="*{confirmPassword}"></div>
@@ -58,8 +58,8 @@
             <h6 style="color:red" th:utext="${errorMessage}">message error</h6>
         </div>
         <input type="hidden" name="_csrf" value="${_csrf.token}"><br>
-        <button type="submit" class="btn btn-primary ml-5 mt-1">Sign up</button>
-        <a class="ml-4" href="/login">Login</a>
+        <button type="submit" class="btn btn-primary ml-5 mt-1" th:text="#{signUp}">Sign up</button>
+        <a class="ml-4" href="/login" th:text="#{login}">Login</a>
     </div>
 </form>
 </body>
