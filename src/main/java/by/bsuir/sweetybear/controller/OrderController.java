@@ -84,6 +84,14 @@ public class OrderController {
         model.addAttribute("orders", orderService.getUserOrdersById(id));
         return "user-orders";
     }
+    @GetMapping("/payment/orders/{id}")
+    public String makeOrderPayment(@PathVariable("id") Long id,
+                                 Model model,
+                                 Principal principal) {
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
+        model.addAttribute("order", orderService.getOrderById(id));
+        return "order-payment";
+    }
 
     @GetMapping("/order/pdf/export/{id}")
     public void generatePDF(@PathVariable("id") Long id,

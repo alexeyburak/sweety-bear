@@ -16,7 +16,6 @@
 <div class="row row-cols-1 row-cols-md-3 g-4 ml-4 mr-4 mb-4">
     <div class="col" th:each="order : ${orders}">
         <div class="card h-10 mt-4">
-
             <div class="card-body">
                 <h5 class="card-title" th:utext="${order.sum}">Sum</h5>
                 <p class="card-text" th:unless="${order.isOrderDeliveryPickup()}">
@@ -62,21 +61,30 @@
 
                 </div>
             </div>
-            <div class="btn-group ml-3" role="group" th:unless="${order.isOrderCanceled()}"
-                 th:if="${order.isOrderApproved()}">
-                <form th:method="post" th:action="@{/orders/edit/{id}(id=${order.id})}">
-                    <input type="hidden" name="_csrf" value="${_csrf.token}">
-                    <input type="hidden" th:value="CLOSED" name="status">
-                    <button type="submit" class="btn btn-outline-secondary mb-3">Confirm delivery</button>
-                </form>
+            <div th:if="${order.isOrderPaid()}">
+                <div class="btn-group ml-3" role="group" th:unless="${order.isOrderCanceled()}"
+                     th:if="${order.isOrderApproved()}">
+                    <form th:method="post"
+                          th:action="@{/orders/edit/{id}(id=${order.id})}">
+                        <input type="hidden" name="_csrf" value="${_csrf.token}">
+                        <input type="hidden" th:value="CLOSED" name="status">
+                        <button type="submit" class="btn btn-outline-secondary mb-3">Confirm delivery</button>
+                    </form>
+                </div>
+                <div class="btn-group ml-3" role="group">
+                    <form th:action="@{/order/pdf/export/{id}(id=${order.id})}" method="GET">
+                        <input type="hidden" name="_csrf" value="${_csrf.token}">
+                        <button type="submit" class="btn btn-outline-secondary mb-3">Сheque</button>
+                    </form>
+                </div>
             </div>
-            <div class="btn-group ml-3" role="group">
-                <form th:action="@{/order/pdf/export/{id}(id=${order.id})}" method="GET">
-                    <input type="hidden" name="_csrf" value="${_csrf.token}">
-                    <button type="submit" class="btn btn-outline-secondary mb-3">Сheque</button>
-                </form>
+            <div th:unless="${order.isOrderPaid()}">
+                <div class="btn-group ml-3" role="group" >
+                    <form th:action="@{/payment/orders/{id}(id=${order.id})}">
+                        <button type="submit" class="btn btn-outline-secondary mb-3">Pay for the order</button>
+                    </form>
+                </div>
             </div>
-
         </div>
     </div>
 </div>

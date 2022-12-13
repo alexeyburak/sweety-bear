@@ -72,7 +72,7 @@
 </div>
 <div th:if="${user.isAdmin()}" th:unless="${order.isOrderCanceled()}" class="btn-group" role="group">
     <div>
-        <form th:unless="${order.isOrderApproved()}" th:method="post" th:action="@{/admin/orders/edit/{id}(id=${order.id})}">
+        <form th:unless="${order.isOrderApproved()}" th:if="${order.isOrderPaid()}" th:method="post" th:action="@{/admin/orders/edit/{id}(id=${order.id})}">
             <input type="hidden" name="_csrf" value="${_csrf.token}">
             <input type="hidden" th:value="APPROVED" name="status">
             <button onclick="return deleteConfig('APPROVED')" type="submit" class="btn btn-outline-success ml-5 mt-1">
