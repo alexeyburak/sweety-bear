@@ -75,6 +75,7 @@ public class OrderServiceImpl implements OrderService {
         orderRepository.deleteByProductId(id);
     }
 
+    @Override
     public boolean orderPayment(Long orderId, BankCardDTO bankCardDTO) {
         Order order = this.getOrderById(orderId);
 

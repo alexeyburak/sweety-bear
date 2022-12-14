@@ -5,13 +5,13 @@ import by.bsuir.sweetybear.model.BankCard;
 import by.bsuir.sweetybear.model.Order;
 import by.bsuir.sweetybear.repository.BankCardRepository;
 import by.bsuir.sweetybear.service.BankCardService;
+import by.bsuir.sweetybear.service.PaymentService;
 import by.bsuir.sweetybear.validator.ValidatorFactory;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
-import java.util.Optional;
 
 /**
  * sweety-bear
@@ -22,10 +22,11 @@ import java.util.Optional;
 @Service
 @Slf4j
 @AllArgsConstructor
-public class BankCardServiceImpl implements BankCardService {
+public class BankCardServiceImpl implements BankCardService, PaymentService {
 
     private final BankCardRepository bankCardRepository;
 
+    @Override
     public boolean makeOrderPayment(Order order, BankCardDTO bankCardDTO) {
         BankCard bankCard = toEntity(bankCardDTO);
         bankCard.setUser(order.getUser());
@@ -44,6 +45,7 @@ public class BankCardServiceImpl implements BankCardService {
         return true;
     }
 
+    @Override
     public boolean isBankCardExist(BankCard bankCard) {
         BankCard bankCardDb = bankCardRepository.findByCardNumber(bankCard.getCardNumber());
         if (bankCardDb != null) {
@@ -52,6 +54,7 @@ public class BankCardServiceImpl implements BankCardService {
         return false;
     }
 
+    @Override
     public boolean isBankCardInformationCorrect(BankCard bankCard, long cardNumber, int expirationMonth, int expirationYear, int cvv) {
         if (bankCard.getCardNumber() != cardNumber) return false;
         if (bankCard.getExpirationMonth() != expirationMonth) return false;
@@ -59,14 +62,17 @@ public class BankCardServiceImpl implements BankCardService {
         return bankCard.getCvv() == cvv;
     }
 
-    private boolean isEnoughMoney(BigDecimal balance, BigDecimal price) {
+    @Override
+    public boolean isEnoughMoney(BigDecimal balance, BigDecimal price) {
         return balance.compareTo(price) > 0;
     }
 
-    private BigDecimal calculateNewBalance(BigDecimal balance, BigDecimal price) {
+    @Override
+    public BigDecimal calculateNewBalance(BigDecimal balance, BigDecimal price) {
         return balance.subtract(price);
     }
 
+    @Override
     public boolean isBankCardValid(BankCard bankCard) {
         return ValidatorFactory.getInstance().getCardNameValidator().isValid(bankCard.getCardholderName()) &&
                 ValidatorFactory.getInstance().getCardNumberValidator().isValid(bankCard.getCardNumber().toString()) &&
