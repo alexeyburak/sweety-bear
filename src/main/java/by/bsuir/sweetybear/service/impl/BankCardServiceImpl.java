@@ -27,22 +27,24 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
     private final BankCardRepository bankCardRepository;
 
     @Override
-    public boolean makeOrderPayment(Order order, BankCardDTO bankCardDTO) {
+    public boolean debitingMoneyFromTheBankCard(Order order, BankCardDTO bankCardDTO) {
         BankCard bankCard = toEntity(bankCardDTO);
         bankCard.setUser(order.getUser());
 
-        if (!isBankCardValid(bankCard)) {
+        if (bankCardDontReadyToDebited(order, bankCard)) {
             return false;
         }
-        if (!isEnoughMoney(bankCard.getBalance(), order.getSum()))
-            return false;
 
-        BigDecimal newBalanceOnBanCard = calculateNewBalance(bankCard.getBalance(), order.getSum());
-        bankCard.setBalance(newBalanceOnBanCard);
+        BigDecimal newBalanceOnBankCard = calculateNewBalance(bankCard.getBalance(), order.getSum());
+        bankCard.setBalance(newBalanceOnBankCard);
 
         bankCardRepository.save(bankCard);
-
+        log.info("Debiting money from the bank card. Card number: {}", bankCard.getCardNumber());
         return true;
+    }
+
+    private boolean bankCardDontReadyToDebited(Order order, BankCard bankCard) {
+        return !isBankCardValid(bankCard) || !isEnoughMoney(bankCard.getBalance(), order.getSum());
     }
 
     @Override

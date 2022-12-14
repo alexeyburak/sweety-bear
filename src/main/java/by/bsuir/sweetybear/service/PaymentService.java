@@ -1,5 +1,8 @@
 package by.bsuir.sweetybear.service;
 
+import by.bsuir.sweetybear.dto.BankCardDTO;
+import by.bsuir.sweetybear.model.Order;
+
 import java.math.BigDecimal;
 
 /**
@@ -12,4 +15,5 @@ public interface PaymentService {
 
     boolean isEnoughMoney(BigDecimal balance, BigDecimal price);
     BigDecimal calculateNewBalance(BigDecimal balance, BigDecimal price);
+    boolean debitingMoneyFromTheBankCard(Order order, BankCardDTO bankCardDTO);
 }

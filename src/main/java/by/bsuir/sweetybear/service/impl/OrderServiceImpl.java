@@ -79,7 +79,7 @@ public class OrderServiceImpl implements OrderService {
     public boolean orderPayment(Long orderId, BankCardDTO bankCardDTO) {
         Order order = this.getOrderById(orderId);
 
-        if (!bankCardService.makeOrderPayment(order, bankCardDTO))
+        if (!bankCardService.debitingMoneyFromTheBankCard(order, bankCardDTO))
             return false;
 
         order.setOrderPaid(true);
