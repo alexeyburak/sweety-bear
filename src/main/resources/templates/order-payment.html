@@ -93,8 +93,8 @@
 </head>
 <body>
 <header th:insert="blocks/header :: header"></header>
-<div th:if="${report}">
-    reportreportreportreportreportreportreportreportreport
+<div style="width: 60%" th:if="${report}" class="mb-3 justify-content-center mt-4">
+    <div class="alert alert-danger" th:text="${report}">Error message</div>
 </div>
 <div class="container-fluid">
     <div class="row justify-content-center">
@@ -144,6 +144,7 @@
                         </div>
                     </div>
                     <div class="row justify-content-center">
+                        <input type="hidden" name="_csrf" value="${_csrf.token}">
                         <button class="btn btn-pay placeicon col-md-12" type="submit">Pay
                             <span th:text="${order.sum}"></span> BYN
                         </button>

@@ -7,6 +7,7 @@ import by.bsuir.sweetybear.model.enums.OrderStatus;
 import by.bsuir.sweetybear.service.impl.OrderServiceImpl;
 import by.bsuir.sweetybear.service.impl.PDFGeneratorServiceImpl;
 import by.bsuir.sweetybear.service.impl.UserServiceImpl;
+import by.bsuir.sweetybear.validator.ErrorMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
@@ -102,7 +103,7 @@ public class OrderController {
         model.addAttribute("order", orderService.getOrderById(id));
 
         if (!orderService.orderPayment(id, bankCard)) {
-            model.addAttribute("report", "Mistake");
+            model.addAttribute("report", ErrorMessage.ORDER_PAYMENT_ERROR);
             return "order-payment";
         }
 

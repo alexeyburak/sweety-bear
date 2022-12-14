@@ -16,4 +16,5 @@ public class ErrorMessage {
     public static final String USER_INVALID_ACTIVATION_CODE = "Activation code is not available.";
     public static final String USER_EMAIL_EXISTS = "Email is already exists.";
     public static final String USER_NAME_LENGTH_ERROR = "Name must be between 2 and 15 characters.";
+    public static final String ORDER_PAYMENT_ERROR = "Payment error. Check the entered data or the card balance.";
 }
