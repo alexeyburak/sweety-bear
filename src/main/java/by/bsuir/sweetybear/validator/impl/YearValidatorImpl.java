@@ -9,7 +9,7 @@ import by.bsuir.sweetybear.validator.AbstractValidator;
  */
 
 public class YearValidatorImpl extends AbstractValidator {
-    private static final String YEAR_REGEX = "^[0-9]{4}$";
+    private static final String YEAR_REGEX = "^[0-9]{2}$";
 
     @Override
     protected String getRegex() {
