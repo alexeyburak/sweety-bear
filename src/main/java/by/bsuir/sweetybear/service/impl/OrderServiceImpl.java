@@ -83,7 +83,7 @@ public class OrderServiceImpl implements OrderService {
 
         order.setOrderPaid(true);
         this.save(order);
-        log.info("Order waw paid successfully. Order id:  {}", orderId);
+        log.info("Order was paid successfully. Order id:  {}", orderId);
 
         return true;
     }

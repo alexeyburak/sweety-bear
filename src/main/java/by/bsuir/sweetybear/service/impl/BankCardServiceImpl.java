@@ -11,6 +11,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Optional;
 
 /**
  * sweety-bear
@@ -29,9 +30,9 @@ public class BankCardServiceImpl implements BankCardService {
         BankCard bankCard = toEntity(bankCardDTO);
         bankCard.setUser(order.getUser());
 
-        if (!isBankCardValid(bankCard))
+        if (!isBankCardValid(bankCard)) {
             return false;
-
+        }
         if (!isEnoughMoney(bankCard.getBalance(), order.getSum()))
             return false;
 
@@ -41,6 +42,21 @@ public class BankCardServiceImpl implements BankCardService {
         bankCardRepository.save(bankCard);
 
         return true;
+    }
+
+    public boolean isBankCardExist(BankCard bankCard) {
+        BankCard bankCardDb = bankCardRepository.findByCardNumber(bankCard.getCardNumber());
+        if (bankCardDb != null) {
+            return isBankCardInformationCorrect(bankCard, bankCardDb.getCardNumber(), bankCardDb.getExpirationMonth(), bankCardDb.getExpirationYear(), bankCardDb.getCvv());
+        }
+        return false;
+    }
+
+    public boolean isBankCardInformationCorrect(BankCard bankCard, long cardNumber, int expirationMonth, int expirationYear, int cvv) {
+        if (bankCard.getCardNumber() != cardNumber) return false;
+        if (bankCard.getExpirationMonth() != expirationMonth) return false;
+        if (bankCard.getExpirationYear() != expirationYear) return false;
+        return bankCard.getCvv() == cvv;
     }
 
     private boolean isEnoughMoney(BigDecimal balance, BigDecimal price) {
@@ -59,12 +75,15 @@ public class BankCardServiceImpl implements BankCardService {
                 ValidatorFactory.getInstance().getYearValidator().isValid(bankCard.getExpirationYear().toString());
     }
 
-    //TODO card month and year building
     private BankCard toEntity(BankCardDTO bankCardDTO) {
+        String expiryDate = bankCardDTO.getExpiryDate();
         return BankCard.builder()
+                .balance(BigDecimal.valueOf(100000000000L))
                 .cardNumber(bankCardDTO.getCardNumber())
-                .cardholderName(bankCardDTO.getCardholderName())
+                .cardholderName(bankCardDTO.getCardholderName().toUpperCase())
                 .cvv(bankCardDTO.getCvv())
+                .expirationMonth(Integer.parseInt(expiryDate.substring(0, expiryDate.indexOf("/"))))
+                .expirationYear(Integer.parseInt(expiryDate.substring(expiryDate.indexOf("/") + 1)))
                 .build();
     }
 }

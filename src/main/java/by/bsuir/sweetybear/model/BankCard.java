@@ -20,6 +20,7 @@ import java.util.Objects;
 @ToString
 @Builder
 @RequiredArgsConstructor
+@AllArgsConstructor
 public class BankCard extends IdentifiedModel {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -37,11 +38,6 @@ public class BankCard extends IdentifiedModel {
     private BigDecimal balance;
     @Column(name = "cvv")
     private Integer cvv;
-
-    @PrePersist
-    private void init() {
-        balance = BigDecimal.valueOf(Math.random());
-    }
 
     @Override
     public boolean equals(Object o) {

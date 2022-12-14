@@ -84,7 +84,7 @@ public class OrderController {
     }
 
     @GetMapping("/payment/orders/{id}")
-    public String makeOrderPayment(@PathVariable("id") Long id,
+    public String orderPayment(@PathVariable("id") Long id,
                                    @ModelAttribute("bankCard") BankCardDTO bankCard,
                                    Model model,
                                    Principal principal) {
@@ -96,14 +96,17 @@ public class OrderController {
     @PostMapping("/payment/orders/{id}")
     public String makeOrderPayment(@PathVariable("id") Long id,
                                    @ModelAttribute("bankCard") BankCardDTO bankCard,
-                                   Model model) {
+                                   Model model,
+                                   Principal principal) {
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
+        model.addAttribute("order", orderService.getOrderById(id));
+
         if (!orderService.orderPayment(id, bankCard)) {
             model.addAttribute("report", "Mistake");
             return "order-payment";
         }
 
-        model.addAttribute("report", "Success");
-        return "order-payment";
+        return "redirect:/";
     }
 
     @GetMapping("/order/pdf/export/{id}")

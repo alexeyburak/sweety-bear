@@ -93,6 +93,9 @@
 </head>
 <body>
 <header th:insert="blocks/header :: header"></header>
+<div th:if="${report}">
+    reportreportreportreportreportreportreportreportreport
+</div>
 <div class="container-fluid">
     <div class="row justify-content-center">
         <div class=" col-lg-6 col-md-8">
@@ -102,7 +105,7 @@
                         <h2 class="heading text-center">Order <span th:utext="${order.getId()}">ID</span></h2>
                     </div>
                 </div>
-                <form class="form-card" th:action="@{/payment/orders/{id}(id=${order.getId()})}" th:method="POST"
+                <form class="form-card" th:action="@{/payment/orders/{id}(id=${order.id})}" th:method="POST"
                       th:object="${bankCard}">
                     <div class="row justify-content-center">
                         <div class="col-12">
@@ -117,9 +120,9 @@
                                                             type="text" id="cr_no" name="card-no"
                                                             pattern="\d*"
                                                             inputmode="numeric"
-                                                            placeholder="0000 0000 0000 0000" minlength="19"
+                                                            placeholder="0000 0000 0000 0000" minlength="16"
                                                             autocomplete="cc-number"
-                                                            maxlength="19"> <label>Card Number</label></div>
+                                                            maxlength="16"> <label>Card Number</label></div>
                         </div>
                     </div>
                     <div class="row justify-content-center payment">
