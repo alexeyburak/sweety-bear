@@ -18,6 +18,7 @@ import java.util.Objects;
 @Getter
 @Setter
 @ToString
+@Builder
 @RequiredArgsConstructor
 public class BankCard extends IdentifiedModel {
 
@@ -36,6 +37,11 @@ public class BankCard extends IdentifiedModel {
     private BigDecimal balance;
     @Column(name = "cvv")
     private Integer cvv;
+
+    @PrePersist
+    private void init() {
+        balance = BigDecimal.valueOf(Math.random());
+    }
 
     @Override
     public boolean equals(Object o) {

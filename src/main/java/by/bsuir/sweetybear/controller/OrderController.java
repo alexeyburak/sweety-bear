@@ -1,5 +1,6 @@
 package by.bsuir.sweetybear.controller;
 
+import by.bsuir.sweetybear.dto.BankCardDTO;
 import by.bsuir.sweetybear.model.Order;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.model.enums.OrderStatus;
@@ -10,10 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
@@ -29,8 +27,8 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class OrderController {
 
-    private static final String PDF_CONTENT_TYPE  = "application/pdf";
-    private static final String PDF_HEADER_KEY  = "Content-Disposition";
+    private static final String PDF_CONTENT_TYPE = "application/pdf";
+    private static final String PDF_HEADER_KEY = "Content-Disposition";
 
     private final OrderServiceImpl orderService;
     private final UserServiceImpl userService;
@@ -39,8 +37,8 @@ public class OrderController {
     @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
     @GetMapping("/orders")
     public String aboutOrders(@RequestParam("status") OrderStatus orderStatus,
-                                Model model,
-                                Principal principal) {
+                              Model model,
+                              Principal principal) {
         model.addAttribute("user", userService.getUserByPrincipal(principal));
         model.addAttribute("orders", orderService.orderListFindByStatus(orderStatus));
         return "orders";
@@ -84,12 +82,27 @@ public class OrderController {
         model.addAttribute("orders", orderService.getUserOrdersById(id));
         return "user-orders";
     }
+
     @GetMapping("/payment/orders/{id}")
     public String makeOrderPayment(@PathVariable("id") Long id,
-                                 Model model,
-                                 Principal principal) {
+                                   @ModelAttribute("bankCard") BankCardDTO bankCard,
+                                   Model model,
+                                   Principal principal) {
         model.addAttribute("user", userService.getUserByPrincipal(principal));
         model.addAttribute("order", orderService.getOrderById(id));
+        return "order-payment";
+    }
+
+    @PostMapping("/payment/orders/{id}")
+    public String makeOrderPayment(@PathVariable("id") Long id,
+                                   @ModelAttribute("bankCard") BankCardDTO bankCard,
+                                   Model model) {
+        if (!orderService.orderPayment(id, bankCard)) {
+            model.addAttribute("report", "Mistake");
+            return "order-payment";
+        }
+
+        model.addAttribute("report", "Success");
         return "order-payment";
     }
 

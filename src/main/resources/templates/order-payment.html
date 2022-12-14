@@ -102,17 +102,23 @@
                         <h2 class="heading text-center">Order <span th:utext="${order.getId()}">ID</span></h2>
                     </div>
                 </div>
-                <form class="form-card">
+                <form class="form-card" th:action="@{/payment/orders/{id}(id=${order.getId()})}" th:method="POST"
+                      th:object="${bankCard}">
                     <div class="row justify-content-center">
                         <div class="col-12">
-                            <div class="input-group"><input type="text" name="Name" placeholder="John Doe">
+                            <div class="input-group"><input type="text" th:field="*{cardholderName}"
+                                                            name="Name" placeholder="John Doe">
                                 <label>Name</label></div>
                         </div>
                     </div>
                     <div class="row justify-content-center">
                         <div class="col-12">
-                            <div class="input-group"><input type="text" id="cr_no" name="card-no"
+                            <div class="input-group"><input th:field="*{cardNumber}"
+                                                            type="text" id="cr_no" name="card-no"
+                                                            pattern="\d*"
+                                                            inputmode="numeric"
                                                             placeholder="0000 0000 0000 0000" minlength="19"
+                                                            autocomplete="cc-number"
                                                             maxlength="19"> <label>Card Number</label></div>
                         </div>
                     </div>
@@ -120,12 +126,14 @@
                         <div class="col-12">
                             <div class="row">
                                 <div class="col-6">
-                                    <div class="input-group"><input type="text" id="exp" name="expdate"
+                                    <div class="input-group"><input th:field="*{expiryDate}"
+                                                                    type="text" id="exp" name="expdate"
                                                                     placeholder="MM/YY" minlength="5" maxlength="5">
                                         <label>Expiry Date</label></div>
                                 </div>
                                 <div class="col-6">
-                                    <div class="input-group"><input type="password" name="cvv"
+                                    <div class="input-group"><input th:field="*{cvv}"
+                                                                    type="password" name="cvv"
                                                                     placeholder="&#9679;&#9679;&#9679;" minlength="3"
                                                                     maxlength="3"> <label>CVV</label></div>
                                 </div>

@@ -1,5 +1,6 @@
 package by.bsuir.sweetybear.service.impl;
 
+import by.bsuir.sweetybear.dto.BankCardDTO;
 import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.Order;
 import by.bsuir.sweetybear.model.enums.OrderStatus;
@@ -24,6 +25,7 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+    private final BankCardServiceImpl bankCardService;
 
     @Override
     public void save(Order order) {
@@ -71,5 +73,18 @@ public class OrderServiceImpl implements OrderService {
     public void deleteProductById(Long id) {
         log.warn("Delete product from order. Product id: {}", id);
         orderRepository.deleteByProductId(id);
+    }
+
+    public boolean orderPayment(Long orderId, BankCardDTO bankCardDTO) {
+        Order order = this.getOrderById(orderId);
+
+        if (!bankCardService.makeOrderPayment(order, bankCardDTO))
+            return false;
+
+        order.setOrderPaid(true);
+        this.save(order);
+        log.info("Order waw paid successfully. Order id:  {}", orderId);
+
+        return true;
     }
 }
