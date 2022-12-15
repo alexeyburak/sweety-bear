@@ -93,11 +93,12 @@
 </head>
 <body>
 <header th:insert="blocks/header :: header"></header>
-<div style="width: 60%" th:if="${report}" class="mb-3 justify-content-center mt-4">
-    <div class="alert alert-danger" th:text="${report}">Error message</div>
-</div>
+
 <div class="container-fluid">
     <div class="row justify-content-center">
+        <div style="width: 60%" th:if="${report}" class="mt-1">
+            <div class="alert alert-danger" th:text="${report}">Error message</div>
+        </div>
         <div class=" col-lg-6 col-md-8">
             <div class="card p-3">
                 <div class="row justify-content-center">

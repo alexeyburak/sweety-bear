@@ -12,6 +12,8 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
 
 /**
  * sweety-bear
@@ -44,7 +46,21 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
     }
 
     private boolean bankCardDontReadyToDebited(Order order, BankCard bankCard) {
-        return !isBankCardValid(bankCard) || !isEnoughMoney(bankCard.getBalance(), order.getSum());
+        return //!isBankCardValid(bankCard) || !isEnoughMoney(bankCard.getBalance(), order.getSum()) ||
+                isCardDateValid(bankCard.getExpirationMonth(), bankCard.getExpirationYear());
+    }
+
+    private boolean isCardDateValid(int month, int year) {
+        Calendar calendar = Calendar.getInstance();
+        calendar.setTime(new Date());
+        int currentMonth = calendar.get(Calendar.MONTH);
+        int currentYear = calendar.get(Calendar.YEAR);
+
+        if (year < currentYear) return true;
+        if (year == currentYear) {
+            return month < currentMonth;
+        }
+        return false;
     }
 
     @Override
