@@ -26,6 +26,7 @@ import java.util.Date;
 @AllArgsConstructor
 public class BankCardServiceImpl implements BankCardService, PaymentService {
 
+    private static final String CURRENT_MILLENNIUM = "20";
     private final BankCardRepository bankCardRepository;
 
     @Override
@@ -46,8 +47,9 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
     }
 
     private boolean bankCardDontReadyToDebited(Order order, BankCard bankCard) {
-        return //!isBankCardValid(bankCard) || !isEnoughMoney(bankCard.getBalance(), order.getSum()) ||
-                isCardDateValid(bankCard.getExpirationMonth(), bankCard.getExpirationYear());
+        return !isBankCardValid(bankCard) ||
+                !isEnoughMoney(bankCard.getBalance(), order.getSum()) ||
+                !isCardDateValid(bankCard.getExpirationMonth(), bankCard.getExpirationYear());
     }
 
     private boolean isCardDateValid(int month, int year) {
@@ -56,7 +58,7 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
         int currentMonth = calendar.get(Calendar.MONTH);
         int currentYear = calendar.get(Calendar.YEAR);
 
-        if (year < currentYear) return true;
+        if (Integer.parseInt(CURRENT_MILLENNIUM + year) < currentYear) return true;
         if (year == currentYear) {
             return month < currentMonth;
         }
@@ -102,7 +104,7 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
     private BankCard toEntity(BankCardDTO bankCardDTO) {
         String expiryDate = bankCardDTO.getExpiryDate();
         return BankCard.builder()
-                .balance(BigDecimal.valueOf(100000000000L))
+                .balance(BigDecimal.valueOf(1_000_000L))
                 .cardNumber(bankCardDTO.getCardNumber())
                 .cardholderName(bankCardDTO.getCardholderName().toUpperCase())
                 .cvv(bankCardDTO.getCvv())
