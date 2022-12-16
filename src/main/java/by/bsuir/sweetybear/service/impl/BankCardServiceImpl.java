@@ -35,6 +35,7 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
         bankCard.setUser(order.getUser());
 
         if (bankCardDontReadyToDebited(order, bankCard)) {
+            log.warn("Bank card validation error.");
             return false;
         }
 

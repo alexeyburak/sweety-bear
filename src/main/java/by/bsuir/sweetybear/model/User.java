@@ -47,6 +47,8 @@ public class User extends IdentifiedModel implements UserDetails {
     private LocalDateTime dateOfCreated;
     @Column(name = "activation_code")
     private String activationCode;
+    @Column(name = "reset_password_code")
+    private String resetPasswordCode;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Bucket bucket;

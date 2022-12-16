@@ -159,7 +159,8 @@ public class BucketServiceImpl implements BucketService {
         User user = userService.getUserByEmail(email);
         if (user == null)
             throw new ApiRequestException("User is not found");
-        user.setAddress(address);
+        if (!address.getStreet().isEmpty())
+            user.setAddress(address);
 
         return user;
     }
