@@ -72,6 +72,7 @@ public class UserServiceImpl implements UserService {
         String title = "Thanks for registration!";
 
         mailSender.send(user.getEmail(), title, message);
+        log.info("Send greeting message.");
     }
 
     @Override
@@ -96,6 +97,10 @@ public class UserServiceImpl implements UserService {
     public User getUserByPrincipal(Principal principal) {
         if (principal == null) return new User();
         return userRepository.findByEmail(principal.getName());
+    }
+
+    public User getUserByResetPasswordCode(String resetPasswordCode) {
+        return userRepository.findByResetPasswordCode(resetPasswordCode);
     }
 
     @Override

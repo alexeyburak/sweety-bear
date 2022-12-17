@@ -31,7 +31,6 @@ public class MailSenderImpl implements MailSender {
         mailMessage.setTo(emailTo);
         mailMessage.setSubject(subject);
         mailMessage.setText(message);
-        log.info("Send greeting message. Email: {}", emailTo);
         mailSender.send(mailMessage);
     }
 }

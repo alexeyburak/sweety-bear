@@ -73,7 +73,7 @@ public class UserController {
         if (isActivated)
             model.addAttribute("messageSuccess", ErrorMessage.USER_CONFIRM_EMAIL);
         else
-            model.addAttribute("messageSuccess", ErrorMessage.USER_INVALID_ACTIVATION_CODE);
+            model.addAttribute("messageError", ErrorMessage.USER_INVALID_ACTIVATION_CODE);
 
         return "login";
     }
