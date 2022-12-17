@@ -1,5 +1,6 @@
 package by.bsuir.sweetybear.service.impl;
 
+import by.bsuir.sweetybear.dto.UserDTO;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.repository.UserRepository;
 import by.bsuir.sweetybear.service.ForgotPasswordService;
@@ -25,25 +26,25 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
     @Value("${server.port}")
     private String serverPort;
     private final UserServiceImpl userService;
-    private final UserRepository userRepository;
     private final PasswordEncoder passwordEncoder;
     private final MailSenderImpl mailSender;
 
     public boolean setCodeToResetUserPassword(String email) {
         User user = userService.getUserByEmail(email);
-        if (user == null) return false;
+        if (user == null || user.isActive()) return false;
 
         user.setResetPasswordCode(UUID.randomUUID().toString());
         sendResetPasswordLinkToUser(user);
-        log.warn("Send email to reset user password.");
+        userService.save(user);
 
+        log.warn("Send email to reset user password.");
         return true;
     }
 
     private void sendResetPasswordLinkToUser(final User user) {
         String message = String.format(
                 "%s, click link to set new password" +
-                        "\nActivate your email: http://localhost:" + serverPort + "/reset/%s ",
+                        "\nActivate your email: http://localhost:" + serverPort + "/reset_password/%s ",
                 user.getName(),
                 user.getResetPasswordCode()
         );
@@ -52,15 +53,15 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
         mailSender.send(user.getEmail(), title, message);
     }
 
-    public boolean changeUserPassword(String resetPasswordCode, String updatedPassword) {
-        User user = userRepository.findByResetPasswordCode(resetPasswordCode);
-        if (user == null) return false;
+    public boolean changeUserPassword(String resetPasswordCode, User user) {
+        User userDb = userService.getUserByResetPasswordCode(resetPasswordCode);
+        if (userDb == null) return false;
 
-        user.setPassword(passwordEncoder.encode(updatedPassword));
-        user.setResetPasswordCode(null);
+        userDb.setPassword(passwordEncoder.encode(user.getPassword()));
+        userDb.setResetPasswordCode(null);
 
-        userService.save(user);
-        log.info("User reset password. User email: {}", user.getEmail());
+        log.info("User reset password. User email: {}", userDb.getEmail());
+        userService.save(userDb);
         return true;
     }
 }
