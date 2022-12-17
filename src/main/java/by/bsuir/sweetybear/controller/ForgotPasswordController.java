@@ -1,6 +1,5 @@
 package by.bsuir.sweetybear.controller;
 
-import by.bsuir.sweetybear.dto.UserDTO;
 import by.bsuir.sweetybear.dto.UserForgotPasswordDTO;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.service.impl.ForgotPasswordServiceImpl;
@@ -12,9 +11,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
@@ -41,11 +40,11 @@ public class ForgotPasswordController {
     @PostMapping("/forgot_password")
     public String codeToResetPassword(Model model, @ModelAttribute("email") String email) {
         if (!forgotPasswordService.setCodeToResetUserPassword(email)) {
-            model.addAttribute("reportError", "Your account was not found");
+            model.addAttribute("reportError", ErrorMessage.RESET_PASSWORD_NOT_FOUND_ACCOUNT);
             return "forgot-password";
         }
 
-        model.addAttribute("reportSuccess", "Check your email for further password recovery.");
+        model.addAttribute("reportSuccess", ErrorMessage.RESET_PASSWORD_CHECK_EMAIL);
         return "forgot-password";
     }
 
@@ -57,7 +56,7 @@ public class ForgotPasswordController {
         User userDB = userService.getUserByResetPasswordCode(code);
 
         if (userDB == null) {
-            model.addAttribute("messageError", "Reset password code is not available");
+            model.addAttribute("messageError", ErrorMessage.USER_INVALID_ACTIVATION_CODE);
             return "login";
         }
         model.addAttribute("code", code);
@@ -79,9 +78,9 @@ public class ForgotPasswordController {
 
         String code = request.getParameter("code");
         if (forgotPasswordService.changeUserPassword(code, user))
-            model.addAttribute("messageSuccess", "Reset");
+            model.addAttribute("messageSuccess", ErrorMessage.RESET_PASSWORD_SUCCESS);
         else
-            model.addAttribute("messageError", "er");
+            model.addAttribute("messageError", ErrorMessage.RESET_PASSWORD_ERROR);
 
         return "login";
     }

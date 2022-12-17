@@ -25,6 +25,7 @@ public interface UserService {
     User getUserByEmail(String email);
     // Find user by principal
     User getUserByPrincipal(Principal principal);
+    User getUserByResetPasswordCode(String resetPasswordCode);
     // Ban user logic
     void banUserAccountById(Long id);
     // Update user info

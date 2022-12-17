@@ -1,5 +1,7 @@
 package by.bsuir.sweetybear.service;
 
+import by.bsuir.sweetybear.model.User;
+
 /**
  * sweety-bear
  * Created by Alexey Burak
@@ -7,4 +9,7 @@ package by.bsuir.sweetybear.service;
  */
 
 public interface ForgotPasswordService {
+
+    boolean setCodeToResetUserPassword(String email);
+    boolean changeUserPassword(String resetPasswordCode, User userUpdate);
 }

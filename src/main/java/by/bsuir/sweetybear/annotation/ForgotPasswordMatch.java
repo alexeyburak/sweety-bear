@@ -26,5 +26,6 @@ public @interface ForgotPasswordMatch {
     String message() default ErrorMessage.PASSWORDS_NOT_MATCH;
 
     Class<?>[] groups() default {};
+
     Class<? extends Payload>[] payload() default {};
 }

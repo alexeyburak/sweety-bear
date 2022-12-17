@@ -99,6 +99,7 @@ public class UserServiceImpl implements UserService {
         return userRepository.findByEmail(principal.getName());
     }
 
+    @Override
     public User getUserByResetPasswordCode(String resetPasswordCode) {
         return userRepository.findByResetPasswordCode(resetPasswordCode);
     }
