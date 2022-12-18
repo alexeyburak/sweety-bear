@@ -59,8 +59,8 @@ public class ForgotPasswordController {
             model.addAttribute("messageError", ErrorMessage.USER_INVALID_ACTIVATION_CODE);
             return "login";
         }
-        model.addAttribute("code", code);
 
+        model.addAttribute("code", code);
         return "reset-password";
     }
     

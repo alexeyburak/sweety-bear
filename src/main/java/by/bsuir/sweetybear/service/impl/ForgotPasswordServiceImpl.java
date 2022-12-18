@@ -30,7 +30,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
     @Override
     public boolean setCodeToResetUserPassword(String email) {
         User user = userService.getUserByEmail(email);
-        if (user == null || user.isActive()) return false;
+        if (user == null || !user.isActive()) return false;
 
         user.setResetPasswordCode(UUID.randomUUID().toString());
         log.info("Set reset password code to user. Email: {}", email);
