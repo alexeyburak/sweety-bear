@@ -19,6 +19,7 @@ public interface UserService {
     boolean addUserToDatabase(User user);
     // Return user list, if email != null, return users with email
     List<User> userList(String email);
+    void addUserAfterOauthLoginSuccess(String email, String name);
     // Find user by id
     User getUserById(Long id);
     // Find one user by email

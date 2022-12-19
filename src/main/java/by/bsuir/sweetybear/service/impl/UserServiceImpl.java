@@ -64,8 +64,8 @@ public class UserServiceImpl implements UserService {
 
     private void sendEmailMessageToUser(final User user) {
         String message = String.format(
-                "%s, we hope that we will not quarrel! " +
-                        "\nActivate your email: http://localhost:" + serverPort + "/activate/%s ",
+                "%s, we hope that we will not quarrel!\n" +
+                        "Activate your email: http://localhost:" + serverPort + "/activate/%s ",
                 user.getName(),
                 user.getActivationCode()
         );
@@ -73,6 +73,38 @@ public class UserServiceImpl implements UserService {
 
         mailSender.send(user.getEmail(), title, message);
         log.info("Send greeting message.");
+    }
+
+    @Override
+    public void addUserAfterOauthLoginSuccess(String email, String name) {
+        User user = new User();
+        user.setEmail(email);
+        user.setName(name);
+        user.setActive(true);
+        user.getRoles().add(Role.ROLE_USER);
+        String temporaryPassword = UUID.randomUUID().toString();
+        user.setPassword(passwordEncoder.encode(temporaryPassword));
+
+        log.info("Saving User. Email {}", email);
+        userRepository.save(user);
+
+        sendEmailWithPasswordToUser(user, temporaryPassword);
+    }
+
+    private void sendEmailWithPasswordToUser(final User user, final String temporaryPassword) {
+        String message = String.format(
+                """
+                        %s, there are your account data
+                        Email: %s
+                        Password: %s""",
+                user.getName(),
+                user.getEmail(),
+                temporaryPassword
+        );
+        String title = "Thanks for registration!";
+
+        mailSender.send(user.getEmail(), title, message);
+        log.info("Send message with password.");
     }
 
     @Override

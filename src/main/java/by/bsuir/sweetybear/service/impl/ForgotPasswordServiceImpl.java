@@ -51,6 +51,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
         String title = "Reset password";
 
         mailSender.send(user.getEmail(), title, message);
+        log.info("Send resetting password message.");
     }
 
     @Override

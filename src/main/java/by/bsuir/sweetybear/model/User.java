@@ -74,6 +74,11 @@ public class User extends IdentifiedModel implements UserDetails {
         this.avatar = image;
     }
 
+    public void addBankCardToUser(BankCard bankCard) {
+        bankCard.setUser(this);
+        bankCards.add(bankCard);
+    }
+
     @PrePersist
     private void init() {
         dateOfCreated = LocalDateTime.now();
