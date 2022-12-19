@@ -25,6 +25,11 @@
             <span th:text="#{login.logout}">You have been logged out.</span>
         </div>
     </div>
+    <div th:if="${param.oauth2_login}" class="mb-3 mt-4">
+        <div class="alert alert-success">
+            <span>We have sent your password to the address you specified.</span>
+        </div>
+    </div>
 
     <div class="mb-3 mt-4">
         <label for="exampleInputEmail1" class="form-label" th:text="#{login.email}">Email address</label>
@@ -52,6 +57,7 @@
         <p>or sign up with:</p>
         <button type="button" class="btn btn-link btn-floating mx-1">
             <i class="fab fa-google"></i>
+            <a th:href="@{/oauth2/authorization/google}">Sign up with Google</a>
         </button>
     </div>
 </form>

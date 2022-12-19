@@ -61,8 +61,13 @@
     <input type="hidden" name="_csrf" value="${_csrf.token}"><br>
     <button type="submit" class="btn btn-primary btn-block mb-4" th:text="#{signUp}">Sign up</button>
 
-    <div class="text-center mb-3">
+    <div class="text-center mb-4">
         <p>Already have an account? <a href="/login" th:text="#{login}">Login</a></p>
+        <p>or sign up with:</p>
+        <button type="button" class="btn btn-link btn-floating mx-1">
+            <i class="fab fa-google"></i>
+            <a th:href="@{/oauth2/authorization/google}">Sign up with Google</a>
+        </button>
     </div>
 </form>
 </body>
