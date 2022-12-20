@@ -8,11 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-/**
- * sweety-bear
- * Created by Alexey Burak
- * Oct 2022
- */
 
 public class Utils {
 

@@ -8,8 +8,6 @@ import javax.validation.constraints.*;
 
 /**
  * sweety-bear
- * Created by Alexey Burak
- * Nov 2022
  */
 
 @Data
