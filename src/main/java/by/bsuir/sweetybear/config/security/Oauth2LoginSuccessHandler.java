@@ -1,11 +1,8 @@
 package by.bsuir.sweetybear.config.security;
 
-import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.security.oauth2.core.oidc.user.DefaultOidcUser;
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -31,13 +28,14 @@ public class Oauth2LoginSuccessHandler extends SimpleUrlAuthenticationSuccessHan
                                         HttpServletResponse response,
                                         Authentication authentication) throws IOException, ServletException {
         CustomOauth2User oauth2User = (CustomOauth2User) authentication.getPrincipal();
+        this.setDefaultTargetUrl("/login");
 
         String email = oauth2User.getEmail();
         if (userService.getUserByEmail(email) == null) {
+            this.setDefaultTargetUrl("/login?oauth2_login");
             userService.addUserAfterOauthLoginSuccess(email, oauth2User.getName());
         }
 
-        this.setDefaultTargetUrl("/login?oauth2_login");
         super.onAuthenticationSuccess(request, response, authentication);
     }
 
