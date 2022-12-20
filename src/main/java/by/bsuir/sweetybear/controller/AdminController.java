@@ -12,11 +12,6 @@ import org.springframework.web.bind.annotation.*;
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
 
-/**
- * sweety-bear
- * Created by Alexey Burak
- * Oct 2022
- */
 
 @Controller
 @RequiredArgsConstructor

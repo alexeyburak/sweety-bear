@@ -7,12 +7,6 @@ import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
-/**
- * sweety-bear
- * Created by Alexey Burak
- * Oct 2022
- */
-
 @Service
 @RequiredArgsConstructor
 @Slf4j

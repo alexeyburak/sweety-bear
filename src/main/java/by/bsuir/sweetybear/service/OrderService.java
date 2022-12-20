@@ -5,12 +5,6 @@ import by.bsuir.sweetybear.model.enums.OrderStatus;
 
 import java.util.List;
 
-/**
- * sweety-bear
- * Created by Alexey Burak
- * Nov 2022
- */
-
 public interface OrderService {
 
     // Save order to database

@@ -8,7 +8,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
-
 public class Utils {
 
     public static Image toImageEntity(MultipartFile file) throws IOException {
@@ -33,5 +32,4 @@ public class Utils {
         refactorList.remove(flag);
         return refactorList;
     }
-
 }

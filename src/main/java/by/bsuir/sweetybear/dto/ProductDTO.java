@@ -6,10 +6,6 @@ import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.*;
 
-/**
- * sweety-bear
- */
-
 @Data
 @NoArgsConstructor
 public class ProductDTO {

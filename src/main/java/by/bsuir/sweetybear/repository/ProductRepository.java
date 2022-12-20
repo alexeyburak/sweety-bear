@@ -7,12 +7,6 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
-/**
- * sweety-bear
- * Created by Alexey Burak
- * Oct 2022
- */
-
 public interface ProductRepository extends JpaRepository<Product, Long> {
     @Modifying
     @Query(value = "SELECT * FROM products WHERE title LIKE ?1" + "%", nativeQuery = true)
