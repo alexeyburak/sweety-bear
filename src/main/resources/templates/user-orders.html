@@ -71,7 +71,7 @@
                         <button type="submit" class="btn btn-outline-secondary mb-3">Confirm delivery</button>
                     </form>
                 </div>
-                <div class="btn-group ml-3" role="group">
+                <div th:if="${order.isOrderCanceled()}" class="btn-group ml-3" role="group">
                     <form th:action="@{/order/pdf/export/{id}(id=${order.id})}" method="GET">
                         <input type="hidden" name="_csrf" value="${_csrf.token}">
                         <button type="submit" class="btn btn-outline-secondary mb-3">Сheque</button>
@@ -79,7 +79,7 @@
                 </div>
             </div>
             <div th:unless="${order.isOrderPaid()}">
-                <div class="btn-group ml-3" role="group" >
+                <div th:unless="${order.isOrderCanceled()}" class="btn-group ml-3" role="group" >
                     <form th:action="@{/payment/orders/{id}(id=${order.id})}">
                         <button type="submit" class="btn btn-outline-secondary mb-3">Pay for the order</button>
                     </form>

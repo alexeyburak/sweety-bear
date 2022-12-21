@@ -65,6 +65,10 @@ public class Order extends IdentifiedModel implements Comparable<Order>{
         return sum.compareTo(BigDecimal.valueOf(countCurrentlyProductsPrice())) == 0;
     }
 
+    public boolean isOrderPaymentDeprecated() {
+        return dateOfDelivery.isBefore(LocalDateTime.now());
+    }
+
     private Double countCurrentlyProductsPrice() {
         return details
                 .stream()

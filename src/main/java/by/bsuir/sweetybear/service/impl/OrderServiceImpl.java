@@ -88,4 +88,13 @@ public class OrderServiceImpl implements OrderService {
 
         return true;
     }
+
+    @Override
+    public void checkForOrderPaymentDate(Long userId) {
+        this.getUserOrdersById(userId)
+                .stream()
+                .filter(Order::isOrderPaymentDeprecated)
+                .forEach(order ->
+                        this.updateOrderStatusById(order.getId(), OrderStatus.CANCELED));
+    }
 }

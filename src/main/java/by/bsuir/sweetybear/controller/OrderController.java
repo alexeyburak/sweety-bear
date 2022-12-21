@@ -50,8 +50,11 @@ public class OrderController {
     public String orderInfo(@PathVariable("id") Long id,
                             Model model,
                             Principal principal) {
+        Order order = orderService.getOrderById(id);
+        orderService.checkForOrderPaymentDate(order.getUser().getId());
+
         model.addAttribute("user", userService.getUserByPrincipal(principal));
-        model.addAttribute("order", orderService.getOrderById(id));
+        model.addAttribute("order", order);
         return "order-info";
     }
 
@@ -74,8 +77,9 @@ public class OrderController {
     public String aboutUserOrder(@PathVariable("id") Long id,
                                  Model model,
                                  Principal principal) {
-        User userFromPrincipal = userService.getUserByPrincipal(principal);
+        orderService.checkForOrderPaymentDate(id);
 
+        User userFromPrincipal = userService.getUserByPrincipal(principal);
         if (!userFromPrincipal.isActive())
             return "redirect:/login";
         if (!Objects.equals(id, userFromPrincipal.getId()))

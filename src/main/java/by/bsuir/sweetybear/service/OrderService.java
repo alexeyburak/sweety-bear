@@ -27,4 +27,5 @@ public interface OrderService {
     // Delete product from database
     void deleteProductById(Long id);
     boolean orderPayment(Long orderId, BankCardDTO bankCardDTO);
+    void checkForOrderPaymentDate(Long userId);
 }
