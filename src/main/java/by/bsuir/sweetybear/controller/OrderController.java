@@ -76,6 +76,8 @@ public class OrderController {
                                  Principal principal) {
         User userFromPrincipal = userService.getUserByPrincipal(principal);
 
+        if (!userFromPrincipal.isActive())
+            return "redirect:/login";
         if (!Objects.equals(id, userFromPrincipal.getId()))
             return "redirect:/";
 

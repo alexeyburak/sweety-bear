@@ -29,8 +29,8 @@ import static by.bsuir.sweetybear.utils.Utils.getCurrentDateTime;
 public class AdminController {
 
     private static final String PDF_GENERATION_FILENAME = "users_" + getCurrentDateTime() + ".pdf";
-    private static final String PDF_CONTENT_TYPE  = "application/pdf";
-    private static final String PDF_HEADER_KEY  = "Content-Disposition";
+    private static final String PDF_CONTENT_TYPE = "application/pdf";
+    private static final String PDF_HEADER_KEY = "Content-Disposition";
 
     private final UserServiceImpl userService;
     private final PDFGeneratorServiceImpl pdfGeneratorService;

@@ -39,8 +39,13 @@ public class ProductController {
                            @RequestParam(name = "sort", required = false) SortType type,
                            Principal principal,
                            Model model) {
+        User userPrincipal = userService.getUserByPrincipal(principal);
+
+        if (!userPrincipal.isActive())
+            return "redirect:/login";
+
         model.addAttribute("products", productService.listProducts(title, type));
-        model.addAttribute("user", userService.getUserByPrincipal(principal));
+        model.addAttribute("user", userPrincipal);
         model.addAttribute("product", new ProductDTO());
         model.addAttribute("title", title);
         return "products";

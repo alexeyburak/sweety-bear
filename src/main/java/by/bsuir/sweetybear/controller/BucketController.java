@@ -35,12 +35,15 @@ public class BucketController {
     public String aboutBucket(@ModelAttribute("address") AddressDTO address,
                               Model model,
                               Principal principal) {
-        User user = userService.getUserByPrincipal(principal);
-        model.addAttribute("user", user);
+        User userPrincipal = userService.getUserByPrincipal(principal);
+        if (!userPrincipal.isActive())
+            return "redirect:/login";
+
+        model.addAttribute("user", userPrincipal);
         if (principal == null) {
             model.addAttribute("bucket", new BucketDTO());
         } else {
-            BucketDTO bucketDTO = bucketService.getBucketByUser(user.getEmail());
+            BucketDTO bucketDTO = bucketService.getBucketByUser(userPrincipal.getEmail());
             model.addAttribute("bucket", bucketDTO);
         }
         return "bucket";

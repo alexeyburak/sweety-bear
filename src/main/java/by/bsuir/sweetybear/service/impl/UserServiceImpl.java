@@ -158,17 +158,17 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userUpdate.getEmail());
         user.setPassword(passwordEncoder.encode(userUpdate.getPassword()));
 
-        changeSecurityAuthenticationEmail(user);
+        changeSecurityAuthenticationEmail(user.getEmail());
 
         log.info("Update user. Id: {}", id);
         userRepository.save(user);
     }
 
-    private void changeSecurityAuthenticationEmail(final User user) {
+    private void changeSecurityAuthenticationEmail(final String email) {
         User userDetails = (User) SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
-        userDetails.setEmail(user.getEmail());
+        userDetails.setEmail(email);
     }
 
     @Override
