@@ -1,5 +1,7 @@
 package by.bsuir.sweetybear.model;
 
+import by.bsuir.sweetybear.annotation.PasswordValid;
+import by.bsuir.sweetybear.annotation.UsernameValid;
 import by.bsuir.sweetybear.model.enums.Role;
 import lombok.Data;
 import org.springframework.security.core.GrantedAuthority;
@@ -8,11 +10,8 @@ import org.springframework.security.core.userdetails.UserDetails;
 import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 import java.time.LocalDateTime;
-import java.util.Collection;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @Entity
 @Table(name = "users")
@@ -24,8 +23,7 @@ public class User extends IdentifiedModel implements UserDetails {
     @NotBlank(message = "Email is required")
     private String email;
     @Column(name = "name")
-    @Size(min = 3, max = 30, message = "Name must be between 3 and 30 characters")
-    @NotBlank(message = "Name is required")
+    @UsernameValid
     private String name;
     @Column(name = "active")
     private boolean active;
@@ -33,7 +31,7 @@ public class User extends IdentifiedModel implements UserDetails {
     @JoinColumn(name = "image_id")
     private Image avatar;
     @Column(name = "password", length = 1000)
-    @NotBlank(message = "Password is required")
+    @PasswordValid
     private String password;
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))
@@ -41,13 +39,17 @@ public class User extends IdentifiedModel implements UserDetails {
     private Set<Role> roles = new HashSet<>();
     @Column(name = "date_Of_Created")
     private LocalDateTime dateOfCreated;
-    @Column(name = "address")
-    private String address;
     @Column(name = "activation_code")
     private String activationCode;
+    @Column(name = "reset_password_code")
+    private String resetPasswordCode;
 
     @OneToOne(cascade = CascadeType.ALL)
     private Bucket bucket;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Address address;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private List<BankCard> bankCards = new ArrayList<>();
 
     public boolean isAdmin() {
         return roles.contains(Role.ROLE_ADMIN) || roles.contains(Role.ROLE_OWNER);
@@ -64,6 +66,11 @@ public class User extends IdentifiedModel implements UserDetails {
     public void addAvatarToUser(Image image) {
         image.setUser(this);
         this.avatar = image;
+    }
+
+    public void addBankCardToUser(BankCard bankCard) {
+        bankCard.setUser(this);
+        bankCards.add(bankCard);
     }
 
     @PrePersist

@@ -1,6 +1,7 @@
 package by.bsuir.sweetybear.service;
 
 import by.bsuir.sweetybear.dto.BucketDTO;
+import by.bsuir.sweetybear.model.Address;
 import by.bsuir.sweetybear.model.Bucket;
 import by.bsuir.sweetybear.model.User;
 
@@ -17,7 +18,7 @@ public interface BucketService {
     // Count bucket price
     BucketDTO getBucketByUser(String email);
     // Add bucket to order
-    void addBucketToOrder(String email, String address);
+    void addBucketToOrder(String email, Address address);
     // Delete product from database
     void deleteProductByIdFromBucket(Long id);
 }

@@ -13,12 +13,14 @@ public interface UserService {
     boolean addUserToDatabase(User user);
     // Return user list, if email != null, return users with email
     List<User> userList(String email);
+    void addUserAfterOauthLoginSuccess(String email, String name);
     // Find user by id
     User getUserById(Long id);
     // Find one user by email
     User getUserByEmail(String email);
     // Find user by principal
     User getUserByPrincipal(Principal principal);
+    User getUserByResetPasswordCode(String resetPasswordCode);
     // Ban user logic
     void banUserAccountById(Long id);
     // Update user info
@@ -31,8 +33,6 @@ public interface UserService {
     boolean activateUserAccountAfterRegistration(String code);
     // Delete user account with saving his orders and bucket
     void deleteUserAccountById(Long id);
-    // Set address to user after making order
-    void setAddressToUser(final User user, final String address);
     // Delete user avatar
     void deleteUserAvatarById(Long id);
 }

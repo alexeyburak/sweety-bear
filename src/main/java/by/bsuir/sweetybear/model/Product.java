@@ -11,13 +11,24 @@ import java.time.LocalDateTime;
 import java.util.ArrayList;
 import java.util.List;
 
+import static by.bsuir.sweetybear.utils.Utils.getYearMonthDayHourMinuteSecond;
+
+/**
+ * sweety-bear
+ * Created by Alexey Burak
+ * Oct 2022
+ */
+
 @Entity
 @Table(name = "products")
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Product extends IdentifiedModel {
+public class Product {
 
+    @Id
+    @Column(name = "id")
+    private Long id;
     @Column(name = "title")
     @Size(min = 3, max = 100, message = "Title must be between 3 and 100 characters")
     @NotEmpty(message = "Title is required")
@@ -31,7 +42,7 @@ public class Product extends IdentifiedModel {
     @Digits(integer = 8, fraction = 2, message = "It's too much")
     @Positive(message = "Should be positive")
     private Double price;
-    @Column(name = "Weight")
+    @Column(name = "weight")
     @NotNull(message = "It's required")
     @Min(value = 10, message = "Minimum of 10")
     private int weight;
@@ -56,6 +67,7 @@ public class Product extends IdentifiedModel {
     @PrePersist
     private void init() {
         dateOfCreated = LocalDateTime.now();
+        id = Long.valueOf(getYearMonthDayHourMinuteSecond());
     }
 
     public void addImageToProduct(Image image) {

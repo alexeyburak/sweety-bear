@@ -18,4 +18,8 @@ public class Bucket extends IdentifiedModel{
     joinColumns = @JoinColumn(name = "bucket_id"),
     inverseJoinColumns = @JoinColumn(name = "product_id"))
     private List<Product> products;
+
+    public int getNumberOfProductsInBucket() {
+        return  products.size();
+    }
 }

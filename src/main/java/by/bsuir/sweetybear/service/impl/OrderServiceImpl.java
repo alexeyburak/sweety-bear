@@ -1,9 +1,11 @@
-package by.bsuir.sweetybear.service;
+package by.bsuir.sweetybear.service.impl;
 
+import by.bsuir.sweetybear.dto.BankCardDTO;
 import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.Order;
 import by.bsuir.sweetybear.model.enums.OrderStatus;
 import by.bsuir.sweetybear.repository.OrderRepository;
+import by.bsuir.sweetybear.service.OrderService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -17,6 +19,7 @@ import java.util.List;
 public class OrderServiceImpl implements OrderService {
 
     private final OrderRepository orderRepository;
+    private final BankCardServiceImpl bankCardService;
 
     @Override
     public void save(Order order) {
@@ -38,15 +41,14 @@ public class OrderServiceImpl implements OrderService {
     public Order getOrderById(Long id) {
         return orderRepository
                 .findById(id)
-                .orElse(null);
+                .orElseThrow(() -> new ApiRequestException("Order not found. Id: " + id));
     }
 
     @Override
     public void updateOrderStatusById(Long id,
                                       OrderStatus status) {
         Order order = this.getOrderById(id);
-        if (order == null)
-            throw new ApiRequestException("Order not found");
+
         log.info("Change order status. Id: {}. Status: {}. New status: {}", id, order.getStatus(), status);
         order.setStatus(status);
         orderRepository.save(order);
@@ -65,5 +67,28 @@ public class OrderServiceImpl implements OrderService {
     public void deleteProductById(Long id) {
         log.warn("Delete product from order. Product id: {}", id);
         orderRepository.deleteByProductId(id);
+    }
+
+    @Override
+    public boolean orderPayment(Long orderId, BankCardDTO bankCardDTO) {
+        Order order = this.getOrderById(orderId);
+
+        if (!bankCardService.debitingMoneyFromTheBankCard(order, bankCardDTO))
+            return false;
+
+        order.setOrderPaid(true);
+        this.save(order);
+        log.info("Order was paid successfully. Order id:  {}", orderId);
+
+        return true;
+    }
+
+    @Override
+    public void checkForOrderPaymentDate(Long userId) {
+        this.getUserOrdersById(userId)
+                .stream()
+                .filter(Order::isOrderPaymentDeprecated)
+                .forEach(order ->
+                        this.updateOrderStatusById(order.getId(), OrderStatus.CANCELED));
     }
 }

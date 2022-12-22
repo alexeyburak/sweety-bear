@@ -25,17 +25,23 @@ public class Order extends IdentifiedModel implements Comparable<Order>{
     private User user;
     @Column(name = "sum")
     private BigDecimal sum;
-    @Column(name = "address")
-    private String address;
+    @OneToOne(cascade = CascadeType.ALL)
+    private Address address;
     @OneToMany(cascade = CascadeType.ALL)
     @JoinColumn(name = "details_id")
     private List<OrderDetails> details;
+    @Column(name = "delivery")
     @Enumerated(EnumType.STRING)
     private DeliveryType delivery;
+    @Column(name = "status")
     @Enumerated(EnumType.STRING)
     private OrderStatus status;
+    @Column(name = "date_of_created")
     private LocalDateTime dateOfCreated;
+    @Column(name = "date_of_delivery")
     private LocalDateTime dateOfDelivery;
+    @Column(name = "is_order_paid")
+    private boolean isOrderPaid;
 
     public boolean isOrderDeliveryPickup() {
         return delivery == DeliveryType.PICKUP;
@@ -51,6 +57,10 @@ public class Order extends IdentifiedModel implements Comparable<Order>{
 
     public boolean isTotalProductsPriceNotChanged() {
         return sum.compareTo(BigDecimal.valueOf(countCurrentlyProductsPrice())) == 0;
+    }
+
+    public boolean isOrderPaymentDeprecated() {
+        return dateOfDelivery.isBefore(LocalDateTime.now());
     }
 
     private Double countCurrentlyProductsPrice() {

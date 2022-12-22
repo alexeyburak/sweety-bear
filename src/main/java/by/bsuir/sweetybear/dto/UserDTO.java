@@ -1,25 +1,27 @@
 package by.bsuir.sweetybear.dto;
 
+import by.bsuir.sweetybear.annotation.PasswordMatch;
+import by.bsuir.sweetybear.annotation.PasswordValid;
+import by.bsuir.sweetybear.annotation.UsernameValid;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
-import javax.validation.constraints.Size;
 
 @Data
 @NoArgsConstructor
+@PasswordMatch
 public class UserDTO {
 
-    @Size(min = 3, max = 30, message = "Name must be between 3 and 30 characters")
-    @NotBlank(message = "Name is required")
+    @UsernameValid
     private String name;
     @Email(message = "Email must be valid")
     @NotBlank(message = "Email is required")
     private String email;
-    @NotBlank(message = "Password is required")
+    @PasswordValid
     private String password;
-    @NotBlank(message = "Password confirm is required")
+    @PasswordValid
     private String confirmPassword;
 
 }

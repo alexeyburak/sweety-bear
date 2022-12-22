@@ -1,4 +1,4 @@
-package by.bsuir.sweetybear.service;
+package by.bsuir.sweetybear.service.impl;
 
 import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.Bucket;
@@ -8,6 +8,7 @@ import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.model.enums.SortType;
 import by.bsuir.sweetybear.repository.ImageRepository;
 import by.bsuir.sweetybear.repository.ProductRepository;
+import by.bsuir.sweetybear.service.ProductService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -66,7 +67,7 @@ public class ProductServiceImpl implements ProductService {
                         .toList();
             }
         }
-        return null;
+        return productRepository.findAll();
     }
 
     @Override
@@ -92,7 +93,7 @@ public class ProductServiceImpl implements ProductService {
     public Product getProductById(Long id) {
         return productRepository
                 .findById(id)
-                .orElse(null);
+                .orElseThrow(() -> new ApiRequestException("Product not found"));
     }
 
     private void addImagesToProduct(Product product,
@@ -101,7 +102,7 @@ public class ProductServiceImpl implements ProductService {
         Image productPreviewImage;
         Image productImage;
         if (multipartPreviewFile.getSize() != 0) {
-            if (product.getImages() != null) {
+            if (!product.getImages().isEmpty()) {
                 deleteProductImagesFromDatabase(product);
             }
             productPreviewImage = toImageEntity(multipartPreviewFile);
@@ -128,10 +129,7 @@ public class ProductServiceImpl implements ProductService {
                                   MultipartFile multipartPreviewFile,
                                   MultipartFile multipartFile) throws IOException {
         Product product = this.getProductById(id);
-        if (product == null) {
-            log.error("Product not found. Id: " + id);
-            throw new ApiRequestException("Product not found. Id: " + id);
-        }
+
         addImagesToProduct(product, multipartPreviewFile, multipartFile);
         product.setTitle(productUpdate.getTitle());
         product.setDescription(productUpdate.getDescription());

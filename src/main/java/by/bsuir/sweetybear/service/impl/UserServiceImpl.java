@@ -1,4 +1,4 @@
-package by.bsuir.sweetybear.service;
+package by.bsuir.sweetybear.service.impl;
 
 import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.Image;
@@ -8,6 +8,7 @@ import by.bsuir.sweetybear.repository.BucketRepository;
 import by.bsuir.sweetybear.repository.ImageRepository;
 import by.bsuir.sweetybear.repository.OrderRepository;
 import by.bsuir.sweetybear.repository.UserRepository;
+import by.bsuir.sweetybear.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -57,16 +58,48 @@ public class UserServiceImpl implements UserService {
 
     private void sendEmailMessageToUser(final User user) {
         String message = String.format(
-                "%s, we hope that we will not quarrel! " +
-                        "\nActivate your email: http://localhost:" + serverPort + "/activate/%s ",
+                "%s, we hope that we will not quarrel!\n" +
+                        "Activate your email: http://localhost:" + serverPort + "/activate/%s ",
                 user.getName(),
                 user.getActivationCode()
         );
         String title = "Thanks for registration!";
 
         mailSender.send(user.getEmail(), title, message);
+        log.info("Send greeting message.");
     }
 
+    @Override
+    public void addUserAfterOauthLoginSuccess(String email, String name) {
+        User user = new User();
+        user.setEmail(email);
+        user.setName(name);
+        user.setActive(true);
+        user.getRoles().add(Role.ROLE_USER);
+        String temporaryPassword = UUID.randomUUID().toString();
+        user.setPassword(passwordEncoder.encode(temporaryPassword));
+
+        log.info("Saving User. Email {}", email);
+        userRepository.save(user);
+
+        sendEmailWithPasswordToUser(user, temporaryPassword);
+    }
+
+    private void sendEmailWithPasswordToUser(final User user, final String temporaryPassword) {
+        String message = String.format(
+                """
+                        %s, there are your account data
+                        Email: %s
+                        Password: %s""",
+                user.getName(),
+                user.getEmail(),
+                temporaryPassword
+        );
+        String title = "Thanks for registration!";
+
+        mailSender.send(user.getEmail(), title, message);
+        log.info("Send message with password.");
+    }
 
     @Override
     public List<User> userList(String email) {
@@ -76,7 +109,9 @@ public class UserServiceImpl implements UserService {
 
     @Override
     public User getUserById(Long id) {
-        return userRepository.findById(id).orElse(null);
+        return userRepository
+                .findById(id)
+                .orElseThrow(() -> new ApiRequestException("User not found. Id: " + id));
     }
 
     @Override
@@ -91,10 +126,13 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
+    public User getUserByResetPasswordCode(String resetPasswordCode) {
+        return userRepository.findByResetPasswordCode(resetPasswordCode);
+    }
+
+    @Override
     public void banUserAccountById(Long id) {
         User user = this.getUserById(id);
-        if (user == null)
-            throw new ApiRequestException("User not found");
 
         user.setActive(!user.isActive());
         log.info("Ban/Unban user. Id: {}, Email: {}", user.getId(), user.getEmail());
@@ -102,20 +140,10 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void setAddressToUser(final User user,
-                                 final String address) {
-        user.setAddress(address);
-        log.info("Set address to user. User email: {}", user.getEmail());
-        this.save(user);
-    }
-
-    @Override
     public void updateUserById(Long id,
                                User userUpdate,
                                MultipartFile multipartFile) throws IOException {
         User user = this.getUserById(id);
-        if (user == null)
-            throw new ApiRequestException("User not found");
 
         if (multipartFile.getSize() != 0)
             addAvatarToUser(user, multipartFile);
@@ -124,24 +152,22 @@ public class UserServiceImpl implements UserService {
         user.setEmail(userUpdate.getEmail());
         user.setPassword(passwordEncoder.encode(userUpdate.getPassword()));
 
-        changeSecurityAuthenticationEmail(user);
+        changeSecurityAuthenticationEmail(user.getEmail());
 
         log.info("Update user. Id: {}", id);
         userRepository.save(user);
     }
 
-    private void changeSecurityAuthenticationEmail(final User user) {
+    private void changeSecurityAuthenticationEmail(final String email) {
         User userDetails = (User) SecurityContextHolder.getContext()
                 .getAuthentication()
                 .getPrincipal();
-        userDetails.setEmail(user.getEmail());
+        userDetails.setEmail(email);
     }
 
     @Override
     public void deleteUserAvatarById(Long id) {
         User user = this.getUserById(id);
-        if (user == null)
-            throw new ApiRequestException("User not found");
 
         user.setAvatar(null);
         imageRepository.markToDeleteByUserId(id, "toDelete");
@@ -160,7 +186,6 @@ public class UserServiceImpl implements UserService {
         userAvatar = toImageEntity(multipartFile);
         userAvatar.setPreviewImage(true);
         user.addAvatarToUser(userAvatar);
-
     }
 
     @Override
@@ -197,10 +222,11 @@ public class UserServiceImpl implements UserService {
     public void deleteUserAccountById(Long id) {
         User user = this.getUserById(id);
         user.setBucket(null);
+        user.setAddress(null);
         userRepository.save(user);
         bucketRepository.deleteByUserId(id);
         orderRepository.deleteByUserId(id);
-        userRepository.deleteById(id);
+        userRepository.delete(user);
         log.warn("Delete user account. User id: {}", id);
     }
 }

@@ -5,19 +5,16 @@
     <title>Sweety Bear</title>
     <link rel="stylesheet" href="../static/css/preloader.css" th:href="@{/css/preloader.css}">
     <th:block th:replace="/base/base_dependencies :: base_dependencies"/>
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-            integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-            crossorigin="anonymous"></script>
     <style>
         .card_link {
             text-decoration: none !important;
             color: inherit !important;
         }
+
         .card {
             transition: 0.5s;
         }
+
         .card:hover {
             background-color: rgba(245, 245, 245, 0.99);
             transform: scale(1.02);
@@ -35,32 +32,34 @@
     <div class="loader" id="preloader"></div>
 </div>
 <header th:insert="blocks/header :: header"></header>
-<div class="mt-3 ml-5" style="font-size:18px">
+<div class="mt-3 ml-5" style="font-size:18px" th:text="#{menu.catalog}">
     Catalog
 </div>
 <div class="btn-group mt-3 ml-5" role="group" aria-label="Button group with nested dropdown">
     <div class="btn-group" role="group">
         <button th:unless="${#arrays.isEmpty(products)}" type="button" class="btn btn-outline-secondary dropdown-toggle"
                 data-bs-toggle="dropdown" aria-expanded="false">
-            Sort
+            <span th:text="#{products.sort}"></span>
         </button>
         <ul class="dropdown-menu">
             <li>
                 <form action="/" method="get">
                     <input type="hidden" th:value="NEW" name="sort">
-                    <button type="submit" class="btn btn-light">New</button>
+                    <button type="submit" class="btn btn-light"><span th:text="#{products.sort.new}"></span></button>
                 </form>
             </li>
             <li>
                 <form action="/" method="get">
                     <input type="hidden" th:value="ASCENDING" name="sort">
-                    <button type="submit" class="btn btn-light mt-1">Cheap</button>
+                    <button type="submit" class="btn btn-light mt-1"><span th:text="#{products.sort.cheap}"></span>
+                    </button>
                 </form>
             </li>
             <li>
                 <form action="/" method="get">
                     <input type="hidden" th:value="REDUCING" name="sort">
-                    <button type="submit" class="btn btn-light mt-1">Expensive</button>
+                    <button type="submit" class="btn btn-light mt-1"><span th:text="#{products.sort.expensive}"></span>
+                    </button>
                 </form>
             </li>
         </ul>
@@ -69,12 +68,14 @@
         <button th:unless="${error}" class="btn btn-outline-secondary ml-3" type="button"
                 data-bs-toggle="offcanvas"
                 data-bs-target="#demo">
-            Add product
+            <span th:text="#{products.add}"></span>
         </button>
     </div>
 </div>
 <div th:if="${title}" class="mt-3 ml-5">
-    <div th:if="${#arrays.isEmpty(products)}">No such products like '<span th:utext="${title}">title</span>'</div>
+    <div th:if="${#arrays.isEmpty(products)}"><span th:text="#{products.searchError}"></span> '<span
+            th:utext="${title}">title</span>'
+    </div>
 </div>
 <div>
     <div class="row row-cols-1 row-cols-md-3 g-4 ml-4 mr-4 mb-4">
@@ -90,7 +91,7 @@
                     <form th:action="@{/{id}/bucket(id=${product.id})}">
                         <div class="card-body">
                             <h5 class="card-title" th:utext="${product.title}">Card title</h5>
-                            <div class="card-text" style="display: inline-block">Price:
+                            <div class="card-text" style="display: inline-block"><span th:text="#{products.price}"></span>:
                                 <div th:utext="${product.price}" style="display: inline-block; font-weight:bold">
                                     price
                                 </div>
@@ -98,9 +99,9 @@
                             </div>
                             <p class="card-text" th:utext="${product.description}">Des</p>
                             <button th:if="${product.isProductAvailable()}" type="submit"
-                                    class="btn btn-outline-secondary">Add to bucket
+                                    class="btn btn-outline-secondary"><span th:text="#{products.addToBucket}"></span>
                             </button>
-                            <p th:unless="${product.isProductAvailable()}" class="card-text"
+                            <p th:unless="${product.isProductAvailable()}" class="card-text" th:text="#{products.notAvailable}"
                                style="color:gray">Is not available now</p>
                         </div>
                     </form>
@@ -112,31 +113,31 @@
 <div class="ml-5 mr-5 mt-4" th:if="${user.isAdmin()}">
     <div th:if="${error}">
         <div style="font-size:18px">
-            Add new product
+            <span th:text="#{products.add}"></span>
         </div>
         <form th:action="@{/product/create}" th:method="post" th:object="${product}"
               enctype="multipart/form-data"
               class="row g-3">
             <div class="input-group mt-4 col-md-6">
-                <span class="input-group-text" id="inputGroup-sizing-default">Title</span>
+                <span class="input-group-text" id="inputGroup-sizing" th:text="#{products.title}">Title</span>
                 <input type="text" th:field="*{title}" class="form-control" aria-label="Sizing example input"
-                       aria-describedby="inputGroup-sizing-default">
+                       aria-describedby="inputGroup-sizing">
             </div>
             <div class="alert alert-danger col-md-auto ml-2 mt-1" th:if="${#fields.hasErrors('title')}"
                  th:errors="*{title}">title error
             </div>
             <div class="input-group mt-2 col-md-12">
-                <span class="input-group-text">Description</span>
+                <span class="input-group-text" th:text="#{products.description}">Description</span>
                 <textarea th:field="*{description}" class="form-control" aria-label="With textarea"></textarea>
             </div>
             <div class="alert alert-danger col-md-auto ml-2 mt-1" th:if="${#fields.hasErrors('description')}"
                  th:errors="*{description}"></div>
             <div class="input-group mb-2 mt-2 col-md-3">
-                <label for="formFile1" class="form-label">First image </label>
+                <label for="formFile1" class="form-label" th:text="#{products.firstImage}">First image </label>
                 <input required class="form-control" type="file" name="file1" id="formFile1">
             </div>
             <div class="input-group col-md-3">
-                <label for="formFile2" class="form-label">Second image </label>
+                <label for="formFile2" class="form-label" th:text="#{products.firstImage}">Second image </label>
                 <input class="form-control" type="file" name="file2" id="formFile2">
             </div>
             <div class=" input-group mt-3">
@@ -148,7 +149,7 @@
                          th:errors="*{price}"></div>
                 </div>
                 <div class="input-group col-md-6">
-                    <span class="input-group-text">Weight</span>
+                    <span class="input-group-text" th:text="#{products.weight}">Weight</span>
                     <input type="number" th:field="*{weight}" class="form-control"
                            aria-label="Amount (to the nearest dollar)">
                     <div class="alert alert-danger col-md-auto mt-1 ml-1" th:if="${#fields.hasErrors('weight')}"
@@ -157,45 +158,43 @@
                 <div class="input-group mt-3">
                     <div class="form-check form-switch">
                         <input class="form-check-input col-md-3" type="checkbox" th:field="*{availability}"
-                               role="switch" id="flexSwitchCheckChecked"
+                               role="switch" id="flexSwitchCheck"
                                checked>
-                        <label class="form-check-label" for="flexSwitchCheckChecked">Product availability</label>
+                        <label class="form-check-label" for="flexSwitchCheck" th:text="#{products.availability}">Product availability</label>
                     </div>
                     <div class="alert alert-danger col-md-auto ml-2 mt-1" th:if="${#fields.hasErrors('availability')}"
                          th:errors="*{availability}"></div>
                 </div>
             </div>
             <div>
-                <button type="submit" class="btn btn-outline-secondary col-md-3 mb-5">Add product</button>
+                <button type="submit" class="btn btn-outline-secondary col-md-3 mb-5"><span th:text="#{products.add}"></span></button>
             </div>
         </form>
     </div>
 </div>
-
-
 <div class="offcanvas offcanvas-start" id="demo">
     <div class="offcanvas-header">
-        <h1 class="offcanvas-title">New product</h1>
+        <h1 class="offcanvas-title"><span th:text="#{products.add.new}"></span></h1>
         <button type="button" class="btn-close text-reset" data-bs-dismiss="offcanvas"></button>
     </div>
     <div class="offcanvas-body">
         <form th:action="@{/product/create}" th:method="post" th:object="${product}" enctype="multipart/form-data"
               class="row g-3">
             <div class="input-group mt-4 col-md-6">
-                <span class="input-group-text" id="inputGroup-sizing-default">Title</span>
+                <span class="input-group-text" id="inputGroup-sizing-default" th:text="#{products.title}">Title</span>
                 <input type="text" th:field="*{title}" class="form-control" aria-label="Sizing example input"
                        aria-describedby="inputGroup-sizing-default">
             </div>
             <div class="input-group mt-2 col-md-12">
-                <span class="input-group-text">Description</span>
+                <span class="input-group-text" th:text="#{products.description}">Description</span>
                 <textarea th:field="*{description}" class="form-control" aria-label="With textarea"></textarea>
             </div>
             <div class="input-group mt-2 col-md-6">
-                <label for="formFile1" class="form-label">First image </label>
+                <label for="formFile1" class="form-label" th:text="#{products.firstImage}">First image </label>
                 <input required class="form-control" type="file" name="file1" id="formFile1">
             </div>
             <div class="input-group mt-2 col-md-6">
-                <label for="formFile2" class="form-label">Second image </label>
+                <label for="formFile2" class="form-label" th:text="#{products.firstImage}">Second image </label>
                 <input class="form-control" type="file" name="file2" id="formFile2">
             </div>
             <div class="input-group mt-2 col-md-6">
@@ -204,7 +203,7 @@
                        aria-label="Amount (to the nearest dollar)">
             </div>
             <div class="input-group mt-2 col-md-6">
-                <span class="input-group-text">Weight</span>
+                <span class="input-group-text" th:text="#{products.weight}">Weight</span>
                 <input type="number" th:field="*{weight}" class="form-control"
                        aria-label="Amount (to the nearest dollar)">
             </div>
@@ -213,11 +212,11 @@
                     <input class="form-check-input col-md-3" type="checkbox" th:field="*{availability}"
                            role="switch" id="flexSwitchCheckChecked"
                            checked>
-                    <label class="form-check-label" for="flexSwitchCheckChecked">Product availability</label>
+                    <label class="form-check-label" for="flexSwitchCheckChecked" th:text="#{products.availability}">Product availability</label>
                 </div>
             </div>
             <div>
-                <button type="submit" class="btn btn-outline-secondary col-md-6 mb-5">Add product</button>
+                <button type="submit" class="btn btn-outline-secondary col-md-6 mb-5"><span th:text="#{products.add}"></span></button>
             </div>
         </form>
 

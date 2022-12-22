@@ -4,8 +4,8 @@ import by.bsuir.sweetybear.dto.ProductDTO;
 import by.bsuir.sweetybear.model.Product;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.model.enums.SortType;
-import by.bsuir.sweetybear.service.ProductServiceImpl;
-import by.bsuir.sweetybear.service.UserServiceImpl;
+import by.bsuir.sweetybear.service.impl.ProductServiceImpl;
+import by.bsuir.sweetybear.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -33,8 +33,13 @@ public class ProductController {
                            @RequestParam(name = "sort", required = false) SortType type,
                            Principal principal,
                            Model model) {
+        User userPrincipal = userService.getUserByPrincipal(principal);
+
+        if (!userPrincipal.isActive() && userPrincipal.getEmail() != null)
+            return "redirect:/login";
+
         model.addAttribute("products", productService.listProducts(title, type));
-        model.addAttribute("user", userService.getUserByPrincipal(principal));
+        model.addAttribute("user", userPrincipal);
         model.addAttribute("product", new ProductDTO());
         model.addAttribute("title", title);
         return "products";
@@ -112,7 +117,7 @@ public class ProductController {
                             Principal principal,
                             HttpServletRequest request) {
         User user = userService.getUserByPrincipal(principal);
-        if (principal == null) {
+        if (user == null) {
             return "redirect:/";
         }
         productService.addProductIdToUserBucket(id, user.getEmail());

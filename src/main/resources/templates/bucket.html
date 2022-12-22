@@ -15,6 +15,12 @@
 <div class="mt-3 ml-5" style="font-size:18px">
     Bucket
 </div>
+<div th:if="${param.success}" class="mb-3 ml-5 mt-3" style="width:60%">
+    <div class="alert alert-success">
+        <span>You have successfully placed an order. Please pay for your order
+            <a th:href="@{/orders/user/{id}(id=${user.getId()})}" class="alert-link">in your orders.</a></span>
+    </div>
+</div>
 <div th:unless="${bucket.isBucketEmpty()}">
     <div class="mt-3 ml-5" style="font-size:16px">
         Final cost
@@ -48,7 +54,8 @@
 <div class="mt-3 ml-5" th:if="${bucket.isBucketEmpty()}">
     Your shopping cart is empty, make purchases in our <a href="/">catalog</a>
 </div>
-<form th:unless="${bucket.isBucketEmpty()}" class="mt-1 ml-4" th:action="@{/bucket}" method="post">
+<form th:unless="${bucket.isBucketEmpty()}" class="mt-1 ml-4" th:action="@{/bucket}" th:object="${address}"
+      method="POST">
     <input type="hidden" name="_csrf" value="${_csrf.token}">
     <div class="form-check form-switch ml-4">
         <input class="form-check-input col-md-3" type="checkbox"
@@ -57,11 +64,33 @@
                checked>
         <label class="form-check-label" for="flexSwitchCheckChecked">Pickup | Delivery</label>
     </div>
-    <div id="addressInput" style="width: 40%" class="ml-4 mt-2 mb-2">
-        <span class="input-group-text">Address</span>
-        <input type="text" name="address" class="form-control" aria-label="Address">
+    <div style="width: 80%" id="addressInput" class="row g-3 ml-2 mt-2">
+        <div class="input-group">
+            <div class="col-md-6">
+                <label for="Street" class="form-label">Street</label>
+                <input th:field="*{street}" id="Street" type="text" class="form-control" aria-label="Address">
+            </div>
+            <div class="col-md-6">
+                <label for="Street" class="form-label">House</label>
+                <input th:field="*{houseNumber}" type="number" class="form-control" aria-label="Address">
+            </div>
+        </div>
+        <div class="input-group">
+            <div class="col-md-4">
+                <label for="Street" class="form-label">Apartment</label>
+                <input th:field="*{apartmentNumber}" type="number" class="form-control" aria-label="Address">
+            </div>
+            <div class="col-md-4">
+                <label for="Street" class="form-label">Case</label>
+                <input th:field="*{caseNumber}" type="number" class="form-control" aria-label="Address">
+            </div>
+            <div class="col-md-4">
+                <label for="Street" class="form-label">Post code</label>
+                <input th:field="*{postCode}" type="number" class="form-control" aria-label="Address">
+            </div>
+        </div>
     </div>
-    <button type="submit" class="btn btn-outline-secondary ml-4 mt-2">Create order</button>
+    <button type="submit" class="btn btn-outline-secondary ml-4 mt-4 mb-4">Go to payment</button>
 </form>
 </body>
 </html>

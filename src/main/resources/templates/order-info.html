@@ -21,7 +21,7 @@
         <h6 class="card-subtitle mb-2 text-muted" th:utext="${order.status}">Status</h6>
         <p class="card-text"></p>
         <div class="card-text" style="display: inline-block">User:
-            <a th:if="${order.user}" th:href="@{/user/{id}(id=${order.user.id})}">
+            <a th:if="${order.user}" th:href="@{/admin/user/{id}(id=${order.user.id})}">
                 <div th:utext="${order.user.name}" style="display: inline-block">User name</div>
             </a>
             <p style="color: #6e0001" th:unless="${order.user}">DELETED</p>
@@ -30,9 +30,16 @@
             <div th:utext="${order.sum}" style="display: inline-block">Sum</div>
         </div>
         <div class="card-text" style="display: inline-block">Address:
-            <div th:utext="${order.address}" th:unless="${order.isOrderDeliveryPickup()}"
-                 style="display: inline-block; font-weight:bold">Address
-            </div>
+            <p class="card-text" th:unless="${order.isOrderDeliveryPickup()}">
+                <span style="font-weight:bold" th:if="${order.address.street}" th:utext="${order.address.street}"></span>
+                <span style="font-weight:bold" th:if="${order.address.houseNumber}">
+                            <span th:utext="${order.address.houseNumber}"></span> /
+                        </span>
+                <span style="font-weight:bold" th:if="${order.address.caseNumber}">
+                            <span th:utext="${order.address.caseNumber}"></span>,
+                        </span>
+                <span th:if="${order.address.apartmentNumber}" th:utext="${order.address.apartmentNumber}"></span>
+            </p>
             <p class="card-text" th:if="${order.isOrderDeliveryPickup()}"
                style="display: inline-block; font-weight:bold">PICKUP</p>
         </div>
@@ -65,7 +72,7 @@
 </div>
 <div th:if="${user.isAdmin()}" th:unless="${order.isOrderCanceled()}" class="btn-group" role="group">
     <div>
-        <form th:method="post" th:action="@{/admin/orders/edit/{id}(id=${order.id})}">
+        <form th:unless="${order.isOrderApproved()}" th:if="${order.isOrderPaid()}" th:method="post" th:action="@{/admin/orders/edit/{id}(id=${order.id})}">
             <input type="hidden" name="_csrf" value="${_csrf.token}">
             <input type="hidden" th:value="APPROVED" name="status">
             <button onclick="return deleteConfig('APPROVED')" type="submit" class="btn btn-outline-success ml-5 mt-1">

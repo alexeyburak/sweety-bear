@@ -1,4 +1,4 @@
-package by.bsuir.sweetybear.service;
+package by.bsuir.sweetybear.service.impl;
 
 import by.bsuir.sweetybear.dto.BucketDTO;
 import by.bsuir.sweetybear.dto.BucketDetailDTO;
@@ -8,6 +8,7 @@ import by.bsuir.sweetybear.model.enums.DeliveryType;
 import by.bsuir.sweetybear.model.enums.OrderStatus;
 import by.bsuir.sweetybear.repository.BucketRepository;
 import by.bsuir.sweetybear.repository.ProductRepository;
+import by.bsuir.sweetybear.service.BucketService;
 import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -110,12 +111,13 @@ public class BucketServiceImpl implements BucketService {
     @Override
     @Transactional
     public void addBucketToOrder(final String email,
-                                 final String address) {
+                                 final Address address) {
         User user = this.getUserForOrderAndSetAddress(email, address);
 
         Bucket bucket = user.getBucket();
-        if (bucket == null || getProductsFromBucket(bucket).isEmpty())
+        if (bucket == null || getProductsFromBucket(bucket).isEmpty()) {
             throw new ApiRequestException("Bucket is empty");
+        }
         Order order = new Order();
         order.setStatus(OrderStatus.NEW);
         order.setUser(user);
@@ -126,31 +128,32 @@ public class BucketServiceImpl implements BucketService {
 
         BigDecimal totalSum = countOrderTotalSum(orderDetails);
 
-        addDeliveryStatusToOrder(order, address);
+        addDeliveryStatusAndAddressToOrder(order, address);
         order.setDetails(orderDetails);
         order.setSum(totalSum);
-        order.setAddress(address);
         log.info("Add bucket to order. Bucket id: {}.", bucket.getId());
         orderService.save(order);
 
         clearProductsFromBucket(bucket);
     }
 
-    private void addDeliveryStatusToOrder(final Order order,
-                                          final String address) {
-        if (address.isEmpty())
+    private void addDeliveryStatusAndAddressToOrder(final Order order,
+                                                    final Address address) {
+        if (address.getStreet().isEmpty())
             order.setDelivery(DeliveryType.PICKUP);
-        else
+        else {
+            order.setAddress(address);
             order.setDelivery(DeliveryType.DELIVERY);
+        }
     }
 
     private User getUserForOrderAndSetAddress(final String email,
-                                              final String address) {
+                                              final Address address) {
         User user = userService.getUserByEmail(email);
         if (user == null)
             throw new ApiRequestException("User is not found");
-        if (!address.isEmpty())
-            userService.setAddressToUser(user, address);
+        if (!address.getStreet().isEmpty())
+            user.setAddress(address);
 
         return user;
     }
