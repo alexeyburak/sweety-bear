@@ -18,12 +18,6 @@ import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.Objects;
 
-/**
- * sweety-bear
- * Created by Alexey Burak
- * Nov 2022
- */
-
 @Controller
 @RequiredArgsConstructor
 public class OrderController {

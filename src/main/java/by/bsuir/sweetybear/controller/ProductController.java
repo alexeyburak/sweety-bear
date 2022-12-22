@@ -20,12 +20,6 @@ import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
 
-/**
- * sweety-bear
- * Created by Alexey Burak
- * Oct 2022
- */
-
 @Controller
 @RequiredArgsConstructor
 public class ProductController {

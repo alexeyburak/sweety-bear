@@ -13,12 +13,6 @@ import javax.validation.constraints.NotBlank;
 import java.time.LocalDateTime;
 import java.util.*;
 
-/**
- * sweety-bear
- * Created by Alexey Burak
- * Oct 2022
- */
-
 @Entity
 @Table(name = "users")
 @Data

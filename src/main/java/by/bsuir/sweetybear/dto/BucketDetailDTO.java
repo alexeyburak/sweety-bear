@@ -5,12 +5,6 @@ import lombok.*;
 
 import java.math.BigDecimal;
 
-/**
- * sweety-bear
- * Created by Alexey Burak
- * Nov 2022
- */
-
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

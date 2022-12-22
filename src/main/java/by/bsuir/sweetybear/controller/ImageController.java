@@ -13,12 +13,6 @@ import org.springframework.web.bind.annotation.RestController;
 import java.io.ByteArrayInputStream;
 import java.util.Objects;
 
-/**
- * sweety-bear
- * Created by Alexey Burak
- * Oct 2022
- */
-
 @RestController
 @RequiredArgsConstructor
 public class ImageController {

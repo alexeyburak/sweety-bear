@@ -8,12 +8,6 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import java.time.ZoneId;
 import java.time.ZonedDateTime;
 
-/**
- * sweety-bear
- * Created by Alexey Burak
- * Nov 2022
- */
-
 @ControllerAdvice
 public class ApiExceptionHandler {
 

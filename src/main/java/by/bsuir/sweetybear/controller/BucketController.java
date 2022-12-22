@@ -17,12 +17,6 @@ import org.springframework.web.bind.annotation.PostMapping;
 
 import java.security.Principal;
 
-/**
- * sweety-bear
- * Created by Alexey Burak
- * Nov 2022
- */
-
 @Controller
 @RequiredArgsConstructor
 public class BucketController {

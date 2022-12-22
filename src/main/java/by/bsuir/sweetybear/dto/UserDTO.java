@@ -9,12 +9,6 @@ import lombok.NoArgsConstructor;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
 
-/**
- * sweety-bear
- * Created by Alexey Burak
- * Nov 2022
- */
-
 @Data
 @NoArgsConstructor
 @PasswordMatch

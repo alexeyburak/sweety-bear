@@ -17,12 +17,6 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.Objects;
 
-/**
- * sweety-bear
- * Created by Alexey Burak
- * Oct 2022
- */
-
 @Controller
 @RequiredArgsConstructor
 public class UserController {
