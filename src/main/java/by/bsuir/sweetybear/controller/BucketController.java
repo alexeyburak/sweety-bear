@@ -40,12 +40,9 @@ public class BucketController {
             return "redirect:/login";
 
         model.addAttribute("user", userPrincipal);
-        if (principal == null) {
-            model.addAttribute("bucket", new BucketDTO());
-        } else {
-            BucketDTO bucketDTO = bucketService.getBucketByUser(userPrincipal.getEmail());
-            model.addAttribute("bucket", bucketDTO);
-        }
+
+        BucketDTO bucketDTO = bucketService.getBucketByUser(userPrincipal.getEmail());
+        model.addAttribute("bucket", bucketDTO);
         return "bucket";
     }
 

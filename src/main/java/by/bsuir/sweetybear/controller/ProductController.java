@@ -41,7 +41,7 @@ public class ProductController {
                            Model model) {
         User userPrincipal = userService.getUserByPrincipal(principal);
 
-        if (!userPrincipal.isActive())
+        if (!userPrincipal.isActive() && userPrincipal.getEmail() != null)
             return "redirect:/login";
 
         model.addAttribute("products", productService.listProducts(title, type));
