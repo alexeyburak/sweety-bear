@@ -8,6 +8,12 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+/**
+ * sweety-bear
+ * Created by Alexey Burak
+ * Oct 2022
+ */
+
 public interface OrderRepository extends JpaRepository<Order, Long> {
     List<Order> findByStatus(OrderStatus status);
     List<Order> findByUserId(Long id);

@@ -7,6 +7,12 @@ import lombok.NoArgsConstructor;
 import javax.persistence.*;
 import java.math.BigDecimal;
 
+/**
+ * sweety-bear
+ * Created by Alexey Burak
+ * Oct 2022
+ */
+
 @Entity
 @Table(name = "orders_details")
 @Data

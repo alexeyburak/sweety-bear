@@ -7,6 +7,12 @@ import org.springframework.web.multipart.MultipartFile;
 import java.io.IOException;
 import java.util.List;
 
+/**
+ * sweety-bear
+ * Created by Alexey Burak
+ * Oct 2022
+ */
+
 public interface ProductService {
 
     // Return all products, and search by title

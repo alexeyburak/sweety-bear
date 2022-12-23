@@ -25,6 +25,12 @@ import java.util.UUID;
 
 import static by.bsuir.sweetybear.utils.Utils.toImageEntity;
 
+/**
+ * sweety-bear
+ * Created by Alexey Burak
+ * Oct 2022
+ */
+
 @Service
 @Slf4j
 @RequiredArgsConstructor

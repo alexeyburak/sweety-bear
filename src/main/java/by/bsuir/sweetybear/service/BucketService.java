@@ -7,6 +7,12 @@ import by.bsuir.sweetybear.model.User;
 
 import java.util.List;
 
+/**
+ * sweety-bear
+ * Created by Alexey Burak
+ * Oct 2022
+ */
+
 public interface BucketService {
 
     // Create bucket

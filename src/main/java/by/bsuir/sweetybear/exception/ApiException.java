@@ -5,6 +5,12 @@ import org.springframework.http.HttpStatus;
 
 import java.time.ZonedDateTime;
 
+/**
+ * sweety-bear
+ * Created by Alexey Burak
+ * Nov 2022
+ */
+
 @Data
 public class ApiException {
     private final String message;

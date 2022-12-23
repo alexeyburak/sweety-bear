@@ -7,6 +7,12 @@ import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
+/**
+ * sweety-bear
+ * Created by Alexey Burak
+ * Oct 2022
+ */
+
 public interface UserRepository extends JpaRepository<User, Long> {
     User findByEmail(String email);
     @Modifying

@@ -5,6 +5,12 @@ import lombok.Data;
 import javax.persistence.*;
 import java.util.List;
 
+/**
+ * sweety-bear
+ * Created by Alexey Burak
+ * Oct 2022
+ */
+
 @Entity
 @Table(name = "buckets")
 @Data

@@ -12,6 +12,12 @@ import java.util.Date;
 import java.util.List;
 import java.util.Objects;
 
+/**
+ * sweety-bear
+ * Created by Alexey Burak
+ * Oct 2022
+ */
+
 public class Utils {
 
     public static Image toImageEntity(MultipartFile file) throws IOException {

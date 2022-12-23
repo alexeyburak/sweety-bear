@@ -8,6 +8,12 @@ import org.springframework.web.servlet.LocaleResolver;
 
 import java.util.Locale;
 
+/**
+ * sweety-bear
+ * Created by Alexey Burak
+ * Oct 2022
+ */
+
 @Configuration
 public class AppConfig {
 

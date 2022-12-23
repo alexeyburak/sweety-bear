@@ -20,6 +20,12 @@ import java.util.stream.Collectors;
 
 import static by.bsuir.sweetybear.utils.Utils.removeOnlyOneIdFromList;
 
+/**
+ * sweety-bear
+ * Created by Alexey Burak
+ * Oct 2022
+ */
+
 @Service
 @Slf4j
 @AllArgsConstructor

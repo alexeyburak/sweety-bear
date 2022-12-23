@@ -5,6 +5,12 @@ import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 
+/**
+ * sweety-bear
+ * Created by Alexey Burak
+ * Oct 2022
+ */
+
 @MappedSuperclass
 @Data
 @RequiredArgsConstructor
