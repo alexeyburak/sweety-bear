@@ -93,8 +93,12 @@ public class OrderServiceImpl implements OrderService {
     public void checkForOrderPaymentDate(Long userId) {
         this.getUserOrdersById(userId)
                 .stream()
+                .filter(order -> !order.isOrderCanceled())
                 .filter(Order::isOrderPaymentDeprecated)
-                .forEach(order ->
-                        this.updateOrderStatusById(order.getId(), OrderStatus.CANCELED));
+                .forEach(order -> {
+                            log.info("Order payment was overdue.");
+                            this.updateOrderStatusById(order.getId(), OrderStatus.CANCELED);
+                        }
+                );
     }
 }
