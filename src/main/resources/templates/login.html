@@ -6,8 +6,9 @@
     <th:block th:replace="/base/base_dependencies :: base_dependencies"/>
 </head>
 <body>
-<form th:action="@{/login}" method="POST" style="width: 60%; display: block; margin-left: auto; margin-right: auto; margin-top: 5%">
-    <div class="mt-4 text-center" style="font-size:26px" th:text="#{login.title}" >
+<form th:action="@{/login}" method="POST"
+      style="width: 60%; display: block; margin-left: auto; margin-right: auto; margin-top: 5%">
+    <div class="mt-4 text-center" style="font-size:26px" th:text="#{login.title}">
         Authorization
     </div>
     <div th:if="${messageSuccess}" class="mb-3 mt-4">
@@ -27,7 +28,7 @@
     </div>
     <div th:if="${param.oauth2_login}" class="mb-3 mt-4">
         <div class="alert alert-success">
-            <span>We have sent your password to the address you specified.</span>
+            <span><i class="fa-solid fa-envelope-dot"></i> We have sent your password to the address you specified.</span>
         </div>
     </div>
 
@@ -35,7 +36,9 @@
         <label for="exampleInputEmail1" class="form-label" th:text="#{login.email}">Email address</label>
         <input autofocus type="email" name="username" class="form-control" id="exampleInputEmail1"
                aria-describedby="emailHelp">
-        <div id="emailHelp" class="form-text" th:text="#{login.email.description}">We'll never share your email with anyone else.</div>
+        <div id="emailHelp" class="form-text" th:text="#{login.email.description}">We'll never share your email with
+            anyone else.
+        </div>
     </div>
 
     <div class="mb-3 mt-2">
@@ -56,8 +59,8 @@
         <p>Not a member? <a href="/registration" th:text="#{signUp}">Sign up</a></p>
         <p>or sign up with:</p>
         <button type="button" class="btn btn-link btn-floating mx-1">
-            <i class="fab fa-google"></i>
-            <a th:href="@{/oauth2/authorization/google}">Sign up with Google</a>
+            <a th:href="@{/oauth2/authorization/google}" class="mr-2"><i class="fab fa-google fa-2xl"></i></a>
+            <a th:href="@{/oauth2/authorization/github}"><i class="fa-brands fa-github fa-2xl"></i></a>
         </button>
     </div>
 </form>
