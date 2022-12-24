@@ -74,7 +74,7 @@
                 <div th:if="${order.isOrderCanceled()}" class="btn-group ml-3" role="group">
                     <form th:action="@{/order/pdf/export/{id}(id=${order.id})}" method="GET">
                         <input type="hidden" name="_csrf" value="${_csrf.token}">
-                        <button type="submit" class="btn btn-outline-secondary mb-3">Сheque</button>
+                        <button type="submit" class="btn btn-outline-secondary mb-3">Cheque <i class="fa-solid fa-download"></i> </button>
                     </form>
                 </div>
             </div>

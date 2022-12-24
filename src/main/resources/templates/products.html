@@ -190,11 +190,11 @@
                 <textarea th:field="*{description}" class="form-control" aria-label="With textarea"></textarea>
             </div>
             <div class="input-group mt-2 col-md-6">
-                <label for="formFile1" class="form-label" th:text="#{products.firstImage}">First image </label>
+                <label for="formFile1" class="form-label"><i class="fa-solid fa-image fa-xl mr-1"></i></label>
                 <input required class="form-control" type="file" name="file1" id="formFile1">
             </div>
             <div class="input-group mt-2 col-md-6">
-                <label for="formFile2" class="form-label" th:text="#{products.firstImage}">Second image </label>
+                <label for="formFile2" class="form-label"><i class="fa-solid fa-image fa-xl mr-1"></i></label>
                 <input class="form-control" type="file" name="file2" id="formFile2">
             </div>
             <div class="input-group mt-2 col-md-6">
@@ -203,7 +203,7 @@
                        aria-label="Amount (to the nearest dollar)">
             </div>
             <div class="input-group mt-2 col-md-6">
-                <span class="input-group-text" th:text="#{products.weight}">Weight</span>
+                <span class="input-group-text" ><i class="fa-solid fa-weight-scale fa-xl"></i></span>
                 <input type="number" th:field="*{weight}" class="form-control"
                        aria-label="Amount (to the nearest dollar)">
             </div>
@@ -222,7 +222,7 @@
 
     </div>
     <div class="offcanvas-footer ml-2">
-        <h6 class="offcanvas-footer">© Sweety Bear, 2022</h6>
+        <h6 class="offcanvas-footer"><i class="fa-solid fa-copyright"></i> Sweety Bear, 2022</h6>
     </div>
 </div>
 

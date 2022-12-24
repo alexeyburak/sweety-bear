@@ -1,11 +1,11 @@
 <div th:fragment="header">
     <nav class="navbar navbar-expand-lg bg-light">
         <a class="navbar-brand ml-3" href="/" style="font-size:30px">Sweety Bear</a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+        <button class="navbar-toggler justify-content-center" type="button" data-toggle="collapse" data-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="true" aria-label="Toggle navigation"
                 style="border-color: black !important; color: black !important">
 
-            <span class="navbar-toggler-icon"></span>
+            <span class="navbar-toggler-icon mt-1 "><i class="fa-solid fa-lg fa-bars"></i></span>
         </button>
         <div class="navbar-collapse collapse ml-3" id="navbarCollapse">
             <ul class="navbar-nav mr-auto">
@@ -13,25 +13,26 @@
                     <a class="nav-link active" aria-current="page" href="/" th:text="#{menu.catalog}">Catalog</a>
                 </li>
                 <li class="nav-item" th:if="${user.email}">
-                    <a class="nav-link active" th:href="@{/user/edit/{id}(id=${user.id})}"
-                       th:text="#{menu.editAccount}">Edit account</a>
+                    <a class="nav-link active" th:href="@{/orders/user/{id}(id=${user.id})}" th:text="#{menu.myOrders}">My
+                        orders</a>
                 </li>
                 <li class="nav-item" th:if="${user.email}">
-                    <a th:if="${user.bucket != null}" class="nav-link active position-relative mr-3 "
-                       th:href="@{/bucket}" >
-                        <span th:text="#{menu.bucket}">Bucket</span>
+                    <a th:if="${user.bucket != null}" class="nav-link active position-relative mr-2 "
+                       th:href="@{/bucket}">
+                        <span ><i class="fa-solid fa-cart-shopping fa-lg"></i></span>
                         <span th:if="${user.bucket.getNumberOfProductsInBucket() != 0}"
                               style="background-color: #a22c2c !important"
                               th:utext="${user.bucket.getNumberOfProductsInBucket()}"
                               class="position-absolute top-2 start-100 translate-middle badge rounded-pill bg-danger">
                                          99+
-                                            <span class="visually-hidden mr-3 ">products</span>
+                                            <span class="visually-hidden mr-2 ">products</span>
                             </span>
                     </a>
                 </li>
                 <li class="nav-item" th:if="${user.email}">
-                    <a class="nav-link active" th:href="@{/orders/user/{id}(id=${user.id})}" th:text="#{menu.myOrders}">My
-                        orders</a>
+                    <a class="nav-link active" th:href="@{/user/edit/{id}(id=${user.id})}">
+                        <i class="fa-solid fa-user fa-lg mr-1"></i>
+                    </a>
                 </li>
                 <li class="nav-item" th:if="${user.isAdmin()}">
                     <a class="nav-link active" th:href="@{/admin}" th:text="#{menu.adminMenu}">Admin menu</a>
