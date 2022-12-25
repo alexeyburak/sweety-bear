@@ -17,12 +17,14 @@
         </div>
     </div>
     <div th:if="${messageError}" class="mb-3 mt-4">
-        <div class="alert alert-danger"
-             th:text="${messageError}">messageError
+        <div class="alert alert-danger">
+            <i class="fa-solid fa-circle-exclamation"></i>
+            <span th:text="${messageError}">error</span>
         </div>
     </div>
     <div th:if="${param.logout}" class="mb-3 mt-4">
         <div class="alert alert-success">
+            <i class="fa-solid fa-check"></i>
             <span th:text="#{login.logout}">You have been logged out.</span>
         </div>
     </div>

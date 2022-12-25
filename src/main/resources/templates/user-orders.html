@@ -42,6 +42,14 @@
                         dateOfDelivery
                     </div>
                 </div>
+                <div class="card-text mt-1" style="color: red"
+                     th:if="${order.getNumberOfDaysOfTheOrderPaymentDay()} <= 1"
+                     th:unless="${order.isOrderCanceled()}">
+                    <div th:unless="${order.isOrderPaid()}">
+                        <i class="fa-solid fa-circle-exclamation"></i>
+                        There is one day left before payment of the order otherwise it will be canceled!
+                    </div>
+                </div>
                 <div class="mt-1">
                     Products:
                 </div>

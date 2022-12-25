@@ -69,6 +69,10 @@ public class Order extends IdentifiedModel implements Comparable<Order>{
         return dateOfDelivery.isBefore(LocalDateTime.now());
     }
 
+    public int getNumberOfDaysOfTheOrderPaymentDay() {
+        return dateOfDelivery.compareTo(LocalDateTime.now());
+    }
+
     private Double countCurrentlyProductsPrice() {
         return details
                 .stream()

@@ -3,9 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <title>Registration</title>
-    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css"
-          integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
+    <th:block th:replace="/base/base_dependencies :: base_dependencies"/>
     <style>
         input:invalid {
             animation: shake .3s;
@@ -65,8 +63,8 @@
         <p>Already have an account? <a href="/login" th:text="#{login}">Login</a></p>
         <p>or sign up with:</p>
         <button type="button" class="btn btn-link btn-floating mx-1">
-            <i class="fab fa-google"></i>
-            <a th:href="@{/oauth2/authorization/google}">Sign up with Google</a>
+            <a th:href="@{/oauth2/authorization/google}"><i class="mr-2 fab fa-google fa-2xl"></i></a>
+            <a th:href="@{/oauth2/authorization/github}"><i class="fa-brands fa-github fa-2xl"></i></a>
         </button>
     </div>
 </form>
