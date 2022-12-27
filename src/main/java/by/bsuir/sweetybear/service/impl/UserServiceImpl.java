@@ -11,7 +11,6 @@ import by.bsuir.sweetybear.repository.UserRepository;
 import by.bsuir.sweetybear.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -37,8 +36,6 @@ import static by.bsuir.sweetybear.utils.Utils.toImageEntity;
 @Transactional
 public class UserServiceImpl implements UserService {
 
-    @Value("${server.port}")
-    private String serverPort;
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;
     private final PasswordEncoder passwordEncoder;
@@ -58,21 +55,9 @@ public class UserServiceImpl implements UserService {
 
         log.info("Saving User. Email {}", email);
         userRepository.save(user);
-        sendEmailMessageToUser(user);
+
+        mailSender.sendEmailWithActivationLinkToUser(user);
         return true;
-    }
-
-    private void sendEmailMessageToUser(final User user) {
-        String message = String.format(
-                "%s, we hope that we will not quarrel!\n" +
-                        "Activate your email: http://localhost:" + serverPort + "/activate/%s ",
-                user.getName(),
-                user.getActivationCode()
-        );
-        String title = "Thanks for registration!";
-
-        mailSender.send(user.getEmail(), title, message);
-        log.info("Send greeting message.");
     }
 
     @Override
@@ -88,23 +73,7 @@ public class UserServiceImpl implements UserService {
         log.info("Saving User. Email {}", email);
         userRepository.save(user);
 
-        sendEmailWithPasswordToUser(user, temporaryPassword);
-    }
-
-    private void sendEmailWithPasswordToUser(final User user, final String temporaryPassword) {
-        String message = String.format(
-                """
-                        %s, there are your account data
-                        Email: %s
-                        Password: %s""",
-                user.getName(),
-                user.getEmail(),
-                temporaryPassword
-        );
-        String title = "Thanks for registration!";
-
-        mailSender.send(user.getEmail(), title, message);
-        log.info("Send message with password.");
+        mailSender.sendEmailWithPasswordToUser(user, temporaryPassword);
     }
 
     @Override

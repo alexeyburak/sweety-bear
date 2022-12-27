@@ -1,10 +1,8 @@
 package by.bsuir.sweetybear.service.impl;
 
-import by.bsuir.sweetybear.service.MailSender;
-import lombok.RequiredArgsConstructor;
+import by.bsuir.sweetybear.model.User;
+import by.bsuir.sweetybear.service.AbstractMailSender;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
@@ -15,22 +13,59 @@ import org.springframework.stereotype.Service;
  */
 
 @Service
-@RequiredArgsConstructor
 @Slf4j
-public class MailSenderImpl implements MailSender {
+public class MailSenderImpl extends AbstractMailSender {
 
-    private final JavaMailSender mailSender;
-
-    @Value("${spring.mail.username}")
-    private String username;
+    public MailSenderImpl(JavaMailSender mailSender) {
+        super(mailSender);
+    }
 
     @Override
-    public void send(String emailTo, String subject, String message) {
-        SimpleMailMessage mailMessage = new SimpleMailMessage();
-        mailMessage.setFrom(username);
-        mailMessage.setTo(emailTo);
-        mailMessage.setSubject(subject);
-        mailMessage.setText(message);
-        mailSender.send(mailMessage);
+    public void sendEmailWithResetPasswordLinkToUser(final User user) {
+        message = String.format(
+                """
+                        %s, click link to set new password
+                        Reset your password: http://localhost:%s/reset_password/%s""",
+                user.getName(),
+                serverPort,
+                user.getResetPasswordCode()
+        );
+        title = "Reset password";
+
+        send(user.getEmail(), title, message);
+        log.warn("Send resetting password message.");
+    }
+
+    @Override
+    public void sendEmailWithActivationLinkToUser(final User user) {
+        message = String.format(
+                """
+                        %s, we hope that we will not quarrel!
+                        Activate your email: http://localhost:%s/activate/%s""",
+                user.getName(),
+                serverPort,
+                user.getActivationCode()
+        );
+        title = "Thanks for registration!";
+
+        send(user.getEmail(), title, message);
+        log.warn("Send greeting message.");
+    }
+
+    @Override
+    public void sendEmailWithPasswordToUser(final User user, final String temporaryPassword) {
+        message = String.format(
+                """
+                        %s, there are your account data
+                        Email: %s
+                        Password: %s""",
+                user.getName(),
+                user.getEmail(),
+                temporaryPassword
+        );
+        title = "Thanks for registration!";
+
+        send(user.getEmail(), title, message);
+        log.warn("Send message with password.");
     }
 }
