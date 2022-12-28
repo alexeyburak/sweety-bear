@@ -24,15 +24,23 @@ public class MailSenderImpl extends AbstractMailSender {
     public void sendEmailWithResetPasswordLinkToUser(final User user) {
         message = String.format(
                 """
-                        %s, click link to set new password
-                        Reset your password: http://localhost:%s/reset_password/%s""",
+                        <h4> %s, click button to set new password</h4>
+                        <form action="http://localhost:%s/reset_password/%s" target="_blank"> <button style="background-color: #555555;
+                                                              border: none;
+                                                              color: white;
+                                                              text-align: center;
+                                                              margin-top: 10px;
+                                                              text-decoration: none;
+                                                              font-size: 20px;">Reset password</button>
+                        </form>
+                """,
                 user.getName(),
                 serverPort,
                 user.getResetPasswordCode()
         );
         title = "Reset password";
 
-        send(user.getEmail(), title, message);
+        sendWithMime(user.getEmail(), title, message);
         log.warn("Send resetting password message.");
     }
 
@@ -40,15 +48,23 @@ public class MailSenderImpl extends AbstractMailSender {
     public void sendEmailWithActivationLinkToUser(final User user) {
         message = String.format(
                 """
-                        %s, we hope that we will not quarrel!
-                        Activate your email: http://localhost:%s/activate/%s""",
+                        <h4>%s, we hope that we will not quarrel!</h4>
+                        <form action="http://localhost:%s/activate/%s" target="_blank"> <button style="background-color: #555555;
+                                                              border: none;
+                                                              color: white;
+                                                              text-align: center;
+                                                              margin-top: 10px;
+                                                              text-decoration: none;
+                                                              font-size: 20px;">Activate account</button>
+                        </form>
+                """,
                 user.getName(),
                 serverPort,
                 user.getActivationCode()
         );
         title = "Thanks for registration!";
 
-        send(user.getEmail(), title, message);
+        sendWithMime(user.getEmail(), title, message);
         log.warn("Send greeting message.");
     }
 
@@ -58,7 +74,8 @@ public class MailSenderImpl extends AbstractMailSender {
                 """
                         %s, there are your account data
                         Email: %s
-                        Password: %s""",
+                        Password: %s
+                """,
                 user.getName(),
                 user.getEmail(),
                 temporaryPassword
