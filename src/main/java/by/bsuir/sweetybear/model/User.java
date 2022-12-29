@@ -53,8 +53,10 @@ public class User extends IdentifiedModel implements UserDetails {
     private Bucket bucket;
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     private List<BankCard> bankCards = new ArrayList<>();
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    private Set<Product> favoriteProducts = new HashSet<>();
 
     public boolean isAdmin() {
         return roles.contains(Role.ROLE_ADMIN) || roles.contains(Role.ROLE_OWNER);
@@ -71,6 +73,10 @@ public class User extends IdentifiedModel implements UserDetails {
     public void addAvatarToUser(Image image) {
         image.setUser(this);
         this.avatar = image;
+    }
+
+    public void addProductToFavorites(Product product) {
+        favoriteProducts.add(product);
     }
 
     public void addBankCardToUser(BankCard bankCard) {

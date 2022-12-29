@@ -88,23 +88,33 @@
                         margin-left: auto; margin-right: auto " th:src="@{/images/{id}(id=${image.id})}"/>
                         </div>
                     </tr>
-                    <form th:action="@{/{id}/bucket(id=${product.id})}">
-                        <div class="card-body">
-                            <h5 class="card-title" th:utext="${product.title}">Card title</h5>
-                            <div class="card-text" style="display: inline-block"><span th:text="#{products.price}"></span>:
-                                <div th:utext="${product.price}" style="display: inline-block; font-weight:bold">
-                                    price
-                                </div>
-                                BYN
+
+                    <div class="card-body">
+                        <h5 class="card-title" th:utext="${product.title}">Card title</h5>
+                        <div class="card-text" style="display: inline-block"><span th:text="#{products.price}"></span>:
+                            <div th:utext="${product.price}" style="display: inline-block; font-weight:bold">
+                                price
                             </div>
-                            <p class="card-text" th:utext="${product.description}">Des</p>
-                            <button th:if="${product.isProductAvailable()}" type="submit"
-                                    class="btn btn-outline-secondary"><span th:text="#{products.addToBucket}"></span>
-                            </button>
-                            <p th:unless="${product.isProductAvailable()}" class="card-text" th:text="#{products.notAvailable}"
-                               style="color:gray">Is not available now</p>
+                            BYN
                         </div>
-                    </form>
+                        <p class="card-text" th:utext="${product.description}">Des</p>
+                        <div class="btn-group " role="group">
+                            <form th:action="@{/{id}/bucket(id=${product.id})}">
+                                <button th:if="${product.isProductAvailable()}" type="submit"
+                                        class="btn btn-outline-secondary mr-3">
+                                    <span th:text="#{products.addToBucket}">Add to bucket</span>
+                                </button>
+                            </form>
+                            <form th:action="@{/product/favorite/{id}(id=${product.id})}">
+                                <button th:if="${user.email}" type="submit" class="btn btn-outline-secondary ml-auto">
+                                    <i class="fa-solid fa-heart"></i>
+                                </button>
+                            </form>
+                        </div>
+                        <p th:unless="${product.isProductAvailable()}" class="card-text"
+                           th:text="#{products.notAvailable}"
+                           style="color:gray">Is not available now</p>
+                    </div>
                 </div>
             </a>
         </div>
@@ -160,14 +170,16 @@
                         <input class="form-check-input col-md-3" type="checkbox" th:field="*{availability}"
                                role="switch" id="flexSwitchCheck"
                                checked>
-                        <label class="form-check-label" for="flexSwitchCheck" th:text="#{products.availability}">Product availability</label>
+                        <label class="form-check-label" for="flexSwitchCheck" th:text="#{products.availability}">Product
+                            availability</label>
                     </div>
                     <div class="alert alert-danger col-md-auto ml-2 mt-1" th:if="${#fields.hasErrors('availability')}"
                          th:errors="*{availability}"></div>
                 </div>
             </div>
             <div>
-                <button type="submit" class="btn btn-outline-secondary col-md-3 mb-5"><span th:text="#{products.add}"></span></button>
+                <button type="submit" class="btn btn-outline-secondary col-md-3 mb-5"><span
+                        th:text="#{products.add}"></span></button>
             </div>
         </form>
     </div>
@@ -203,7 +215,7 @@
                        aria-label="Amount (to the nearest dollar)">
             </div>
             <div class="input-group mt-2 col-md-6">
-                <span class="input-group-text" ><i class="fa-solid fa-weight-scale fa-xl"></i></span>
+                <span class="input-group-text"><i class="fa-solid fa-weight-scale fa-xl"></i></span>
                 <input type="number" th:field="*{weight}" class="form-control"
                        aria-label="Amount (to the nearest dollar)">
             </div>
@@ -212,11 +224,13 @@
                     <input class="form-check-input col-md-3" type="checkbox" th:field="*{availability}"
                            role="switch" id="flexSwitchCheckChecked"
                            checked>
-                    <label class="form-check-label" for="flexSwitchCheckChecked" th:text="#{products.availability}">Product availability</label>
+                    <label class="form-check-label" for="flexSwitchCheckChecked" th:text="#{products.availability}">Product
+                        availability</label>
                 </div>
             </div>
             <div>
-                <button type="submit" class="btn btn-outline-secondary col-md-6 mb-5"><span th:text="#{products.add}"></span></button>
+                <button type="submit" class="btn btn-outline-secondary col-md-6 mb-5"><span
+                        th:text="#{products.add}"></span></button>
             </div>
         </form>
 
@@ -225,6 +239,5 @@
         <h6 class="offcanvas-footer"><i class="fa-solid fa-copyright"></i> Sweety Bear, 2022</h6>
     </div>
 </div>
-
 </body>
 </html>

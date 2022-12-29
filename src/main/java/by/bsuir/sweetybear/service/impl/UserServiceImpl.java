@@ -2,6 +2,7 @@ package by.bsuir.sweetybear.service.impl;
 
 import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.Image;
+import by.bsuir.sweetybear.model.Product;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.model.enums.Role;
 import by.bsuir.sweetybear.repository.BucketRepository;
@@ -203,5 +204,15 @@ public class UserServiceImpl implements UserService {
         orderRepository.deleteByUserId(id);
         userRepository.delete(user);
         log.warn("Delete user account. User id: {}", id);
+    }
+
+    @Override
+    public void addProductToFavorites(String authorizedEmail, Product product) {
+        User user = this.getUserByEmail(authorizedEmail);
+
+        user.addProductToFavorites(product);
+
+        userRepository.save(user);
+        log.info("Add product to favorites. User id: {}", user.getId());
     }
 }

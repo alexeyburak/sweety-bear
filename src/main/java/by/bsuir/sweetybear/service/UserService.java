@@ -1,5 +1,6 @@
 package by.bsuir.sweetybear.service;
 
+import by.bsuir.sweetybear.model.Product;
 import by.bsuir.sweetybear.model.User;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -41,4 +42,5 @@ public interface UserService {
     void deleteUserAccountById(Long id);
     // Delete user avatar
     void deleteUserAvatarById(Long id);
+    void addProductToFavorites(String authorizedEmail, Product product);
 }

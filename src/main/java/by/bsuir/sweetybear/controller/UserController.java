@@ -37,8 +37,8 @@ public class UserController {
 
     @PostMapping("/registration")
     public String registration(@ModelAttribute("user") @Valid UserDTO user,
-                             BindingResult bindingResult,
-                             Model model) {
+                               BindingResult bindingResult,
+                               Model model) {
         if (bindingResult.hasErrors()) {
             return "registration";
         }
@@ -63,6 +63,16 @@ public class UserController {
         }
 
         return "login";
+    }
+
+    @GetMapping("/user/favorites")
+    public String favoriteProducts(Model model,
+                                   Principal principal) {
+        User user = userService.getUserByPrincipal(principal);
+
+        model.addAttribute("user", user);
+        model.addAttribute("products", user.getFavoriteProducts());
+        return "user-favorites";
     }
 
     @GetMapping("/activate/{code}")

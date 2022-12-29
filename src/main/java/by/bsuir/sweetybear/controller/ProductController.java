@@ -123,13 +123,23 @@ public class ProductController {
                             Principal principal,
                             HttpServletRequest request) {
         User user = userService.getUserByPrincipal(principal);
-        if (user == null) {
-            return "redirect:/";
-        }
+
         productService.addProductIdToUserBucket(id, user.getEmail());
 
         String referer = request.getHeader("Referer");
         return "redirect:" + referer;
     }
+
+    @GetMapping("/product/favorite/{productId}")
+    public String addProductToUserFavorites(@PathVariable Long productId,
+                                     Principal principal,
+                                     HttpServletRequest request) {
+        Product favoriteProduct = productService.getProductById(productId);
+        userService.addProductToFavorites(principal.getName(), favoriteProduct);
+
+        String referer = request.getHeader("Referer");
+        return "redirect:" + referer;
+    }
+
 
 }
