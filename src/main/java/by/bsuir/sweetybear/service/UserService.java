@@ -42,5 +42,5 @@ public interface UserService {
     void deleteUserAccountById(Long id);
     // Delete user avatar
     void deleteUserAvatarById(Long id);
-    void addProductToFavorites(String authorizedEmail, Product product);
+    void addProductToFavoritesAndRemoveIfExists(String authorizedEmail, Product product);
 }

@@ -207,12 +207,16 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void addProductToFavorites(String authorizedEmail, Product product) {
+    public void addProductToFavoritesAndRemoveIfExists(String authorizedEmail, Product product) {
         User user = this.getUserByEmail(authorizedEmail);
 
-        user.addProductToFavorites(product);
+        if (!user.getFavoriteProducts().contains(product))
+            user.addProductToFavorites(product);
+        else
+            user.removeProductFromFavorites(product);
 
         userRepository.save(user);
-        log.info("Add product to favorites. User id: {}", user.getId());
+        log.info("Update user favorites. User id: {}", user.getId());
     }
+
 }

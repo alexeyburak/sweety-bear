@@ -135,11 +135,9 @@ public class ProductController {
                                      Principal principal,
                                      HttpServletRequest request) {
         Product favoriteProduct = productService.getProductById(productId);
-        userService.addProductToFavorites(principal.getName(), favoriteProduct);
+        userService.addProductToFavoritesAndRemoveIfExists(principal.getName(), favoriteProduct);
 
-        String referer = request.getHeader("Referer");
-        return "redirect:" + referer;
+        return "redirect:" + request.getHeader("Referer");
     }
-
 
 }

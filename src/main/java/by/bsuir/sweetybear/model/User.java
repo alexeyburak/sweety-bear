@@ -55,8 +55,11 @@ public class User extends IdentifiedModel implements UserDetails {
     private Address address;
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "user")
     private List<BankCard> bankCards = new ArrayList<>();
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
-    private Set<Product> favoriteProducts = new HashSet<>();
+    @ManyToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "users_favorite_products",
+            joinColumns = @JoinColumn(name = "user_id"),
+            inverseJoinColumns = @JoinColumn(name = "product_id"))
+    private List<Product> favoriteProducts = new ArrayList<>();
 
     public boolean isAdmin() {
         return roles.contains(Role.ROLE_ADMIN) || roles.contains(Role.ROLE_OWNER);
@@ -77,6 +80,10 @@ public class User extends IdentifiedModel implements UserDetails {
 
     public void addProductToFavorites(Product product) {
         favoriteProducts.add(product);
+    }
+
+    public void removeProductFromFavorites(Product product) {
+        favoriteProducts.remove(product);
     }
 
     public void addBankCardToUser(BankCard bankCard) {
