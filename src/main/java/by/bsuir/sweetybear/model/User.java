@@ -86,6 +86,12 @@ public class User extends IdentifiedModel implements UserDetails {
         favoriteProducts.remove(product);
     }
 
+    public List<Long> getFavoriteProductsIds() {
+        return favoriteProducts.stream()
+                .map(Product::getId)
+                .toList();
+    }
+
     public void addBankCardToUser(BankCard bankCard) {
         bankCard.setUser(this);
         bankCards.add(bankCard);

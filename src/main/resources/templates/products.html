@@ -107,7 +107,12 @@
                             </form>
                             <form th:action="@{/product/favorite/{id}(id=${product.id})}">
                                 <button th:if="${user.email}" type="submit" class="btn btn-outline-secondary ml-auto">
-                                    <i class="fa-solid fa-heart"></i>
+                                    <div th:unless="${#lists.contains(user_favorites, product.id)}">
+                                        <i class="fa-solid fa-heart"></i>
+                                    </div>
+                                    <div th:if="${#lists.contains(user_favorites, product.id)}">
+                                        <i class="fa-solid fa-heart-circle-xmark"></i>
+                                    </div>
                                 </button>
                             </form>
                         </div>

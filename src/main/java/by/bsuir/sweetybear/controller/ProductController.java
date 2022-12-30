@@ -47,6 +47,7 @@ public class ProductController {
         model.addAttribute("products", productService.listProducts(title, type));
         model.addAttribute("user", userPrincipal);
         model.addAttribute("product", new ProductDTO());
+        model.addAttribute("user_favorites", userPrincipal.getFavoriteProductsIds());
         model.addAttribute("title", title);
         return "products";
     }

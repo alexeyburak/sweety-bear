@@ -1,7 +1,8 @@
 <div th:fragment="header">
     <nav class="navbar navbar-expand-lg bg-light">
         <a class="navbar-brand ml-3" href="/" style="font-size:30px">Sweety Bear</a>
-        <button class="navbar-toggler justify-content-center" type="button" data-toggle="collapse" data-target="#navbarCollapse"
+        <button class="navbar-toggler justify-content-center" type="button" data-toggle="collapse"
+                data-target="#navbarCollapse"
                 aria-controls="navbarCollapse" aria-expanded="true" aria-label="Toggle navigation"
                 style="border-color: black !important; color: black !important">
 
@@ -19,7 +20,7 @@
                 <li class="nav-item" th:if="${user.email}">
                     <a th:if="${user.bucket != null}" class="nav-link active position-relative mr-2 "
                        th:href="@{/bucket}">
-                        <span ><i class="fa-solid fa-cart-shopping fa-lg"></i></span>
+                        <span><i class="fa-solid fa-cart-shopping fa-lg"></i></span>
                         <span th:if="${user.bucket.getNumberOfProductsInBucket() != 0}"
                               style="background-color: #a22c2c !important"
                               th:utext="${user.bucket.getNumberOfProductsInBucket()}"

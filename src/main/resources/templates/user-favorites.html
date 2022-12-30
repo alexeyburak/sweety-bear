@@ -68,7 +68,7 @@
                             </form>
                             <form th:action="@{/product/favorite/{id}(id=${product.id})}">
                                 <button th:if="${user.email}" type="submit" class="btn btn-outline-secondary ml-auto">
-                                    <i class="fa-solid fa-heart"></i>
+                                    <i class="fa-solid fa-heart-circle-xmark"></i>
                                 </button>
                             </form>
                         </div>
