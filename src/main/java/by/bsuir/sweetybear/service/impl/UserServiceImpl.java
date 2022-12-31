@@ -1,5 +1,6 @@
 package by.bsuir.sweetybear.service.impl;
 
+import by.bsuir.sweetybear.dto.UserChangePasswordDTO;
 import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.Image;
 import by.bsuir.sweetybear.model.Product;
@@ -116,9 +117,9 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserById(Long id,
-                               User userUpdate,
-                               MultipartFile multipartFile) throws IOException {
+    public void updateUserDataById(Long id,
+                                   User userUpdate,
+                                   MultipartFile multipartFile) throws IOException {
         User user = this.getUserById(id);
 
         if (multipartFile.getSize() != 0)
@@ -126,12 +127,21 @@ public class UserServiceImpl implements UserService {
 
         user.setName(userUpdate.getName());
         user.setEmail(userUpdate.getEmail());
-        user.setPassword(passwordEncoder.encode(userUpdate.getPassword()));
 
         changeSecurityAuthenticationEmail(user.getEmail());
 
-        log.info("Update user. Id: {}", id);
         userRepository.save(user);
+        log.info("Update user data. Id: {}", id);
+    }
+
+    @Override
+    public void updateUserPassword(Long id, User userUpdate) {
+        User user = this.getUserById(id);
+
+        user.setPassword(passwordEncoder.encode(userUpdate.getPassword()));
+
+        userRepository.save(user);
+        log.info("Update user password. User id: {}", id);
     }
 
     private void changeSecurityAuthenticationEmail(final String email) {

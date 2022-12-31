@@ -36,7 +36,6 @@ public class User extends IdentifiedModel implements UserDetails {
     @JoinColumn(name = "image_id")
     private Image avatar;
     @Column(name = "password", length = 1000)
-    @PasswordValid
     private String password;
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"))

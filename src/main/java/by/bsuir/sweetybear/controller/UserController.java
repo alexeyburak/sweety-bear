@@ -93,26 +93,22 @@ public class UserController {
     public String editUserAccount(@PathVariable("id") Long id,
                                   Model model,
                                   Principal principal) {
-        User userFromPrincipal = userService.getUserByPrincipal(principal);
-
-        if (!Objects.equals(id, userFromPrincipal.getId()))
+        if (!Objects.equals(id, userService.getUserByPrincipal(principal).getId()))
             return "redirect:/";
 
-        model.addAttribute("userUpdate", userService.getUserById(id));
-        model.addAttribute("userPassword", new UserChangePasswordDTO());
-        model.addAttribute("user", userFromPrincipal);
+        insertDataInModelForEditingUserAccount(model, principal, id);
         return "account-edit";
     }
 
     @PostMapping("/user/edit/{id}")
-    public String updateUserAccount(@RequestParam("file1") MultipartFile userAvatar,
-                                    @ModelAttribute("userUpdate") @Valid User user,
-                                    BindingResult bindingResult,
-                                    @PathVariable("id") Long id,
-                                    Model model,
-                                    Principal principal) throws IOException {
+    public String updateUserAccountData(@RequestParam("file1") MultipartFile userAvatar,
+                                        @ModelAttribute("userUpdateData") @Valid User user,
+                                        BindingResult bindingResult,
+                                        @PathVariable("id") Long id,
+                                        Model model,
+                                        Principal principal) throws IOException {
         User principalUser = userService.getUserByPrincipal(principal);
-        model.addAttribute("user", principalUser);
+        insertDataInModelForEditingUserAccount(model, principal, id);
 
         if (bindingResult.hasErrors()) {
             return "account-edit";
@@ -124,8 +120,33 @@ public class UserController {
             return "account-edit";
         }
 
-        userService.updateUserById(id, user, userAvatar);
+        userService.updateUserDataById(id, user, userAvatar);
         return "redirect:/user/edit/{id}";
+    }
+
+    @PostMapping("/user/edit_password/{id}")
+    public String updateUserAccountPassword(Model model,
+                                            @PathVariable("id") Long id,
+                                            @ModelAttribute("userUpdatePassword") @Valid UserChangePasswordDTO userDTO,
+                                            BindingResult bindingResult,
+                                            Principal principal) {
+        insertDataInModelForEditingUserAccount(model, principal, id);
+
+        if (bindingResult.hasErrors()) {
+            model.addAttribute("messageChangingPassword", ErrorMessage.RESET_PASSWORD_ERROR);
+            return "account-edit";
+        }
+
+        User user = this.modelMapper.map(userDTO, User.class);
+
+        userService.updateUserPassword(id, user);
+        return "redirect:/user/edit/{id}";
+    }
+
+    private void insertDataInModelForEditingUserAccount(Model model, Principal principal, Long id) {
+        model.addAttribute("userUpdateData", userService.getUserById(id));
+        model.addAttribute("userUpdatePassword", new UserChangePasswordDTO());
+        model.addAttribute("user", userService.getUserByPrincipal(principal));
     }
 
     @PostMapping("/user/delete/{id}")

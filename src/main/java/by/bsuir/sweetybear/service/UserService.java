@@ -31,7 +31,8 @@ public interface UserService {
     // Ban user logic
     void banUserAccountById(Long id);
     // Update user info
-    void updateUserById(Long id, User userUpdate, MultipartFile multipartFile) throws IOException;
+    void updateUserDataById(Long id, User userUpdate, MultipartFile multipartFile) throws IOException;
+    void updateUserPassword(Long id, User userUpdate);
     // Change user roles
     void changeUserRole(User user);
     // Save user to database
