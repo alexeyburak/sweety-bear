@@ -39,7 +39,7 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
     }
 
     @Override
-    public boolean changeUserPassword(String resetPasswordCode, User userUpdate) {
+    public boolean changeUserPasswordByCode(String resetPasswordCode, User userUpdate) {
         User userDb = userService.getUserByResetPasswordCode(resetPasswordCode);
         if (userDb == null) return false;
 

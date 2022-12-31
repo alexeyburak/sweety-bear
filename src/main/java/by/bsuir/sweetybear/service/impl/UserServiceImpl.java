@@ -1,6 +1,5 @@
 package by.bsuir.sweetybear.service.impl;
 
-import by.bsuir.sweetybear.dto.UserChangePasswordDTO;
 import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.Image;
 import by.bsuir.sweetybear.model.Product;
@@ -135,7 +134,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public void updateUserPassword(Long id, User userUpdate) {
+    public void updateUserPasswordId(Long id, User userUpdate) {
         User user = this.getUserById(id);
 
         user.setPassword(passwordEncoder.encode(userUpdate.getPassword()));

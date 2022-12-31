@@ -35,7 +35,7 @@
         <div class="col-md-3 border-right">
             <div class="d-flex flex-column align-items-center text-center p-3 py-5">
                 <img th:if="${user.isAvatarNull()}" th:src="@{/images/{id}(id=${user.avatar.id})} "
-                     class="rounded-circle mt-5" width="150px"
+                     class="rounded-circle mt-3" width="200px"
                      alt="Without avatar">
                 <div class="text-black-100" th:unless="${user.isAvatarNull()}">
                     <p class="card-text">Without avatar</p>

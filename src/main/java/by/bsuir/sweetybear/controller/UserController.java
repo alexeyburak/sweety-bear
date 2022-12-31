@@ -139,7 +139,7 @@ public class UserController {
 
         User user = this.modelMapper.map(userDTO, User.class);
 
-        userService.updateUserPassword(id, user);
+        userService.updateUserPasswordId(id, user);
         return "redirect:/user/edit/{id}";
     }
 

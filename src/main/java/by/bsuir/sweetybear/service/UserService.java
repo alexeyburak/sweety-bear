@@ -32,7 +32,7 @@ public interface UserService {
     void banUserAccountById(Long id);
     // Update user info
     void updateUserDataById(Long id, User userUpdate, MultipartFile multipartFile) throws IOException;
-    void updateUserPassword(Long id, User userUpdate);
+    void updateUserPasswordId(Long id, User userUpdate);
     // Change user roles
     void changeUserRole(User user);
     // Save user to database

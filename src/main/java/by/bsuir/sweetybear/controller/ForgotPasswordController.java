@@ -77,7 +77,7 @@ public class ForgotPasswordController {
         User user = this.modelmapper.map(userDTO, User.class);
 
         String code = request.getParameter("code");
-        if (forgotPasswordService.changeUserPassword(code, user))
+        if (forgotPasswordService.changeUserPasswordByCode(code, user))
             model.addAttribute("messageSuccess", ErrorMessage.RESET_PASSWORD_SUCCESS);
         else
             model.addAttribute("messageError", ErrorMessage.RESET_PASSWORD_ERROR);
