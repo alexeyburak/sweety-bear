@@ -14,7 +14,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @ForgotPasswordMatch
-public class UserForgotPasswordDTO {
+public class UserChangePasswordDTO {
 
     @PasswordValid
     private String password;

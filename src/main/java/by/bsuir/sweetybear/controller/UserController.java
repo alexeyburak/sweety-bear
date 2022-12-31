@@ -1,5 +1,6 @@
 package by.bsuir.sweetybear.controller;
 
+import by.bsuir.sweetybear.dto.UserChangePasswordDTO;
 import by.bsuir.sweetybear.dto.UserDTO;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.service.impl.UserServiceImpl;
@@ -98,6 +99,7 @@ public class UserController {
             return "redirect:/";
 
         model.addAttribute("userUpdate", userService.getUserById(id));
+        model.addAttribute("userPassword", new UserChangePasswordDTO());
         model.addAttribute("user", userFromPrincipal);
         return "account-edit";
     }

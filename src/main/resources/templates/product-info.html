@@ -33,7 +33,8 @@
         <div th:if="${product.isOnlyOneImage()}" class="col-md-7 ml-4 mt-2 mb-2">
             <div class="justify-content-center">
                 <div th:each="image : ${images}" class="carousel-item active">
-                    <img height="550px" width="550px" class="d-block" th:src="@{/images/{id}(id=${image.id})}" alt="First Image">
+                    <img height="550px" width="550px" class="d-block" th:src="@{/images/{id}(id=${image.id})}"
+                         alt="First Image">
                 </div>
             </div>
         </div>
@@ -87,13 +88,25 @@
                     </span>
                     gr
                 </p>
-                <form th:action="@{/{id}/bucket(id=${product.id})}">
-                    <button th:if="${product.isProductAvailable()}" type="submit"
-                            class="mt-2 btn btn-outline-secondary">Add to bucket
-                    </button>
-                    <p th:unless="${product.isProductAvailable()}" class="card-text"
-                       style="color:gray">Is not available now</p>
-                </form>
+                <div class="btn-group " role="group">
+                    <form th:action="@{/{id}/bucket(id=${product.id})}">
+                        <button th:if="${product.isProductAvailable()}" type="submit"
+                                class="mt-2 btn btn-outline-secondary mr-3">Add to bucket
+                        </button>
+                    </form>
+                    <form th:action="@{/product/favorite/{id}(id=${product.id})}">
+                        <button th:if="${user.email}" type="submit" class="mt-2 btn btn-outline-secondary ml-auto">
+                            <div th:unless="${#lists.contains(user_favorites, product.id)}">
+                                <i class="fa-solid fa-heart"></i>
+                            </div>
+                            <div th:if="${#lists.contains(user_favorites, product.id)}">
+                                <i class="fa-solid fa-heart-circle-xmark"></i>
+                            </div>
+                        </button>
+                    </form>
+                </div>
+                <p th:unless="${product.isProductAvailable()}" class="card-text"
+                   style="color:gray">Is not available now</p>
                 <div th:if="${user.isAdmin()}">
                     <form th:action="@{/product/delete/{id}(id=${product.id})}" method="post">
                         <input onclick="return deleteConfig('delete')" class="btn btn-outline-danger mt-3 mb-2"

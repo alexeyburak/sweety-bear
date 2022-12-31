@@ -55,9 +55,12 @@ public class ProductController {
     @GetMapping("/product/{id}")
     public String aboutProduct(@PathVariable Long id, Model model, Principal principal) {
         Product product = productService.getProductById(id);
+        User userPrincipal = userService.getUserByPrincipal(principal);
+
         model.addAttribute("product", product);
+        model.addAttribute("user_favorites", userPrincipal.getFavoriteProductsIds());
         model.addAttribute("images", product.getImages());
-        model.addAttribute("user", userService.getUserByPrincipal(principal));
+        model.addAttribute("user", userPrincipal);
         return "product-info";
     }
 

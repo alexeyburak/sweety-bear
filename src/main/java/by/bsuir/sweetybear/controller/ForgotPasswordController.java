@@ -1,6 +1,6 @@
 package by.bsuir.sweetybear.controller;
 
-import by.bsuir.sweetybear.dto.UserForgotPasswordDTO;
+import by.bsuir.sweetybear.dto.UserChangePasswordDTO;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.service.impl.ForgotPasswordServiceImpl;
 import by.bsuir.sweetybear.service.impl.UserServiceImpl;
@@ -50,7 +50,7 @@ public class ForgotPasswordController {
 
     @GetMapping("/reset_password/{code}")
     public String activateUserAccountByCode(@PathVariable String code,
-                                            @ModelAttribute("user") UserForgotPasswordDTO user,
+                                            @ModelAttribute("user") UserChangePasswordDTO user,
                                             Model model) {
 
         User userDB = userService.getUserByResetPasswordCode(code);
@@ -66,7 +66,7 @@ public class ForgotPasswordController {
     
     @PostMapping("/reset_password")
     public String activateUserAccountByCode(Model model,
-                                            @ModelAttribute("user") @Valid UserForgotPasswordDTO userDTO,
+                                            @ModelAttribute("user") @Valid UserChangePasswordDTO userDTO,
                                             BindingResult bindingResult,
                                             HttpServletRequest request) {
 
