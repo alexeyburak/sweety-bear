@@ -127,8 +127,7 @@ public class OrderController {
         }
 
         response.setContentType(PDF_CONTENT_TYPE);
-        String headerValue = "attachment; filename=order_" + id + ".pdf";
-        response.setHeader(PDF_HEADER_KEY, headerValue);
+        response.setHeader(PDF_HEADER_KEY, "attachment; filename=order_" + id + ".pdf");
 
         pdfGeneratorService.exportUserOrderInPDF(response, id);
     }

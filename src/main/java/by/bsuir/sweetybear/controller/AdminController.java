@@ -59,8 +59,7 @@ public class AdminController {
                               HttpServletRequest request) {
         userService.banUserAccountById(id);
 
-        String referer = request.getHeader("Referer");
-        return "redirect:" + referer;
+        return "redirect:" + request.getHeader("Referer");
     }
 
     @GetMapping("/user/{id}")

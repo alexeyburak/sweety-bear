@@ -52,10 +52,7 @@ public class ForgotPasswordController {
     public String activateUserAccountByCode(@PathVariable String code,
                                             @ModelAttribute("user") UserChangePasswordDTO user,
                                             Model model) {
-
-        User userDB = userService.getUserByResetPasswordCode(code);
-
-        if (userDB == null) {
+        if (userService.getUserByResetPasswordCode(code) == null) {
             model.addAttribute("messageError", ErrorMessage.USER_INVALID_ACTIVATION_CODE);
             return "login";
         }
@@ -69,15 +66,14 @@ public class ForgotPasswordController {
                                             @ModelAttribute("user") @Valid UserChangePasswordDTO userDTO,
                                             BindingResult bindingResult,
                                             HttpServletRequest request) {
-
         if (bindingResult.hasErrors()) {
             return "reset-password";
         }
 
         User user = this.modelmapper.map(userDTO, User.class);
 
-        String code = request.getParameter("code");
-        if (forgotPasswordService.changeUserPasswordByCode(code, user))
+        String resetCode = request.getParameter("code");
+        if (forgotPasswordService.changeUserPasswordByCode(resetCode, user))
             model.addAttribute("messageSuccess", ErrorMessage.RESET_PASSWORD_SUCCESS);
         else
             model.addAttribute("messageError", ErrorMessage.RESET_PASSWORD_ERROR);

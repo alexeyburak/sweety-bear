@@ -9,6 +9,7 @@ import by.bsuir.sweetybear.repository.BucketRepository;
 import by.bsuir.sweetybear.repository.ImageRepository;
 import by.bsuir.sweetybear.repository.OrderRepository;
 import by.bsuir.sweetybear.repository.UserRepository;
+import by.bsuir.sweetybear.service.UserReceivingService;
 import by.bsuir.sweetybear.service.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -35,7 +36,7 @@ import static by.bsuir.sweetybear.utils.Utils.toImageEntity;
 @Slf4j
 @RequiredArgsConstructor
 @Transactional
-public class UserServiceImpl implements UserService {
+public class UserServiceImpl implements UserService, UserReceivingService {
 
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;

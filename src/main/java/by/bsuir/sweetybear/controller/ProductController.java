@@ -83,9 +83,7 @@ public class ProductController {
         }
 
         Product productDb = this.modelMapper.map(product, Product.class);
-
         productService.addProductToDatabase(productDb, previewProductImage, productImage);
-
         return "redirect:/";
     }
 
@@ -127,11 +125,9 @@ public class ProductController {
                             Principal principal,
                             HttpServletRequest request) {
         User user = userService.getUserByPrincipal(principal);
-
         productService.addProductIdToUserBucket(id, user.getEmail());
 
-        String referer = request.getHeader("Referer");
-        return "redirect:" + referer;
+        return "redirect:" + request.getHeader("Referer");
     }
 
     @GetMapping("/product/favorite/{productId}")

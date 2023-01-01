@@ -53,19 +53,6 @@ public class UserController {
         return "redirect:/login";
     }
 
-    @PostMapping("/login/error")
-    public String loginError(@ModelAttribute("username") String email,
-                             Model model) {
-        model.addAttribute("messageError", ErrorMessage.USER_INVALID_DATA_INPUT);
-
-        User user = userService.getUserByEmail(email);
-        if (!Objects.requireNonNull(user).isActive()) {
-            model.addAttribute("messageError", ErrorMessage.USER_ACCOUNT_BANNED);
-        }
-
-        return "login";
-    }
-
     @GetMapping("/user/favorites")
     public String favoriteProducts(Model model,
                                    Principal principal) {

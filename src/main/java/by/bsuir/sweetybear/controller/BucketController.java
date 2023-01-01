@@ -38,7 +38,6 @@ public class BucketController {
         User userPrincipal = userService.getUserByPrincipal(principal);
         if (!userPrincipal.isActive())
             return "redirect:/login";
-
         model.addAttribute("user", userPrincipal);
 
         BucketDTO bucketDTO = bucketService.getBucketByUser(userPrincipal.getEmail());
@@ -57,13 +56,11 @@ public class BucketController {
     @PostMapping("/bucket")
     public String commitBucketToOrder(@ModelAttribute("address") AddressDTO address,
                                       Principal principal) {
-        User userFromDB = userService.getUserByPrincipal(principal);
-
         Address addressDb = this.modelMapper.map(address, Address.class);
 
+        User userFromDB = userService.getUserByPrincipal(principal);
         if (userFromDB != null)
             bucketService.addBucketToOrder(userFromDB.getEmail(), addressDb);
-
         return "redirect:/bucket?success";
     }
 }
