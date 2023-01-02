@@ -12,6 +12,6 @@ public interface MailSender {
 
     void sendEmailWithResetPasswordLinkToUser(final User user);
     void sendEmailWithActivationLinkToUser(final User user);
-    void sendEmailWithPasswordToUser(final User user, final String temporaryPassword);
+    void sendEmailWithPasswordToUser(final String email, final String temporaryPassword);
 
 }

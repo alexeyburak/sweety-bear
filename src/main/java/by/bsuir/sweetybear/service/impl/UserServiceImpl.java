@@ -21,6 +21,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
 import java.security.Principal;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 
@@ -64,18 +65,20 @@ public class UserServiceImpl implements UserService, UserReceivingService {
 
     @Override
     public void addUserAfterOauthLoginSuccess(String email, String name) {
-        User user = new User();
-        user.setEmail(email);
-        user.setName(name);
-        user.setActive(true);
-        user.getRoles().add(Role.ROLE_USER);
         String temporaryPassword = UUID.randomUUID().toString();
-        user.setPassword(passwordEncoder.encode(temporaryPassword));
 
+        userRepository.save(
+                User.builder()
+                        .email(email)
+                        .name(name)
+                        .active(true)
+                        .roles(Collections.singleton(Role.ROLE_USER))
+                        .password(passwordEncoder.encode(temporaryPassword))
+                        .build()
+        );
         log.info("Saving User. Email {}", email);
-        userRepository.save(user);
 
-        mailSender.sendEmailWithPasswordToUser(user, temporaryPassword);
+        mailSender.sendEmailWithPasswordToUser(email, temporaryPassword);
     }
 
     @Override

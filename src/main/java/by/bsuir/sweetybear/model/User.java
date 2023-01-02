@@ -3,7 +3,7 @@ package by.bsuir.sweetybear.model;
 import by.bsuir.sweetybear.annotation.PasswordValid;
 import by.bsuir.sweetybear.annotation.UsernameValid;
 import by.bsuir.sweetybear.model.enums.Role;
-import lombok.Data;
+import lombok.*;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
@@ -21,6 +21,9 @@ import java.util.*;
 @Entity
 @Table(name = "users")
 @Data
+@Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class User extends IdentifiedModel implements UserDetails {
 
     @Column(name = "email", unique = true)
