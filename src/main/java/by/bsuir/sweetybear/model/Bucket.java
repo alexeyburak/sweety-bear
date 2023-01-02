@@ -1,6 +1,9 @@
 package by.bsuir.sweetybear.model;
 
+import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 import javax.persistence.*;
 import java.util.List;
@@ -14,6 +17,9 @@ import java.util.List;
 @Entity
 @Table(name = "buckets")
 @Data
+@Builder
+@RequiredArgsConstructor
+@AllArgsConstructor
 public class Bucket extends IdentifiedModel{
 
     @OneToOne(cascade = CascadeType.ALL)

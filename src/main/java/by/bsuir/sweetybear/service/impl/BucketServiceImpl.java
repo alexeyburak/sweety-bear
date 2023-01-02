@@ -40,12 +40,14 @@ public class BucketServiceImpl implements BucketService {
     @Transactional
     public Bucket createUserBucket(final User user,
                                    List<Long> productIds) {
-        Bucket bucket = new Bucket();
-        bucket.setUser(user);
-        log.info("Create bucket. User: {}", user.getEmail());
         List<Product> productList = getCollectRefProductsByIds(productIds);
-        bucket.setProducts(productList);
-        return bucketRepository.save(bucket);
+        log.info("Create bucket. User: {}", user.getEmail());
+        return bucketRepository.save(
+                Bucket.builder()
+                        .user(user)
+                        .products(productList)
+                        .build()
+        );
     }
 
     @Override
@@ -133,10 +135,10 @@ public class BucketServiceImpl implements BucketService {
         List<OrderDetails> orderDetails = fillOrderDetailsToOrder(productsWithAmount, order);
 
         BigDecimal totalSum = countOrderTotalSum(orderDetails);
+        order.setSum(totalSum);
 
         addDeliveryStatusAndAddressToOrder(order, address);
         order.setDetails(orderDetails);
-        order.setSum(totalSum);
         log.info("Add bucket to order. Bucket id: {}.", bucket.getId());
         orderService.save(order);
 
