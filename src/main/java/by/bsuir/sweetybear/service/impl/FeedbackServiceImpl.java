@@ -26,7 +26,10 @@ public class FeedbackServiceImpl implements FeedbackService {
 
     @Override
     public List<Feedback> getProductFeedbackList(long productId) {
-        return feedbackRepository.getFeedbacksByProductId(productId);
+        return feedbackRepository.getFeedbacksByProductId(productId)
+                .stream()
+                .sorted(Feedback::compareTo)
+                .toList();
     }
 
     @Override

@@ -19,7 +19,7 @@ import java.time.LocalDateTime;
 @AllArgsConstructor
 @NoArgsConstructor
 @Table(name = "feedbacks")
-public class Feedback extends IdentifiedModel {
+public class Feedback extends IdentifiedModel implements Comparable<Feedback> {
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
@@ -41,4 +41,8 @@ public class Feedback extends IdentifiedModel {
         this.dateOfCreated = LocalDateTime.now();
     }
 
+    @Override
+    public int compareTo(Feedback o) {
+        return o.getStars() - stars;
+    }
 }
