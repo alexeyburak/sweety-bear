@@ -6,6 +6,6 @@ package by.bsuir.sweetybear.model.enums;
  * Nov 2022
  */
 
-public enum SortType {
+public enum ProductSortType {
     ASCENDING, REDUCING, NEW
 }
