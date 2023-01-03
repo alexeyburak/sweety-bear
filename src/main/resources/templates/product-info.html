@@ -88,6 +88,7 @@
                     </span>
                     gr
                 </p>
+                <br>
                 <div class="btn-group " role="group">
                     <form th:action="@{/{id}/bucket(id=${product.id})}">
                         <button th:if="${product.isProductAvailable()}" type="submit"
@@ -116,6 +117,161 @@
                 </div>
                 <p class="card-text mt-5"><small class="text-muted"
                                                  th:utext="${product.dateOfCreated}">dateOfCreated</small></p>
+            </div>
+        </div>
+    </div>
+</div>
+<div class="container mt-1" style="width: 72%">
+    <div class="offer-dedicated-body-left">
+        <div class="tab-content" id="pills-tabContent">
+            <div class="tab-pane fade active show" id="pills-reviews" role="tabpanel"
+                 aria-labelledby="pills-reviews-tab">
+                <div id="ratings-and-reviews"
+                     class="bg-white rounded shadow-sm p-4 mb-4 clearfix restaurant-detailed-star-rating">
+                    <form th:action="@{/feedback/add/{productId}(productId=${product.id})}" th:method="POST"
+                          th:object="${feedback}">
+                        <div class="bg-white rounded shadow-sm p-4 mb-5 rating-review-select-page">
+                            <h5 class="mb-4">Leave Comment</h5>
+                            <div class="mb-3 mt-2">
+
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword1" class="form-label">Title</label>
+                                <input type="text" th:field="*{title}" class="form-control" id="exampleInputPassword1">
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword3" class="form-label">Description</label>
+                                <textarea id="exampleInputPassword3" maxlength="300" minlength="10" th:field="*{description}" class="form-control"></textarea>
+                            </div>
+                            <div class="form-group">
+                                <label for="exampleInputPassword2" class="form-label">Stars</label>
+                                <input type="number" th:field="*{stars}" class="form-control" min="1" max="5" id="exampleInputPassword2">
+                            </div>
+                            <div class="form-group">
+                                <button class="btn btn-primary btn-sm" type="submit">Add feedback</button>
+                            </div>
+                        </div>
+                    </form>
+                    <div th:if="${feedbacks.size()} != 0">
+                        <div class="bg-white rounded shadow-sm p-4 mb-4 clearfix graph-star-rating">
+                            <h5 class="mb-0 mb-4">Ratings and Reviews</h5>
+                            <div class="graph-star-rating-header">
+                                <div class="star-rating">
+                                    <b class="text-black" th:utext="${rating.getAllRatings()}">334</b>
+                                </div>
+                                <p class="text-black mb-4 mt-2">Rated <span th:utext="${rating.getAvgRating()}"></span>
+                                    out of 5.0</p>
+                            </div>
+                            <div class="graph-star-rating-body">
+                                <div class="rating-list">
+                                    <div class="rating-list-left text-black">
+                                        5 Star
+                                    </div>
+                                    <div class="rating-list-center">
+                                        <div class="progress">
+                                            <div style="width: 56%" aria-valuemax="5" aria-valuemin="0"
+                                                 aria-valuenow="5" role="progressbar" class="progress-bar bg-primary">
+                                                <span class="sr-only">80% Complete (danger)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="rating-list-right text-black">56%</div>
+                                </div>
+                                <div class="rating-list">
+                                    <div class="rating-list-left text-black">
+                                        4 Star
+                                    </div>
+                                    <div class="rating-list-center">
+                                        <div class="progress">
+                                            <div style="width: 23%" aria-valuemax="5" aria-valuemin="0"
+                                                 aria-valuenow="5" role="progressbar" class="progress-bar bg-primary">
+                                                <span class="sr-only">80% Complete (danger)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="rating-list-right text-black">23%</div>
+                                </div>
+                                <div class="rating-list">
+                                    <div class="rating-list-left text-black">
+                                        3 Star
+                                    </div>
+                                    <div class="rating-list-center">
+                                        <div class="progress">
+                                            <div style="width: 11%" aria-valuemax="5" aria-valuemin="0"
+                                                 aria-valuenow="5" role="progressbar" class="progress-bar bg-primary">
+                                                <span class="sr-only">80% Complete (danger)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="rating-list-right text-black">11%</div>
+                                </div>
+                                <div class="rating-list">
+                                    <div class="rating-list-left text-black">
+                                        2 Star
+                                    </div>
+                                    <div class="rating-list-center">
+                                        <div class="progress">
+                                            <div style="width: 2%" aria-valuemax="5" aria-valuemin="0" aria-valuenow="5"
+                                                 role="progressbar" class="progress-bar bg-primary">
+                                                <span class="sr-only">80% Complete (danger)</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="rating-list-right text-black">2%</div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="bg-white rounded shadow-sm p-4 mb-4 restaurant-detailed-ratings-and-reviews">
+                            <h5 class="mb-1">All Ratings and Reviews</h5>
+
+                            <div th:each="feedback : ${feedbacks}" class="reviews-members pt-4 pb-4">
+                                <div class="media">
+                                    <div th:if="${user.isAdmin()}">
+                                        <a class="link-secondary" th:href="@{/admin/user/{id}(id=${feedback.user.id})}">
+                                            <img th:if="${feedback.user.isAvatarNull()}"
+                                                 th:src="@{/images/{id}(id=${feedback.user.avatar.id})} "
+                                                 class="mr-3 rounded-circle" width="70px"
+                                                 alt="Without avatar">
+                                            <p th:unless="${feedback.user.isAvatarNull()}"
+                                               class="mr-3">No avatar</p>
+
+                                            <div class="mr-3" th:utext="${feedback.user.name}"></div>
+                                        </a>
+
+                                    </div>
+                                    <div th:unless="${user.isAdmin()}">
+                                        <img th:if="${feedback.user.isAvatarNull()}"
+                                             th:src="@{/images/{id}(id=${feedback.user.avatar.id})} "
+                                             class="mr-3 rounded-circle" width="70px"
+                                             alt="Without avatar">
+                                        <p th:unless="${feedback.user.isAvatarNull()}"
+                                           class="mr-3">No avatar</p>
+                                        <div class="mr-3" th:utext="${feedback.user.name}"></div>
+                                    </div>
+                                    <div class="media-body">
+                                        <div class="reviews-members-header">
+                                            <span><span th:utext="${feedback.stars}"></span> <i class="fa-solid fa-star"></i></span>
+
+                                        </div>
+                                        <div class="reviews-members-header">
+                                            <h5 th:utext="${feedback.title}">title</h5>
+                                        </div>
+                                        <div class="reviews-members-body">
+                                            <div th:text="${feedback.description}">description</div>
+                                        </div>
+                                        <form th:action="@{/feedback/delete/{id}(id=${feedback.id})}" th:method="POST">
+                                            <button class="btn btn-outline-danger btn-sm mt-3" type="submit">Delete
+                                            </button>
+                                        </form>
+                                        <small class="text-muted"
+                                               th:utext="${feedback.dateOfCreated}">dateOfCreated</small>
+                                    </div>
+                                </div>
+                                <hr>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     </div>
