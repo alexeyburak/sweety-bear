@@ -1,9 +1,12 @@
 package by.bsuir.sweetybear.controller;
 
+import by.bsuir.sweetybear.dto.FeedbackDTO;
 import by.bsuir.sweetybear.dto.ProductDTO;
 import by.bsuir.sweetybear.model.Product;
 import by.bsuir.sweetybear.model.User;
-import by.bsuir.sweetybear.model.enums.SortType;
+import by.bsuir.sweetybear.model.enums.ProductSortType;
+import by.bsuir.sweetybear.service.impl.FeedbackServiceImpl;
+import by.bsuir.sweetybear.service.impl.ProductRatingServiceImpl;
 import by.bsuir.sweetybear.service.impl.ProductServiceImpl;
 import by.bsuir.sweetybear.service.impl.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
@@ -31,12 +34,14 @@ import java.security.Principal;
 public class ProductController {
 
     private final ProductServiceImpl productService;
+    private final FeedbackServiceImpl feedbackService;
     private final UserServiceImpl userService;
+    private final ProductRatingServiceImpl productRatingService;
     private final ModelMapper modelMapper;
 
     @GetMapping("/")
     public String products(@RequestParam(name = "title", required = false) String title,
-                           @RequestParam(name = "sort", required = false) SortType type,
+                           @RequestParam(name = "sort", required = false) ProductSortType type,
                            Principal principal,
                            Model model) {
         User userPrincipal = userService.getUserByPrincipal(principal);
@@ -53,7 +58,10 @@ public class ProductController {
     }
 
     @GetMapping("/product/{id}")
-    public String aboutProduct(@PathVariable Long id, Model model, Principal principal) {
+    public String aboutProduct(@PathVariable Long id,
+                               Model model,
+                               Principal principal,
+                               @ModelAttribute("feedback") FeedbackDTO feedbackDTO) {
         Product product = productService.getProductById(id);
         User userPrincipal = userService.getUserByPrincipal(principal);
 
@@ -61,6 +69,8 @@ public class ProductController {
         model.addAttribute("user_favorites", userPrincipal.getFavoriteProductsIds());
         model.addAttribute("images", product.getImages());
         model.addAttribute("user", userPrincipal);
+        model.addAttribute("rating", productRatingService.generateProductRating(id));
+        model.addAttribute("feedbacks", feedbackService.getProductFeedbackList(id));
         return "product-info";
     }
 
