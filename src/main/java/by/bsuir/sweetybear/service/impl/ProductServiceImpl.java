@@ -5,7 +5,7 @@ import by.bsuir.sweetybear.model.Bucket;
 import by.bsuir.sweetybear.model.Image;
 import by.bsuir.sweetybear.model.Product;
 import by.bsuir.sweetybear.model.User;
-import by.bsuir.sweetybear.model.enums.SortType;
+import by.bsuir.sweetybear.model.enums.ProductSortType;
 import by.bsuir.sweetybear.repository.ImageRepository;
 import by.bsuir.sweetybear.repository.ProductRepository;
 import by.bsuir.sweetybear.service.ProductService;
@@ -41,13 +41,13 @@ public class ProductServiceImpl implements ProductService {
     private final ImageRepository imageRepository;
 
     @Override
-    public List<Product> listProducts(String title, SortType type) {
+    public List<Product> listProducts(String title, ProductSortType type) {
         if (type != null) return listProductsWithSortingType(type);
         if (title != null) return productRepository.findByTitle(title);
         return productRepository.findAll();
     }
 
-    private List<Product> listProductsWithSortingType(SortType type) {
+    private List<Product> listProductsWithSortingType(ProductSortType type) {
         switch (type) {
             case ASCENDING -> {
                 return productRepository

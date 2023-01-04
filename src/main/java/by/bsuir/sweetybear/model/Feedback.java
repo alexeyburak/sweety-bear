@@ -32,7 +32,7 @@ public class Feedback extends IdentifiedModel implements Comparable<Feedback> {
     @Column(name = "title")
     private String title;
     @Column(name = "stars")
-    private byte stars;
+    private Integer stars;
     @Column(name = "date_Of_Created")
     private LocalDateTime dateOfCreated;
 

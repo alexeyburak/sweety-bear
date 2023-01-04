@@ -30,11 +30,10 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
         if (user == null || !user.isActive()) return false;
 
         user.setResetPasswordCode(UUID.randomUUID().toString());
-        log.info("Set reset password code to user. Email: {}", email);
         userService.save(user);
+        log.info("Set reset password code to user. Email: {}", email);
 
         mailSender.sendEmailWithResetPasswordLinkToUser(user);
-        log.warn("Send email to reset user password.");
         return true;
     }
 
@@ -46,8 +45,8 @@ public class ForgotPasswordServiceImpl implements ForgotPasswordService {
         userDb.setPassword(passwordEncoder.encode(userUpdate.getPassword()));
         userDb.setResetPasswordCode(null);
 
-        log.info("User rested password. User email: {}", userDb.getEmail());
         userService.save(userDb);
+        log.info("User rested password. User email: {}", userDb.getEmail());
         return true;
     }
 }

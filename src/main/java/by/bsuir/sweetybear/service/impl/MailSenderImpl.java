@@ -69,20 +69,19 @@ public class MailSenderImpl extends AbstractMailSender {
     }
 
     @Override
-    public void sendEmailWithPasswordToUser(final User user, final String temporaryPassword) {
+    public void sendEmailWithPasswordToUser(final String email, final String temporaryPassword) {
         message = String.format(
                 """
-                        %s, there are your account data
+                        There are your account data
                         Email: %s
                         Password: %s
                 """,
-                user.getName(),
-                user.getEmail(),
+                email,
                 temporaryPassword
         );
         title = "Thanks for registration!";
 
-        send(user.getEmail(), title, message);
+        send(email, title, message);
         log.warn("Send message with password.");
     }
 }
