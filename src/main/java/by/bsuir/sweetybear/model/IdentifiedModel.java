@@ -14,7 +14,7 @@ import javax.persistence.*;
 @MappedSuperclass
 @Data
 @RequiredArgsConstructor
-public class IdentifiedModel {
+public abstract class IdentifiedModel {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

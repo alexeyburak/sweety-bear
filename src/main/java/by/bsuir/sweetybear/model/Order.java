@@ -26,14 +26,14 @@ public class Order extends IdentifiedModel implements Comparable<Order>{
 
     private static final Long DELIVERY_TIME = 5L;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
     @Column(name = "sum")
     private BigDecimal sum;
     @OneToOne(cascade = CascadeType.ALL)
     private Address address;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY)
     @JoinColumn(name = "details_id")
     private List<OrderDetails> details;
     @Column(name = "delivery")

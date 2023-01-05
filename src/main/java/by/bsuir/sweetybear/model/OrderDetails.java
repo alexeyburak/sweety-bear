@@ -20,10 +20,10 @@ import java.math.BigDecimal;
 @NoArgsConstructor
 public class OrderDetails extends IdentifiedModel {
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "order_id")
     private Order order;
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "product_id")
     private Product product;
     @Column(name = "amount")

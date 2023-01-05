@@ -22,10 +22,10 @@ import java.util.List;
 @AllArgsConstructor
 public class Bucket extends IdentifiedModel{
 
-    @OneToOne(cascade = CascadeType.ALL)
+    @OneToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinColumn(name = "user_id")
     private User user;
-    @ManyToMany(cascade = CascadeType.ALL)
+    @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "buckets_products",
     joinColumns = @JoinColumn(name = "bucket_id"),
     inverseJoinColumns = @JoinColumn(name = "product_id"))
