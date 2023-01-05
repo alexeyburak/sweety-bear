@@ -1,7 +1,9 @@
 package by.bsuir.sweetybear.dto;
 
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 import org.hibernate.validator.constraints.Length;
 
 import javax.validation.constraints.*;
@@ -14,21 +16,22 @@ import javax.validation.constraints.*;
 
 @Data
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductDTO {
 
     @Size(min = 3, max = 100, message = "Title must be between 3 and 100 characters")
     @NotEmpty(message = "Title is required")
-    private String title;
+    String title;
     @Length(min = 5, max = 300, message = "Description must be between 5 and 300 characters")
     @NotEmpty(message = "Description is required")
-    private String description;
+    String description;
     @NotNull(message = "It's required")
     @Digits(integer = 8, fraction = 2, message = "It's too much")
     @Positive(message = "Should be positive")
-    private Double price;
+    Double price;
     @NotNull(message = "It's required")
     @Min(value = 10, message = "Minimum of 10")
-    private int weight;
+    int weight;
     @NotNull(message = "Availability is required")
-    private boolean availability;
+    boolean availability;
 }

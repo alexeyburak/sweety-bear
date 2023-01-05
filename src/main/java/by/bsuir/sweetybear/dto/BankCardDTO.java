@@ -1,7 +1,9 @@
 package by.bsuir.sweetybear.dto;
 
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 /**
  * sweety-bear
@@ -11,10 +13,10 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class BankCardDTO {
-
-    private Long cardNumber;
-    private String expiryDate;
-    private String cardholderName;
-    private Integer cvv;
+    Long cardNumber;
+    String expiryDate;
+    String cardholderName;
+    Integer cvv;
 }

@@ -2,8 +2,10 @@ package by.bsuir.sweetybear.dto;
 
 import by.bsuir.sweetybear.annotation.ForgotPasswordMatch;
 import by.bsuir.sweetybear.annotation.PasswordValid;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 /**
  * sweety-bear
@@ -14,10 +16,10 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @ForgotPasswordMatch
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class UserChangePasswordDTO {
-
     @PasswordValid
-    private String password;
+    String password;
     @PasswordValid
-    private String confirmPassword;
+    String confirmPassword;
 }

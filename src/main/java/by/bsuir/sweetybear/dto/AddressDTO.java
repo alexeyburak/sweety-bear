@@ -1,7 +1,9 @@
 package by.bsuir.sweetybear.dto;
 
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 /**
  * sweety-bear
@@ -11,11 +13,11 @@ import lombok.NoArgsConstructor;
 
 @Data
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class AddressDTO {
-
-    private String street;
-    private Integer apartmentNumber;
-    private Integer houseNumber;
-    private Integer caseNumber;
-    private Integer postCode;
+    String street;
+    Integer apartmentNumber;
+    Integer houseNumber;
+    Integer caseNumber;
+    Integer postCode;
 }

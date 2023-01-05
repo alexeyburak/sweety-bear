@@ -3,8 +3,10 @@ package by.bsuir.sweetybear.dto;
 import by.bsuir.sweetybear.annotation.PasswordMatch;
 import by.bsuir.sweetybear.annotation.PasswordValid;
 import by.bsuir.sweetybear.annotation.UsernameValid;
+import lombok.AccessLevel;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 import javax.validation.constraints.Email;
 import javax.validation.constraints.NotBlank;
@@ -17,17 +19,16 @@ import javax.validation.constraints.NotBlank;
 
 @Data
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 @PasswordMatch
 public class UserDTO {
-
     @UsernameValid
-    private String name;
+    String name;
     @Email(message = "Email must be valid")
     @NotBlank(message = "Email is required")
-    private String email;
+    String email;
     @PasswordValid
-    private String password;
+    String password;
     @PasswordValid
-    private String confirmPassword;
-
+    String confirmPassword;
 }
