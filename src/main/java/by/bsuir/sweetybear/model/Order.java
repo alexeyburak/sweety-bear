@@ -3,6 +3,7 @@ package by.bsuir.sweetybear.model;
 import by.bsuir.sweetybear.model.enums.DeliveryType;
 import by.bsuir.sweetybear.model.enums.OrderStatus;
 import lombok.AllArgsConstructor;
+import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
@@ -20,6 +21,7 @@ import java.util.List;
 @Entity
 @Table(name = "orders")
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Order extends IdentifiedModel implements Comparable<Order>{

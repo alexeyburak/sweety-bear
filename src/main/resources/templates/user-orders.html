@@ -4,6 +4,16 @@
     <meta charset="UTF-8">
     <title>Sweety Bear</title>
     <th:block th:replace="/base/base_dependencies :: base_dependencies"/>
+    <script>
+        let cords = ['scrollX','scrollY'];
+        window.addEventListener('unload', e => cords.forEach(cord => localStorage[cord] = window[cord]));
+        window.addEventListener('load', e => {
+            if (localStorage[cords[0]]) {
+                window.scroll(...cords.map(cord => localStorage[cord]));
+                cords.forEach(cord => localStorage.removeItem(cord));
+            }
+        });
+    </script>
 </head>
 <body>
 <header th:insert="blocks/header :: header"></header>
