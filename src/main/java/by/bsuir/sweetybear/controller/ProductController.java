@@ -61,7 +61,7 @@ public class ProductController {
     public String aboutProduct(@PathVariable Long id,
                                Model model,
                                Principal principal,
-                               @ModelAttribute("feedback") FeedbackDTO feedbackDTO) {
+                               @ModelAttribute("feedback") @Valid FeedbackDTO feedbackDTO) {
         Product product = productService.getProductById(id);
         User userPrincipal = userService.getUserByPrincipal(principal);
 

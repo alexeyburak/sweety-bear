@@ -9,12 +9,14 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.validation.Valid;
 import java.security.Principal;
 
 /**
@@ -35,7 +37,12 @@ public class FeedbackController {
     @PostMapping("/add/{productId}")
     public String addFeedback(@PathVariable("productId") Long id,
                               Principal principal,
-                              @ModelAttribute("feedback") FeedbackDTO feedbackDTO) {
+                              @ModelAttribute("feedback") @Valid FeedbackDTO feedbackDTO,
+                              BindingResult bindingResult) {
+        if (bindingResult.hasErrors()) {
+            return "redirect:/product/" + id;
+        }
+
         User user = userService.getUserByPrincipal(principal);
 
         Feedback feedback = this.modelMapper.map(feedbackDTO, Feedback.class);
