@@ -336,8 +336,7 @@
                                         <div th:text="${feedback.description}">description</div>
                                     </div>
                                     <form th:action="@{/feedback/delete/{id}(id=${feedback.id})}" th:method="POST">
-                                        <button class="btn btn-outline-danger btn-sm mt-3" type="submit">Delete
-                                        </button>
+                                        <button class="btn btn-outline-danger btn-sm mt-3" type="submit">Delete</button>
                                     </form>
                                     <small class="text-muted"
                                            th:utext="${feedback.dateOfCreated}">dateOfCreated</small>

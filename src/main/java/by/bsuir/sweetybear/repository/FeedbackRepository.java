@@ -2,6 +2,8 @@ package by.bsuir.sweetybear.repository;
 
 import by.bsuir.sweetybear.model.Feedback;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.Modifying;
+import org.springframework.data.jpa.repository.Query;
 
 import java.util.List;
 
@@ -13,4 +15,7 @@ import java.util.List;
 
 public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
     List<Feedback> getFeedbacksByProductId(long productId);
+    @Modifying
+    @Query(value = "DELETE FROM feedbacks WHERE id = ?1", nativeQuery = true)
+    void deleteByFeedbackId(long productId);
 }
