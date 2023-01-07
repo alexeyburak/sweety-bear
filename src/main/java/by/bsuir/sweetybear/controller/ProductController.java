@@ -4,6 +4,7 @@ import by.bsuir.sweetybear.dto.FeedbackDTO;
 import by.bsuir.sweetybear.dto.ProductDTO;
 import by.bsuir.sweetybear.model.Product;
 import by.bsuir.sweetybear.model.User;
+import by.bsuir.sweetybear.model.enums.FeedbackSortType;
 import by.bsuir.sweetybear.model.enums.ProductSortType;
 import by.bsuir.sweetybear.service.impl.FeedbackServiceImpl;
 import by.bsuir.sweetybear.service.impl.ProductRatingServiceImpl;
@@ -61,7 +62,8 @@ public class ProductController {
     public String aboutProduct(@PathVariable Long id,
                                Model model,
                                Principal principal,
-                               @ModelAttribute("feedback") @Valid FeedbackDTO feedbackDTO) {
+                               @ModelAttribute("feedback") @Valid FeedbackDTO feedbackDTO,
+                               @RequestParam(name = "sort", required = false) FeedbackSortType type) {
         Product product = productService.getProductById(id);
         User userPrincipal = userService.getUserByPrincipal(principal);
 
@@ -70,7 +72,7 @@ public class ProductController {
         model.addAttribute("images", product.getImages());
         model.addAttribute("user", userPrincipal);
         model.addAttribute("rating", productRatingService.generateProductRating(id));
-        model.addAttribute("feedbacks", feedbackService.getProductFeedbackList(id));
+        model.addAttribute("feedbacks", feedbackService.getProductFeedbackListWithSortingType(id, type));
         return "product-info";
     }
 
