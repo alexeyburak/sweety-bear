@@ -14,6 +14,7 @@ import org.springframework.stereotype.Service;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
 /**
  * sweety-bear
@@ -28,6 +29,11 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
 
     private static final String CURRENT_MILLENNIUM = "20";
     private final BankCardRepository bankCardRepository;
+
+    @Override
+    public List<BankCard> getBankCardsByUserId(Long userId) {
+        return bankCardRepository.getBankCardsByUserId(userId);
+    }
 
     @Override
     public boolean debitingMoneyFromTheBankCard(Order order, BankCardDTO bankCardDTO) {
