@@ -1,5 +1,6 @@
 package by.bsuir.sweetybear.service.impl;
 
+import by.bsuir.sweetybear.dto.AccessibleBankCardDTO;
 import by.bsuir.sweetybear.dto.BankCardDTO;
 import by.bsuir.sweetybear.model.BankCard;
 import by.bsuir.sweetybear.model.Order;
@@ -31,8 +32,16 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
     private final BankCardRepository bankCardRepository;
 
     @Override
-    public List<BankCard> getBankCardsByUserId(Long userId) {
-        return bankCardRepository.getBankCardsByUserId(userId);
+    public List<AccessibleBankCardDTO> getBankCardsDTOByUserId(Long userId) {
+        return bankCardRepository.getBankCardsByUserId(userId)
+                .stream()
+                .map(bankCard -> AccessibleBankCardDTO.builder()
+                        .id(bankCard.getId())
+                        .cardNumber("***" + String.valueOf(bankCard.getCardNumber()).substring(12))
+                        .expiryDate(bankCard.getExpirationMonth() + "/" + bankCard.getExpirationYear())
+                        .build()
+                )
+                .toList();
     }
 
     @Override

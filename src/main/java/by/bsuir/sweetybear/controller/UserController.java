@@ -99,7 +99,7 @@ public class UserController {
     private void chooseAccountTabsThenAddToModel(String tab, Model model, Long id) {
         switch (tab) {
             case ACCOUNT_FEEDBACKS -> model.addAttribute(ACCOUNT_FEEDBACKS, feedbackService.getUserFeedbackList(id));
-            case ACCOUNT_BANK_CARDS -> model.addAttribute(ACCOUNT_BANK_CARDS, bankCardService.getBankCardsByUserId(id));
+            case ACCOUNT_BANK_CARDS -> model.addAttribute(ACCOUNT_BANK_CARDS, bankCardService.getBankCardsDTOByUserId(id));
         }
     }
 

@@ -5,6 +5,15 @@
     <title>Edit account</title>
     <th:block th:replace="/base/base_dependencies :: base_dependencies"/>
     <style>
+        .payment-item {
+            transition: 0.5s;
+        }
+
+        .payment-item:hover {
+            background-color: rgba(245, 245, 245, 0.99);
+            transform: scale(1.02);
+        }
+
         input:invalid {
             animation: shake .3s;
         }
@@ -79,14 +88,12 @@
                 <div class="row">
                     <div class="col-md-6" th:each="payment : ${payments}">
                         <div class="bg-white card payments-item mb-4 shadow-sm">
-                            <div class="gold-members p-4">
+                            <div class="payment-item  gold-members p-4">
                                 <div class="media">
                                     <i class="fa-solid fa-credit-card mr-3 mt-3 fa-xl"></i>
                                     <div class="media-body">
                                         <h6 class="mb-1" th:utext="${payment.cardNumber}">6070-XXXXXXXX-0666</h6>
-                                        <p>VALID TILL
-                                            <span th:utext="${payment.expirationMonth}"></span>/<span th:utext="${payment.expirationYear}"></span>
-                                        </p>
+                                        <p>VALID TILL <span th:utext="${payment.expiryDate}"></span></p>
                                         <p class="mb-0 text-black font-weight-bold">
                                             <a class="text-danger" data-toggle="modal" data-target="#delete-address-modal" href="#">DELETE</a></p>
                                     </div>
