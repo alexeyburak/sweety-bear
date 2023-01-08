@@ -3,6 +3,7 @@ package by.bsuir.sweetybear.controller;
 import by.bsuir.sweetybear.dto.UserChangePasswordDTO;
 import by.bsuir.sweetybear.dto.UserDTO;
 import by.bsuir.sweetybear.model.User;
+import by.bsuir.sweetybear.service.impl.FeedbackServiceImpl;
 import by.bsuir.sweetybear.service.impl.UserServiceImpl;
 import by.bsuir.sweetybear.validator.ErrorMessage;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,7 @@ import java.util.Objects;
 public class UserController {
 
     private final UserServiceImpl userService;
+    private final FeedbackServiceImpl feedbackService;
     private final ModelMapper modelMapper;
 
     @GetMapping("/registration")
@@ -79,9 +81,12 @@ public class UserController {
     @GetMapping("/user/edit/{id}")
     public String editUserAccount(@PathVariable("id") Long id,
                                   Model model,
-                                  Principal principal) {
+                                  Principal principal,
+                                  @RequestParam(name = "tab", required = false) String tab) {
         if (!Objects.equals(id, userService.getUserByPrincipal(principal).getId()))
             return "redirect:/";
+        if (Objects.equals(tab, "feedbacks"))
+            model.addAttribute("feedbacks", feedbackService.getUserFeedbackList(id));
 
         insertDataInModelForEditingUserAccount(model, principal, id);
         return "account-edit";

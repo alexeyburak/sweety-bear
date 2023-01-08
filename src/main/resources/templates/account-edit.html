@@ -25,7 +25,8 @@
         function deleteConfig(message) {
             return confirm("Are you sure you want to " + message);
         }
-        let cords = ['scrollX','scrollY'];
+
+        let cords = ['scrollX', 'scrollY'];
         window.addEventListener('unload', e => cords.forEach(cord => localStorage[cord] = window[cord]));
         window.addEventListener('load', e => {
             if (localStorage[cords[0]]) {
@@ -50,10 +51,59 @@
                 </div>
                 <span class="font-weight-bold" th:utext="${user.getName()}">Name</span>
                 <span class="text-black-50" th:utext="${user.getEmail()}">edogaru@mail.com.my</span>
-                <span> </span>
+                <br>
+                <form th:action="@{/user/edit/{id}(id=${user.id})}">
+                    <button type="submit" class="btn btn-outline-secondary btn-sm">
+                        Edit profile
+                    </button>
+                </form>
+                <form th:action="@{/user/edit/{id}(id=${user.id})}">
+                    <button type="submit" class="btn btn-outline-secondary btn-sm mt-1" th:name="tab" th:value="feedbacks">
+                        Feedbacks
+                    </button>
+                </form>
             </div>
         </div>
-        <div class="col-md-5 border-right">
+        <div th:if="${(param.tab != null) and (param.tab[0] == 'feedbacks')}" class="col-md-8">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="text-right">Your feedbacks</h4>
+                </div>
+                <div class="row mt-1">
+                    <div th:each="feedback : ${feedbacks}" class="reviews-members pt-4 pb-4">
+                        <div class="media">
+                            <div class="text-center mr-3">
+                                <a class="link-secondary" th:href="@{/product/{id}(id=${feedback.product.id})}">
+                                    <img th:src="@{/images/{id}(id=${feedback.product.previewImageId})}"
+                                         class="mr-3 rounded-circle" width="70px"
+                                         alt="Without avatar">
+                                    <div class="mr-3" th:utext="${feedback.product.title}"></div>
+                                </a>
+                            </div>
+                            <div class="media-body">
+                                <div class="reviews-members-header">
+                                        <span><span th:utext="${feedback.stars}"></span> <i
+                                                class="fa-solid fa-star"></i></span>
+                                </div>
+                                <div class="reviews-members-header">
+                                    <h5 th:utext="${feedback.title}">title</h5>
+                                </div>
+                                <div class="reviews-members-body">
+                                    <div th:text="${feedback.description}">description</div>
+                                </div>
+                                <form th:action="@{/feedback/delete/{id}(id=${feedback.id})}" th:method="POST">
+                                    <button class="btn btn-outline-danger btn-sm mt-3" type="submit">Delete
+                                    </button>
+                                </form>
+                                <small class="text-muted"
+                                       th:utext="${feedback.dateOfCreated}">dateOfCreated</small>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div th:unless="${(param.tab != null) and (param.tab[0] == 'feedbacks')}" class="col-md-5 border-right">
             <div class="p-3 py-5">
                 <form th:method="post" th:action="@{/user/edit/{id}(id=${userUpdateData.getId()})}"
                       th:object="${userUpdateData}"
@@ -63,8 +113,10 @@
                     </div>
                     <div class="row mt-2">
                         <div class="col-md-6"><label for="name" class="form-label">Enter name: </label>
-                            <input type="text" pattern="[a-zA-Z]*" th:field="*{name}" class="form-control" id="name"/>
-                            <div style="color:red" th:if="${#fields.hasErrors('name')}" th:errors="*{name}"></div>
+                            <input type="text" pattern="[a-zA-Z]*" th:field="*{name}" class="form-control"
+                                   id="name"/>
+                            <div style="color:red" th:if="${#fields.hasErrors('name')}"
+                                 th:errors="*{name}"></div>
                         </div>
                         <div class="col-md-6">
                             <div>
@@ -80,7 +132,8 @@
                             </div>
                             <label for="email" class="form-label">Enter email: </label>
                             <input type="email" th:field="*{email}" class="form-control" id="email"/>
-                            <div style="color:red" th:if="${#fields.hasErrors('email')}" th:errors="*{email}"></div>
+                            <div style="color:red" th:if="${#fields.hasErrors('email')}"
+                                 th:errors="*{email}"></div>
                         </div>
                     </div>
                     <div class="mt-3">
@@ -90,7 +143,7 @@
                 </form>
             </div>
         </div>
-        <div class="col-md-4">
+        <div th:unless="${(param.tab != null) and (param.tab[0] == 'feedbacks')}" class="col-md-4">
             <div class="py-5">
                 <form th:method="POST" th:action="@{/user/edit_password/{id}(id=${userUpdateData.id})}"
                       th:object="${userUpdatePassword}">
@@ -105,7 +158,8 @@
                     <div class="col-md-12 mt-3">
                         <label for="confirmPassword" class="form-label" th:text="#{signUp.confirmPassword}">Confirm
                             password:</label>
-                        <input type="password" th:field="*{confirmPassword}" class="form-control" id="confirmPassword"/>
+                        <input type="password" th:field="*{confirmPassword}" class="form-control"
+                               id="confirmPassword"/>
                         <div class="alert alert-danger mt-1" th:if="${#fields.hasErrors('confirmPassword')}"
                              th:errors="*{confirmPassword}"></div>
                     </div>
@@ -122,7 +176,8 @@
                 </form>
                 <br>
                 <div class="col-md-12 btn-group">
-                    <form th:unless="${user.isOwner()}" th:action="@{/user/delete/{id}(id=${user.id})}" method="post">
+                    <form th:unless="${user.isOwner()}" th:action="@{/user/delete/{id}(id=${user.id})}"
+                          method="post">
                         <input onclick="return deleteConfig('delete your account?')"
                                class="btn btn-outline-danger mr-2"
                                type="submit" value="Delete account">

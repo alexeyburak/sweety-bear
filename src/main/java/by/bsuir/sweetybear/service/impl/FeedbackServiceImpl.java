@@ -28,6 +28,11 @@ public class FeedbackServiceImpl implements FeedbackService {
     private final ProductServiceImpl productService;
 
     @Override
+    public List<Feedback> getUserFeedbackList(long userId) {
+        return feedbackRepository.getFeedbacksByUserId(userId);
+    }
+
+    @Override
     public List<Feedback> getProductFeedbackList(long id) {
         return feedbackRepository.getFeedbacksByProductId(id);
     }

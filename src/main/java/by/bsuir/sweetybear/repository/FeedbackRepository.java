@@ -15,6 +15,7 @@ import java.util.List;
 
 public interface FeedbackRepository extends JpaRepository<Feedback, Long> {
     List<Feedback> getFeedbacksByProductId(long productId);
+    List<Feedback> getFeedbacksByUserId(long userId);
     @Modifying
     @Query(value = "DELETE FROM feedbacks WHERE id = ?1", nativeQuery = true)
     void deleteByFeedbackId(long productId);
