@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<html xmlns:th="http://www.thymeleaf.org" xmlns="http://www.w3.org/1999/html" lang="en">
 <head>
     <meta charset="UTF-8">
     <title>Edit account</title>
@@ -49,7 +49,7 @@
                 <div class="text-black-100" th:unless="${user.isAvatarNull()}">
                     <p class="card-text">Without avatar</p>
                 </div>
-                <span class="font-weight-bold" th:utext="${user.getName()}">Name</span>
+                <span class="font-weight-bold mt-3" th:utext="${user.getName()}">Name</span>
                 <span class="text-black-50" th:utext="${user.getEmail()}">edogaru@mail.com.my</span>
                 <br>
                 <form th:action="@{/user/edit/{id}(id=${user.id})}">
@@ -58,16 +58,49 @@
                     </button>
                 </form>
                 <form th:action="@{/user/edit/{id}(id=${user.id})}">
-                    <button type="submit" class="btn btn-outline-secondary btn-sm mt-1" th:name="tab" th:value="feedbacks">
+                    <button type="submit" class="btn btn-outline-secondary btn-sm mt-1" th:name="tab"
+                            th:value="feedbacks">
                         Feedbacks
                     </button>
                 </form>
+                <form th:action="@{/user/edit/{id}(id=${user.id})}">
+                    <button type="submit" class="btn btn-outline-secondary btn-sm mt-1" th:name="tab"
+                            th:value="payments">
+                        Payments
+                    </button>
+                </form>
+            </div>
+        </div>
+        <div th:if="${(param.tab != null) and (param.tab[0] == 'payments')}" class="col-md-8">
+            <div class="p-3 py-5">
+                <div class="d-flex justify-content-between align-items-center mb-3">
+                    <h4 class="font-weight-bold text-right">Payments</h4>
+                </div>
+                <div class="row">
+                    <div class="col-md-6" th:each="payment : ${payments}">
+                        <div class="bg-white card payments-item mb-4 shadow-sm">
+                            <div class="gold-members p-4">
+                                <div class="media">
+                                    <i class="fa-solid fa-credit-card mr-3 mt-3 fa-xl"></i>
+                                    <div class="media-body">
+                                        <h6 class="mb-1" th:utext="${payment.cardNumber}">6070-XXXXXXXX-0666</h6>
+                                        <p>VALID TILL
+                                            <span th:utext="${payment.expirationMonth}"></span>/<span th:utext="${payment.expirationYear}"></span>
+                                        </p>
+                                        <p class="mb-0 text-black font-weight-bold">
+                                            <a class="text-danger" data-toggle="modal" data-target="#delete-address-modal" href="#">DELETE</a></p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
         <div th:if="${(param.tab != null) and (param.tab[0] == 'feedbacks')}" class="col-md-8">
             <div class="p-3 py-5">
                 <div class="d-flex justify-content-between align-items-center mb-3">
-                    <h4 class="text-right">Your feedbacks</h4>
+                    <h4 class="text-right font-weight-bold">Your feedbacks</h4>
                 </div>
                 <div class="row mt-1">
                     <div th:each="feedback : ${feedbacks}" class="reviews-members pt-4 pb-4">
@@ -103,13 +136,13 @@
                 </div>
             </div>
         </div>
-        <div th:unless="${(param.tab != null) and (param.tab[0] == 'feedbacks')}" class="col-md-5 border-right">
+        <div th:if="${(param.tab == null)}" class="col-md-5 border-right">
             <div class="p-3 py-5">
                 <form th:method="post" th:action="@{/user/edit/{id}(id=${userUpdateData.getId()})}"
                       th:object="${userUpdateData}"
                       enctype="multipart/form-data">
                     <div class="d-flex justify-content-between align-items-center mb-3">
-                        <h4 class="text-right">Profile Settings</h4>
+                        <h4 class="text-right font-weight-bold">Profile Settings</h4>
                     </div>
                     <div class="row mt-2">
                         <div class="col-md-6"><label for="name" class="form-label">Enter name: </label>
@@ -143,7 +176,7 @@
                 </form>
             </div>
         </div>
-        <div th:unless="${(param.tab != null) and (param.tab[0] == 'feedbacks')}" class="col-md-4">
+        <div th:if="${(param.tab == null)}" class="col-md-4">
             <div class="py-5">
                 <form th:method="POST" th:action="@{/user/edit_password/{id}(id=${userUpdateData.id})}"
                       th:object="${userUpdatePassword}">
@@ -193,5 +226,7 @@
         </div>
     </div>
 </div>
+
+
 </body>
 </html>

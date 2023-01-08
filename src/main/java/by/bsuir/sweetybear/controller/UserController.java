@@ -3,6 +3,7 @@ package by.bsuir.sweetybear.controller;
 import by.bsuir.sweetybear.dto.UserChangePasswordDTO;
 import by.bsuir.sweetybear.dto.UserDTO;
 import by.bsuir.sweetybear.model.User;
+import by.bsuir.sweetybear.service.impl.BankCardServiceImpl;
 import by.bsuir.sweetybear.service.impl.FeedbackServiceImpl;
 import by.bsuir.sweetybear.service.impl.UserServiceImpl;
 import by.bsuir.sweetybear.validator.ErrorMessage;
@@ -29,8 +30,11 @@ import java.util.Objects;
 @RequiredArgsConstructor
 public class UserController {
 
+    private static final String ACCOUNT_FEEDBACKS = "feedbacks";
+    private static final String ACCOUNT_BANK_CARDS = "payments";
     private final UserServiceImpl userService;
     private final FeedbackServiceImpl feedbackService;
+    private final BankCardServiceImpl bankCardService;
     private final ModelMapper modelMapper;
 
     @GetMapping("/registration")
@@ -85,11 +89,18 @@ public class UserController {
                                   @RequestParam(name = "tab", required = false) String tab) {
         if (!Objects.equals(id, userService.getUserByPrincipal(principal).getId()))
             return "redirect:/";
-        if (Objects.equals(tab, "feedbacks"))
-            model.addAttribute("feedbacks", feedbackService.getUserFeedbackList(id));
+        if (tab != null)
+            chooseAccountTabsThenAddToModel(tab, model, id);
 
         insertDataInModelForEditingUserAccount(model, principal, id);
         return "account-edit";
+    }
+
+    private void chooseAccountTabsThenAddToModel(String tab, Model model, Long id) {
+        switch (tab) {
+            case ACCOUNT_FEEDBACKS -> model.addAttribute(ACCOUNT_FEEDBACKS, feedbackService.getUserFeedbackList(id));
+            case ACCOUNT_BANK_CARDS -> model.addAttribute(ACCOUNT_BANK_CARDS, bankCardService.getBankCardsByUserId(id));
+        }
     }
 
     @PostMapping("/user/edit/{id}")
