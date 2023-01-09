@@ -15,6 +15,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 import java.io.IOException;
 import java.security.Principal;
@@ -150,6 +151,13 @@ public class UserController {
         model.addAttribute("userUpdateData", userService.getUserById(id));
         model.addAttribute("userUpdatePassword", new UserChangePasswordDTO());
         model.addAttribute("user", userService.getUserByPrincipal(principal));
+    }
+
+    @PostMapping("/user/delete/payment/{id}")
+    public String deleteUserBankCard(@PathVariable Long id,
+                                     HttpServletRequest request) {
+        bankCardService.deleteBankCardById(id);
+        return "redirect:" + request.getHeader("Referer");
     }
 
     @PostMapping("/user/delete/{id}")

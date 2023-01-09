@@ -168,7 +168,7 @@ public class BucketServiceImpl implements BucketService {
 
     private void clearProductsFromBucket(Bucket bucket) {
         getProductsFromBucket(bucket).clear();
-        log.info("Clear bucket after adding to bucket. Bucket id: {}", bucket.getId());
+        log.info("Clear bucket after adding to order. Bucket id: {}", bucket.getId());
         bucketRepository.save(bucket);
     }
 

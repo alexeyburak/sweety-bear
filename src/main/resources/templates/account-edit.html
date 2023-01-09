@@ -94,8 +94,15 @@
                                     <div class="media-body">
                                         <h6 class="mb-1" th:utext="${payment.cardNumber}">6070-XXXXXXXX-0666</h6>
                                         <p>VALID TILL <span th:utext="${payment.expiryDate}"></span></p>
-                                        <p class="mb-0 text-black font-weight-bold">
-                                            <a class="text-danger" data-toggle="modal" data-target="#delete-address-modal" href="#">DELETE</a></p>
+                                        <div class="mb-0 text-black font-weight-bold">
+                                            <form th:method="post"
+                                                  th:action="@{/user/delete/payment/{id}(id=${payment.id})}">
+                                                <button type="submit" class="btn btn-outline-danger btn-sm"
+                                                        onclick="return deleteConfig('delete this payment?')">
+                                                    Delete
+                                                </button>
+                                            </form>
+                                        </div>
                                     </div>
                                 </div>
                             </div>

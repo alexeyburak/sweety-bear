@@ -17,4 +17,5 @@ public interface BankCardService {
     boolean isBankCardExist(BankCard bankCard);
     boolean isBankCardInformationCorrect(BankCard bankCard, long cardNumber, int expirationMonth, int expirationYear, int cvv);
     boolean isBankCardValid(BankCard bankCard);
+    void deleteBankCardById(Long id);
 }
