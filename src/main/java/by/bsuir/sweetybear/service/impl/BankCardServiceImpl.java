@@ -12,6 +12,7 @@ import lombok.AllArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
@@ -28,7 +29,6 @@ import java.util.List;
 @AllArgsConstructor
 public class BankCardServiceImpl implements BankCardService, PaymentService {
 
-    private static final String CURRENT_MILLENNIUM = "20";
     private final BankCardRepository bankCardRepository;
 
     @Override
@@ -49,7 +49,7 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
         BankCard bankCard = toEntity(bankCardDTO);
         bankCard.setUser(order.getUser());
 
-        if (bankCardDontReadyToDebited(order, bankCard)) {
+        if (!isBankCardReadyToDebiting(order, bankCard)) {
             log.warn("Bank card validation error.");
             return false;
         }
@@ -62,23 +62,19 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
         return true;
     }
 
-    private boolean bankCardDontReadyToDebited(Order order, BankCard bankCard) {
-        return !isBankCardValid(bankCard) ||
-                !isEnoughMoney(bankCard.getBalance(), order.getSum()) ||
-                !isCardDateValid(bankCard.getExpirationMonth(), bankCard.getExpirationYear());
+    private boolean isBankCardReadyToDebiting(Order order, BankCard bankCard) {
+        return isBankCardValid(bankCard) &&
+                isEnoughMoney(bankCard.getBalance(), order.getSum()) &&
+                isCardDateValid(bankCard.getExpirationMonth(), bankCard.getExpirationYear());
     }
 
     private boolean isCardDateValid(int month, int year) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
-        int currentMonth = calendar.get(Calendar.MONTH);
-        int currentYear = calendar.get(Calendar.YEAR);
+        int currentMonth = calendar.get(Calendar.MONTH) + 1;
+        int currentYearWithoutMillennium = Integer.parseInt( String.valueOf(calendar.get(Calendar.YEAR)).substring(2));
 
-        if (Integer.parseInt(CURRENT_MILLENNIUM + year) < currentYear) return true;
-        if (year == currentYear) {
-            return month < currentMonth;
-        }
-        return false;
+        return month >= currentMonth && year >= currentYearWithoutMillennium;
     }
 
     @Override
@@ -115,6 +111,13 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
                 ValidatorFactory.getInstance().getCvvValidator().isValid(bankCard.getCvv().toString()) &&
                 ValidatorFactory.getInstance().getMonthValidator().isValid(bankCard.getExpirationMonth().toString()) &&
                 ValidatorFactory.getInstance().getYearValidator().isValid(bankCard.getExpirationYear().toString());
+    }
+
+    @Override
+    @Transactional
+    public void deleteBankCardById(Long id) {
+        bankCardRepository.deleteByBankCardId(id);
+        log.info("Bank card with id {} was deleted.", id);
     }
 
     private BankCard toEntity(BankCardDTO bankCardDTO) {
