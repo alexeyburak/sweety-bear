@@ -153,13 +153,6 @@ public class UserController {
         model.addAttribute("user", userService.getUserByPrincipal(principal));
     }
 
-    @PostMapping("/user/delete/payment/{id}")
-    public String deleteUserBankCard(@PathVariable Long id,
-                                     HttpServletRequest request) {
-        bankCardService.deleteBankCardById(id);
-        return "redirect:" + request.getHeader("Referer");
-    }
-
     @PostMapping("/user/delete/{id}")
     public String deleteUserAccount(@PathVariable Long id) {
         userService.deleteUserAccountById(id);

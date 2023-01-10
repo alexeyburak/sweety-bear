@@ -4,7 +4,9 @@ import by.bsuir.sweetybear.dto.AccessibleBankCardDTO;
 import by.bsuir.sweetybear.dto.BankCardDTO;
 import by.bsuir.sweetybear.model.BankCard;
 import by.bsuir.sweetybear.model.Order;
+import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.repository.BankCardRepository;
+import by.bsuir.sweetybear.repository.UserRepository;
 import by.bsuir.sweetybear.service.BankCardService;
 import by.bsuir.sweetybear.service.PaymentService;
 import by.bsuir.sweetybear.validator.ValidatorFactory;
@@ -45,6 +47,26 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
     }
 
     @Override
+    public boolean addNewBankCard(BankCardDTO bankCardDTO, User user) {
+        BankCard bankCard = toEntity(bankCardDTO);
+
+        if (!isBankCardReadyToAdd(bankCard)) {
+            log.warn("Bank card validation error.");
+            return false;
+        }
+        if (isBankCardExist(bankCard)) {
+            log.warn("Bank card is already exists.");
+            return false;
+        }
+
+        user.addBankCardToUser(bankCard);
+
+        bankCardRepository.save(bankCard);
+        log.info("Add bank card to user. User id: {}", user.getId());
+        return true;
+    }
+
+    @Override
     public boolean debitingMoneyFromTheBankCard(Order order, BankCardDTO bankCardDTO) {
         BankCard bankCard = toEntity(bankCardDTO);
         bankCard.setUser(order.getUser());
@@ -60,6 +82,10 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
         bankCardRepository.save(bankCard);
         log.info("Debiting money from the bank card. Card number: {}", bankCard.getCardNumber());
         return true;
+    }
+
+    private boolean isBankCardReadyToAdd(BankCard bankCard) {
+        return isBankCardValid(bankCard) && isCardDateValid(bankCard.getExpirationMonth(), bankCard.getExpirationYear());
     }
 
     private boolean isBankCardReadyToDebiting(Order order, BankCard bankCard) {

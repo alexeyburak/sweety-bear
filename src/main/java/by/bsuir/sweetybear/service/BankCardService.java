@@ -1,7 +1,9 @@
 package by.bsuir.sweetybear.service;
 
 import by.bsuir.sweetybear.dto.AccessibleBankCardDTO;
+import by.bsuir.sweetybear.dto.BankCardDTO;
 import by.bsuir.sweetybear.model.BankCard;
+import by.bsuir.sweetybear.model.User;
 
 import java.util.List;
 
@@ -14,6 +16,7 @@ import java.util.List;
 public interface BankCardService {
 
     List<AccessibleBankCardDTO> getBankCardsDTOByUserId(Long userId);
+    boolean addNewBankCard(BankCardDTO bankCardDTO, User user);
     boolean isBankCardExist(BankCard bankCard);
     boolean isBankCardInformationCorrect(BankCard bankCard, long cardNumber, int expirationMonth, int expirationYear, int cvv);
     boolean isBankCardValid(BankCard bankCard);

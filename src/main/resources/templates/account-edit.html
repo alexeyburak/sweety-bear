@@ -109,6 +109,11 @@
                         </div>
                     </div>
                 </div>
+                <div class="mt-2 d-flex justify-content-between align-items-center">
+                    <form th:action="@{/add/payment}">
+                        <button type="submit" class="btn btn-primary">Add new card</button>
+                    </form>
+                </div>
             </div>
         </div>
         <div th:if="${(param.tab != null) and (param.tab[0] == 'feedbacks')}" class="col-md-8">
