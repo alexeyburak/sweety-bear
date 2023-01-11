@@ -5,89 +5,49 @@
     <title>Sweety Bear</title>
     <th:block th:replace="/base/base_dependencies :: base_dependencies"/>
     <style>
-        .heading {
-            font-size: 40px;
-            margin-top: 35px;
-            margin-bottom: 30px;
-            padding-left: 20px
-        }
-
         .card {
-            border-radius: 10px !important;
-            margin-top: 60px;
-            margin-bottom: 20px
+            border: none;
+            border-radius: 8px;
+            box-shadow: 5px 6px 6px 2px #e9ecef
         }
 
-        .form-card {
-            margin-left: 20px;
-            margin-right: 20px
+        .heading {
+            font-size: 23px;
+            font-weight: 00
         }
 
-        .form-card input, .form-card textarea {
-            padding: 10px 15px 5px 15px;
-            border: 1px solid lightgrey;
-            border-radius: 6px;
-            margin-bottom: 25px;
-            margin-top: 2px;
-            width: 100%;
-            box-sizing: border-box;
-            font-family: arial, serif;
-            color: #2C3E50;
-            font-size: 14px;
-            letter-spacing: 1px
+        .pricing {
+            border: 2px solid #304FFE;
+            background-color: #f2f5ff
         }
 
-        .form-card input:focus, .form-card textarea:focus {
-            -moz-box-shadow: 0px 0px 0px 1.5px skyblue !important;
-            -webkit-box-shadow: 0px 0px 0px 1.5px skyblue !important;
-            box-shadow: 0px 0px 0px 1.5px skyblue !important;
-            font-weight: bold;
-            border: 1px solid #304FFE;
-            outline-width: 0
+        .business {
+            font-size: 20px;
+            font-weight: 500
         }
 
-        .input-group {
-            position: relative;
-            width: 100%;
-            overflow: hidden
+        .plan {
+            color: #aba4a4
         }
 
-        .input-group input {
-            position: relative;
-            height: 80px;
-            margin-left: 1px;
-            margin-right: 1px;
-            border-radius: 6px;
-            padding-top: 30px;
-            padding-left: 25px
+        .dollar {
+            font-size: 16px;
+            color: #6b6b6f
         }
 
-        .input-group label {
-            position: absolute;
-            height: 24px;
-            background: none;
-            border-radius: 6px;
-            line-height: 48px;
-            font-size: 15px;
-            color: gray;
-            width: 100%;
-            font-weight: 100;
-            padding-left: 25px
+        .amount {
+            font-size: 50px;
+            font-weight: 500
         }
 
-        input:focus + label {
-            color: #304FFE
+        .detail {
+            font-size: 22px;
+            font-weight: 500
         }
 
-        .btn-pay {
-            background-color: #304FFE;
-            height: 60px;
-            color: #ffffff !important;
-            font-weight: bold
-        }
-
-        .btn-pay:hover {
-            background-color: #3F51B5
+        .payment-button {
+            height: 70px;
+            font-size: 20px
         }
 
         .errorMessage {
@@ -101,70 +61,47 @@
 <body>
 <header th:insert="blocks/header :: header"></header>
 
-<div class="container-fluid">
-    <div class="row justify-content-center">
-        <div class=" col-lg-6 col-md-8">
-            <div class="card p-3">
-                <div class="row justify-content-center">
-                    <div class="col-12">
-                        <h2 class="heading text-center">Order <span th:utext="${order.getId()}">ID</span></h2>
+<div class="container mt-5 mb-5 " style="width: 90%;">
+    <form th:method="POST" th:action="@{/payment/orders/{id}(id=${order.id})}">
+        <div class="card p-5">
+            <div><h4 class="heading">Order payment</h4></div>
+            <div class="pricing p-3 rounded mt-4 d-flex justify-content-between">
+                <div class="images d-flex flex-row align-items-center"><img src="https://i.imgur.com/S17BrTx.png"
+                                                                            class="rounded" width="60">
+                    <div class="d-flex flex-column ml-4"><span class="business" th:utext="${order.id}">ID</span> <span
+                            class="plan">DELIVERY: <span th:utext="${order.dateOfDelivery}"></span></span>
                     </div>
                 </div>
-                <form class="form-card" th:action="@{/payment/orders/{id}(id=${order.id})}" th:method="POST"
-                      th:object="${bankCard}">
-                    <div class="row justify-content-center">
-                        <div class="col-12">
-                            <div class="input-group"><input type="text" th:field="*{cardholderName}"
-                                                            name="Name" placeholder="John Doe">
-                                <label>Name</label></div>
-                        </div>
+                <div class="d-flex flex-row align-items-center"><sup class="dollar font-weight-bold">BYN</sup> <span
+                        class="amount ml-1 mr-1" th:utext="${order.sum}">8,350</span></div>
+            </div>
+            <span class="detail mt-5">Payment details</span>
+
+            <div th:each="payment : ${payments}"
+                 class="credit rounded mt-2 d-flex justify-content-between align-items-center">
+                <div class="d-flex flex-row align-items-center"><img src="https://i.imgur.com/qHX7vY1.png"
+                                                                     class="rounded"
+                                                                     width="70">
+                    <div class="d-flex flex-column ml-3"><span class="business">Credit Card</span> <span class="plan"
+                                                                                                         th:utext="${payment.cardNumber}">xxxx8880</span>
                     </div>
-                    <div class="row justify-content-center">
-                        <div class="col-12">
-                            <div class="input-group"><input th:field="*{cardNumber}"
-                                                            type="text" id="cr_no" name="card-no"
-                                                            pattern="\d*"
-                                                            inputmode="numeric"
-                                                            placeholder="0000 0000 0000 0000" minlength="16"
-                                                            autocomplete="cc-number"
-                                                            maxlength="16"> <label>Card Number</label></div>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center payment">
-                        <div class="col-12">
-                            <div class="row">
-                                <div class="col-6">
-                                    <div class="input-group"><input th:field="*{expiryDate}"
-                                                                    type="text" id="exp" name="expdate"
-                                                                    placeholder="MM/YY" minlength="5" maxlength="5">
-                                        <label>Expiry Date</label></div>
-                                </div>
-                                <div class="col-6">
-                                    <div class="input-group"><input th:field="*{cvv}"
-                                                                    required
-                                                                    type="password" name="cvv"
-                                                                    placeholder="&#9679;&#9679;&#9679;" minlength="3"
-                                                                    maxlength="3">
-                                        <label data-toggle="tooltip"
-                                               title="Three digit CV code on the back of your card">
-                                            <span>CVV <i class="fa fa-question-circle d-inline"></i></span>
-                                        </label>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="row justify-content-center">
-                        <input type="hidden" name="_csrf" value="${_csrf.token}">
-                        <button class="btn btn-pay placeicon col-md-12" type="submit">Pay
-                            <span th:text="${order.sum}"></span> BYN
-                        </button>
-                    </div>
-                </form>
+                </div>
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="payment" th:value="${payment.id}" id="flexRadioDefault1">
+                    <label class="form-check-label" for="flexRadioDefault1"></label>
+                </div>
+            </div>
+
+            <a class="mt-4 text-primary" style="text-decoration: none;" href="/payment/add">ADD NEW PAYMENT</a>
+            <div class="mt-3">
+                <button type="submit" class="btn btn-primary btn-block payment-button">Proceed to payment
+                    <i class="fa fa-long-arrow-right"></i>
+                </button>
             </div>
         </div>
-    </div>
+    </form>
 </div>
+
 <div class="errorMessage" th:if="${report}">
     <div class="alert alert-danger" th:text="${report}">Error message</div>
 </div>
