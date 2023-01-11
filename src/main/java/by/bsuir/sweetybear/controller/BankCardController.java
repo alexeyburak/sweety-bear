@@ -8,10 +8,7 @@ import by.bsuir.sweetybear.validator.ErrorMessage;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 import java.security.Principal;
@@ -24,12 +21,13 @@ import java.security.Principal;
 
 @Controller
 @RequiredArgsConstructor
+@RequestMapping("/payment")
 public class BankCardController {
 
     private final UserServiceImpl userService;
     private final BankCardServiceImpl bankCardService;
 
-    @GetMapping("/add/payment")
+    @GetMapping("/add")
     public String addBankCardForm(@ModelAttribute("bankCard") BankCardDTO bankCard,
                                   Principal principal,
                                   Model model) {
@@ -37,7 +35,7 @@ public class BankCardController {
         return "bank-card-add";
     }
 
-    @PostMapping("/add/payment")
+    @PostMapping("/add")
     public String addBankCard(@ModelAttribute("bankCard") BankCardDTO bankCard,
                               Principal principal,
                               Model model) {
@@ -52,7 +50,7 @@ public class BankCardController {
         return "redirect:/user/edit/" + user.getId() + "?tab=payments";
     }
 
-    @PostMapping("/user/delete/payment/{id}")
+    @PostMapping("/delete/{id}")
     public String deleteUserBankCard(@PathVariable Long id,
                                      HttpServletRequest request) {
         bankCardService.deleteBankCardById(id);

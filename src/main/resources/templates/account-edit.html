@@ -96,7 +96,7 @@
                                         <p>VALID TILL <span th:utext="${payment.expiryDate}"></span></p>
                                         <div class="mb-0 text-black font-weight-bold">
                                             <form th:method="post"
-                                                  th:action="@{/user/delete/payment/{id}(id=${payment.id})}">
+                                                  th:action="@{/payment/delete/{id}(id=${payment.id})}">
                                                 <button type="submit" class="btn btn-outline-danger btn-sm"
                                                         onclick="return deleteConfig('delete this payment?')">
                                                     Delete
@@ -110,7 +110,7 @@
                     </div>
                 </div>
                 <div class="mt-2 d-flex justify-content-between align-items-center">
-                    <form th:action="@{/add/payment}">
+                    <form th:action="@{/payment/add}">
                         <button type="submit" class="btn btn-primary">Add new card</button>
                     </form>
                 </div>

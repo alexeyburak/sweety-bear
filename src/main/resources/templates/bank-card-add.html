@@ -97,7 +97,7 @@
     <div class="row justify-content-center">
         <div class=" col-lg-6 col-md-8">
             <div class="card p-3">
-                <form class="form-card" th:action="@{/add/payment}" th:method="POST" th:object="${bankCard}">
+                <form class="form-card" th:action="@{/payment/add}" th:method="POST" th:object="${bankCard}">
                     <div class="row justify-content-center">
                         <div class="col-12">
                             <div class="input-group"><input type="text" th:field="*{cardholderName}"
