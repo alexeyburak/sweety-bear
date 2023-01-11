@@ -14,7 +14,7 @@ import java.util.List;
  */
 
 public interface BankCardService {
-
+    BankCard getBankCardById(Long id);
     List<AccessibleBankCardDTO> getBankCardsDTOByUserId(Long userId);
     boolean addNewBankCard(BankCardDTO bankCardDTO, User user);
     boolean isBankCardExist(BankCard bankCard);

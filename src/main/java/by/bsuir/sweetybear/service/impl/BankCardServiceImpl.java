@@ -2,11 +2,11 @@ package by.bsuir.sweetybear.service.impl;
 
 import by.bsuir.sweetybear.dto.AccessibleBankCardDTO;
 import by.bsuir.sweetybear.dto.BankCardDTO;
+import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.BankCard;
 import by.bsuir.sweetybear.model.Order;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.repository.BankCardRepository;
-import by.bsuir.sweetybear.repository.UserRepository;
 import by.bsuir.sweetybear.service.BankCardService;
 import by.bsuir.sweetybear.service.PaymentService;
 import by.bsuir.sweetybear.validator.ValidatorFactory;
@@ -66,10 +66,14 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
         return true;
     }
 
+    private boolean isBankCardReadyToAdd(BankCard bankCard) {
+        return isBankCardValid(bankCard) &&
+                isCardDateValid(bankCard.getExpirationMonth(), bankCard.getExpirationYear());
+    }
+
     @Override
-    public boolean debitingMoneyFromTheBankCard(Order order, BankCardDTO bankCardDTO) {
-        BankCard bankCard = toEntity(bankCardDTO);
-        bankCard.setUser(order.getUser());
+    public boolean debitingMoneyFromTheBankCard(Order order, Long paymentId) {
+        BankCard bankCard = this.getBankCardById(paymentId);
 
         if (!isBankCardReadyToDebiting(order, bankCard)) {
             log.warn("Bank card validation error.");
@@ -80,17 +84,12 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
         bankCard.setBalance(newBalanceOnBankCard);
 
         bankCardRepository.save(bankCard);
-        log.info("Debiting money from the bank card. Card number: {}", bankCard.getCardNumber());
+        log.info("Debiting money from the bank card. Card id: {}", paymentId);
         return true;
     }
 
-    private boolean isBankCardReadyToAdd(BankCard bankCard) {
-        return isBankCardValid(bankCard) && isCardDateValid(bankCard.getExpirationMonth(), bankCard.getExpirationYear());
-    }
-
     private boolean isBankCardReadyToDebiting(Order order, BankCard bankCard) {
-        return isBankCardValid(bankCard) &&
-                isEnoughMoney(bankCard.getBalance(), order.getSum()) &&
+        return isEnoughMoney(bankCard.getBalance(), order.getSum()) &&
                 isCardDateValid(bankCard.getExpirationMonth(), bankCard.getExpirationYear());
     }
 
@@ -98,7 +97,7 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         int currentMonth = calendar.get(Calendar.MONTH) + 1;
-        int currentYearWithoutMillennium = Integer.parseInt( String.valueOf(calendar.get(Calendar.YEAR)).substring(2));
+        int currentYearWithoutMillennium = Integer.parseInt(String.valueOf(calendar.get(Calendar.YEAR)).substring(2));
 
         return month >= currentMonth && year >= currentYearWithoutMillennium;
     }
@@ -137,6 +136,12 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
                 ValidatorFactory.getInstance().getCvvValidator().isValid(bankCard.getCvv().toString()) &&
                 ValidatorFactory.getInstance().getMonthValidator().isValid(bankCard.getExpirationMonth().toString()) &&
                 ValidatorFactory.getInstance().getYearValidator().isValid(bankCard.getExpirationYear().toString());
+    }
+
+    @Override
+    public BankCard getBankCardById(Long id) {
+        return bankCardRepository.findById(id)
+                .orElseThrow(() -> new ApiRequestException("Bank card not found"));
     }
 
     @Override

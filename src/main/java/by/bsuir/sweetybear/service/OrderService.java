@@ -1,6 +1,5 @@
 package by.bsuir.sweetybear.service;
 
-import by.bsuir.sweetybear.dto.BankCardDTO;
 import by.bsuir.sweetybear.model.Order;
 import by.bsuir.sweetybear.model.enums.OrderStatus;
 
@@ -26,6 +25,6 @@ public interface OrderService {
     List<Order> getUserOrdersById(Long id);
     // Delete product from database
     void deleteProductById(Long id);
-    boolean orderPayment(Long orderId, BankCardDTO bankCardDTO);
+    boolean orderPayment(Long orderId, Long paymentId);
     void checkForOrderPaymentDate(Long userId);
 }

@@ -16,7 +16,7 @@ public interface ErrorMessage {
     String USER_INVALID_ACTIVATION_CODE = "Activation code is not available.";
     String USER_EMAIL_EXISTS = "Email is already exists.";
     String USER_NAME_LENGTH_ERROR = "Name must be between 2 and 15 characters.";
-    String ORDER_PAYMENT_ERROR = "Payment error. Check the entered data or the card balance.";
+    String ORDER_PAYMENT_ERROR = "Payment error. Please, try again.";
     String RESET_PASSWORD_NOT_FOUND_ACCOUNT = "Your account was not found.";
     String RESET_PASSWORD_CHECK_EMAIL = "Check your email for further password recovery.";
     String RESET_PASSWORD_SUCCESS = "You successfully changed your password.";

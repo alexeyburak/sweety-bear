@@ -1,6 +1,5 @@
 package by.bsuir.sweetybear.service.impl;
 
-import by.bsuir.sweetybear.dto.BankCardDTO;
 import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.Order;
 import by.bsuir.sweetybear.model.enums.OrderStatus;
@@ -76,10 +75,10 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public boolean orderPayment(Long orderId, BankCardDTO bankCardDTO) {
+    public boolean orderPayment(Long orderId, Long paymentId) {
         Order order = this.getOrderById(orderId);
 
-        if (!bankCardService.debitingMoneyFromTheBankCard(order, bankCardDTO))
+        if (!bankCardService.debitingMoneyFromTheBankCard(order, paymentId))
             return false;
 
         order.setOrderPaid(true);

@@ -1,9 +1,9 @@
 package by.bsuir.sweetybear.controller;
 
-import by.bsuir.sweetybear.dto.BankCardDTO;
 import by.bsuir.sweetybear.model.Order;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.model.enums.OrderStatus;
+import by.bsuir.sweetybear.service.impl.BankCardServiceImpl;
 import by.bsuir.sweetybear.service.impl.OrderServiceImpl;
 import by.bsuir.sweetybear.service.impl.PDFGeneratorServiceImpl;
 import by.bsuir.sweetybear.service.impl.UserServiceImpl;
@@ -12,7 +12,10 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
@@ -33,6 +36,7 @@ public class OrderController {
 
     private final OrderServiceImpl orderService;
     private final UserServiceImpl userService;
+    private final BankCardServiceImpl bankCardService;
     private final PDFGeneratorServiceImpl pdfGeneratorService;
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
@@ -92,28 +96,33 @@ public class OrderController {
 
     @GetMapping("/payment/orders/{id}")
     public String orderPayment(@PathVariable("id") Long id,
-                                   @ModelAttribute("bankCard") BankCardDTO bankCard,
-                                   Model model,
-                                   Principal principal) {
-        model.addAttribute("user", userService.getUserByPrincipal(principal));
-        model.addAttribute("order", orderService.getOrderById(id));
+                               Model model,
+                               Principal principal) {
+        User user = userService.getUserByPrincipal(principal);
+        addDataToModelInOrderPayment(model, id, user);
         return "order-payment";
     }
 
     @PostMapping("/payment/orders/{id}")
     public String makeOrderPayment(@PathVariable("id") Long id,
-                                   @ModelAttribute("bankCard") BankCardDTO bankCard,
+                                   @RequestParam("payment") Long paymentId,
                                    Model model,
                                    Principal principal) {
-        model.addAttribute("user", userService.getUserByPrincipal(principal));
-        model.addAttribute("order", orderService.getOrderById(id));
+        User user = userService.getUserByPrincipal(principal);
 
-        if (!orderService.orderPayment(id, bankCard)) {
+        if (!orderService.orderPayment(id, paymentId)) {
+            addDataToModelInOrderPayment(model, id, user);
             model.addAttribute("report", ErrorMessage.ORDER_PAYMENT_ERROR);
             return "order-payment";
         }
 
-        return "redirect:/";
+        return "redirect:/orders/user/" + user.getId();
+    }
+
+    private void addDataToModelInOrderPayment(Model model, Long id, User user) {
+        model.addAttribute("user", user);
+        model.addAttribute("payments", bankCardService.getBankCardsDTOByUserId(user.getId()));
+        model.addAttribute("order", orderService.getOrderById(id));
     }
 
     @GetMapping("/order/pdf/export/{id}")
