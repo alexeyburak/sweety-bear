@@ -23,4 +23,10 @@ public interface OrderRepository extends JpaRepository<Order, Long> {
     @Modifying
     @Query(value = "UPDATE orders SET user_id = null WHERE user_id = ?1", nativeQuery = true)
     void deleteByUserId(Long id);
+    @Modifying
+    @Query(value = "DELETE FROM orders_details WHERE order_id = ?1", nativeQuery = true)
+    void deleteFromOrdersDetailsByOrderId(Long id);
+    @Modifying
+    @Query(value = "DELETE FROM orders WHERE id = ?1", nativeQuery = true)
+    void deleteByOrderId(Long id);
 }

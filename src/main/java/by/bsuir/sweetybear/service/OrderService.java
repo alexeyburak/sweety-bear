@@ -24,7 +24,8 @@ public interface OrderService {
     // Return user orders
     List<Order> getUserOrdersById(Long id);
     // Delete product from database
-    void deleteProductById(Long id);
+    void deleteProductFromOrdersById(Long id);
+    void deleteOrderById(Long id);
     boolean orderPayment(Long orderId, Long paymentId);
     void checkForOrderPaymentDate(Long userId);
 }

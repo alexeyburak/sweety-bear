@@ -9,6 +9,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import javax.transaction.Transactional;
 import java.util.Comparator;
 import java.util.List;
 
@@ -69,9 +70,17 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public void deleteProductById(Long id) {
+    public void deleteProductFromOrdersById(Long id) {
         log.warn("Delete product from order. Product id: {}", id);
         orderRepository.deleteByProductId(id);
+    }
+
+    @Override
+    @Transactional
+    public void deleteOrderById(Long id) {
+        log.warn("Delete order. Order id: {}", id);
+        orderRepository.deleteFromOrdersDetailsByOrderId(id);
+        orderRepository.deleteByOrderId(id);
     }
 
     @Override

@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.security.Principal;
 import java.util.Objects;
@@ -64,9 +65,10 @@ public class OrderController {
 
     @PostMapping("/orders/edit/{id}")
     public String updateOrderById(@PathVariable("id") Long id,
-                                  @RequestParam("status") OrderStatus status) {
+                                  @RequestParam("status") OrderStatus status,
+                                  HttpServletRequest request) {
         orderService.updateOrderStatusById(id, status);
-        return "redirect:/";
+        return "redirect:" + request.getHeader("Referer");
     }
 
     @PreAuthorize("hasAuthority('ROLE_ADMIN') || hasAuthority('ROLE_OWNER')")
@@ -123,6 +125,12 @@ public class OrderController {
         model.addAttribute("user", user);
         model.addAttribute("payments", bankCardService.getBankCardsDTOByUserId(user.getId()));
         model.addAttribute("order", orderService.getOrderById(id));
+    }
+
+    @PostMapping("/orders/delete/{id}")
+    public String deleteOrder(@PathVariable("id") Long id) {
+        orderService.deleteOrderById(id);
+        return "redirect:/orders?status=NEW";
     }
 
     @GetMapping("/order/pdf/export/{id}")

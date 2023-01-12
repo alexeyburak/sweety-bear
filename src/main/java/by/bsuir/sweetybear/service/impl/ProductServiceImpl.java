@@ -91,7 +91,7 @@ public class ProductServiceImpl implements ProductService {
     public void deleteProductById(Long id) {
         log.info("Delete product. Id: {}", id);
         bucketService.deleteProductByIdFromBucket(id);
-        orderService.deleteProductById(id);
+        orderService.deleteProductFromOrdersById(id);
         productRepository.deleteById(id);
     }
 
