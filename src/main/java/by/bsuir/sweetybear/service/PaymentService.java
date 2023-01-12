@@ -13,6 +13,7 @@ import java.math.BigDecimal;
 public interface PaymentService {
 
     boolean isEnoughMoney(BigDecimal balance, BigDecimal price);
+    boolean isCardDateValid(int month, int year);
     BigDecimal calculateNewBalance(BigDecimal balance, BigDecimal price);
     boolean debitingMoneyFromTheBankCard(Order order, Long paymentId);
 }

@@ -72,6 +72,32 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
     }
 
     @Override
+    public boolean isBankCardValid(BankCard bankCard) {
+        return ValidatorFactory.getInstance().getCardNameValidator().isValid(bankCard.getCardholderName()) &&
+                ValidatorFactory.getInstance().getCardNumberValidator().isValid(bankCard.getCardNumber().toString()) &&
+                ValidatorFactory.getInstance().getCvvValidator().isValid(bankCard.getCvv().toString()) &&
+                ValidatorFactory.getInstance().getMonthValidator().isValid(bankCard.getExpirationMonth().toString()) &&
+                ValidatorFactory.getInstance().getYearValidator().isValid(bankCard.getExpirationYear().toString());
+    }
+
+    @Override
+    public boolean isBankCardExist(BankCard bankCard) {
+        BankCard bankCardDb = bankCardRepository.findByCardNumber(bankCard.getCardNumber());
+        if (bankCardDb != null) {
+            return isBankCardInformationCorrect(bankCard, bankCardDb.getCardNumber(), bankCardDb.getExpirationMonth(), bankCardDb.getExpirationYear(), bankCardDb.getCvv());
+        }
+        return false;
+    }
+
+    @Override
+    public boolean isBankCardInformationCorrect(BankCard bankCard, long cardNumber, int expirationMonth, int expirationYear, int cvv) {
+        if (bankCard.getCardNumber() != cardNumber) return false;
+        if (bankCard.getExpirationMonth() != expirationMonth) return false;
+        if (bankCard.getExpirationYear() != expirationYear) return false;
+        return bankCard.getCvv() == cvv;
+    }
+
+    @Override
     public boolean debitingMoneyFromTheBankCard(Order order, Long paymentId) {
         BankCard bankCard = this.getBankCardById(paymentId);
 
@@ -93,7 +119,13 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
                 isCardDateValid(bankCard.getExpirationMonth(), bankCard.getExpirationYear());
     }
 
-    private boolean isCardDateValid(int month, int year) {
+    @Override
+    public boolean isEnoughMoney(BigDecimal balance, BigDecimal price) {
+        return balance.compareTo(price) > 0;
+    }
+
+    @Override
+    public boolean isCardDateValid(int month, int year) {
         Calendar calendar = Calendar.getInstance();
         calendar.setTime(new Date());
         int currentMonth = calendar.get(Calendar.MONTH) + 1;
@@ -103,39 +135,8 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
     }
 
     @Override
-    public boolean isBankCardExist(BankCard bankCard) {
-        BankCard bankCardDb = bankCardRepository.findByCardNumber(bankCard.getCardNumber());
-        if (bankCardDb != null) {
-            return isBankCardInformationCorrect(bankCard, bankCardDb.getCardNumber(), bankCardDb.getExpirationMonth(), bankCardDb.getExpirationYear(), bankCardDb.getCvv());
-        }
-        return false;
-    }
-
-    @Override
-    public boolean isBankCardInformationCorrect(BankCard bankCard, long cardNumber, int expirationMonth, int expirationYear, int cvv) {
-        if (bankCard.getCardNumber() != cardNumber) return false;
-        if (bankCard.getExpirationMonth() != expirationMonth) return false;
-        if (bankCard.getExpirationYear() != expirationYear) return false;
-        return bankCard.getCvv() == cvv;
-    }
-
-    @Override
-    public boolean isEnoughMoney(BigDecimal balance, BigDecimal price) {
-        return balance.compareTo(price) > 0;
-    }
-
-    @Override
     public BigDecimal calculateNewBalance(BigDecimal balance, BigDecimal price) {
         return balance.subtract(price);
-    }
-
-    @Override
-    public boolean isBankCardValid(BankCard bankCard) {
-        return ValidatorFactory.getInstance().getCardNameValidator().isValid(bankCard.getCardholderName()) &&
-                ValidatorFactory.getInstance().getCardNumberValidator().isValid(bankCard.getCardNumber().toString()) &&
-                ValidatorFactory.getInstance().getCvvValidator().isValid(bankCard.getCvv().toString()) &&
-                ValidatorFactory.getInstance().getMonthValidator().isValid(bankCard.getExpirationMonth().toString()) &&
-                ValidatorFactory.getInstance().getYearValidator().isValid(bankCard.getExpirationYear().toString());
     }
 
     @Override
