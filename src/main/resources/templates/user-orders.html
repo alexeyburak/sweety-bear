@@ -27,7 +27,10 @@
     <div class="col" th:each="order : ${orders}">
         <div class="card h-10 mt-4">
             <div class="card-body">
-                <h5 class="card-title" th:utext="${order.sum}">Sum</h5>
+                <h5 class="card-title">
+                    <span class="mr-3" th:utext="${order.sum}"></span>
+                    <span style="color: #a10000" th:unless="${order.isOrderPaid()}">NOT PAID</span>
+                </h5>
                 <p class="card-text" th:unless="${order.isOrderDeliveryPickup()}">
                         <span style="font-weight:bold" th:if="${order.address.street}"
                               th:utext="${order.address.street}"></span>
@@ -44,6 +47,7 @@
                 <div class="card-text" style="display: inline-block">Status:
                     <div th:utext="${order.status}" style="display: inline-block; font-weight:bold">Status</div>
                 </div>
+                <br>
                 <div class="card-text" style="display: inline-block">Order date:
                     <div th:utext="${order.dateOfCreated}" style="display: inline-block;">dateOfCreated</div>
                 </div>
