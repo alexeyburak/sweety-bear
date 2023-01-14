@@ -123,7 +123,7 @@ public class OrderController {
 
     private void addDataToModelInOrderPayment(Model model, Long id, User user) {
         model.addAttribute("user", user);
-        model.addAttribute("payments", bankCardService.getBankCardsDTOByUserId(user.getId()));
+        model.addAttribute("payments", bankCardService.getBankCardDTOListByUserId(user.getId()));
         model.addAttribute("order", orderService.getOrderById(id));
     }
 

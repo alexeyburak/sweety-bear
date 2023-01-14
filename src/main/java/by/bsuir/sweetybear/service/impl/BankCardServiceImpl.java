@@ -34,7 +34,7 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
     private final BankCardRepository bankCardRepository;
 
     @Override
-    public List<AccessibleBankCardDTO> getBankCardsDTOByUserId(Long userId) {
+    public List<AccessibleBankCardDTO> getBankCardDTOListByUserId(Long userId) {
         return bankCardRepository.getBankCardsByUserId(userId)
                 .stream()
                 .map(bankCard -> AccessibleBankCardDTO.builder()

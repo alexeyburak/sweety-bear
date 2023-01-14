@@ -15,7 +15,7 @@ import java.util.List;
 
 public interface BankCardService {
     BankCard getBankCardById(Long id);
-    List<AccessibleBankCardDTO> getBankCardsDTOByUserId(Long userId);
+    List<AccessibleBankCardDTO> getBankCardDTOListByUserId(Long userId);
     boolean addNewBankCard(BankCardDTO bankCardDTO, User user);
     boolean isBankCardExist(BankCard bankCard);
     boolean isBankCardInformationCorrect(BankCard bankCard, long cardNumber, int expirationMonth, int expirationYear, int cvv);

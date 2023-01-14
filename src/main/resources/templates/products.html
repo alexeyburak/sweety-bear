@@ -25,7 +25,7 @@
             let preloader = document.getElementById('preloader');
             preloader.style.display = 'none';
         }
-        let cords = ['scrollX','scrollY'];
+        let cords = ['scrollX', 'scrollY'];
         window.addEventListener('unload', e => cords.forEach(cord => localStorage[cord] = window[cord]));
         window.addEventListener('load', e => {
             if (localStorage[cords[0]]) {
@@ -85,54 +85,9 @@
             th:utext="${title}">title</span>'
     </div>
 </div>
-<div>
-    <div class="row row-cols-1 row-cols-md-3 g-4 ml-4 mr-4 mb-4">
-        <div class="col" th:each="product : ${products}">
-            <a class="card_link" th:href="@{/product/{id}(id=${product.id})}">
-                <div class="card h-10 mt-4">
-                    <tr th:each="image : ${product.images}">
-                        <div th:if="${image.id} == ${product.previewImageId}">
-                            <img class="card-img-top mt-1" style="height:250px; width:250px; display: block;
-                        margin-left: auto; margin-right: auto " th:src="@{/images/{id}(id=${image.id})}"/>
-                        </div>
-                    </tr>
 
-                    <div class="card-body">
-                        <h5 class="card-title" th:utext="${product.title}">Card title</h5>
-                        <div class="card-text" style="display: inline-block"><span th:text="#{products.price}"></span>:
-                            <div th:utext="${product.price}" style="display: inline-block; font-weight:bold">
-                                price
-                            </div>
-                            BYN
-                        </div>
-                        <p class="card-text" th:utext="${product.description}">Des</p>
-                        <div class="btn-group " role="group">
-                            <form th:action="@{/{id}/bucket(id=${product.id})}">
-                                <button th:if="${product.isProductAvailable()}" type="submit"
-                                        class="btn btn-outline-secondary mr-3">
-                                    <span th:text="#{products.addToBucket}">Add to bucket</span>
-                                </button>
-                            </form>
-                            <form th:action="@{/product/favorite/{id}(id=${product.id})}">
-                                <button th:if="${user.email}" type="submit" class="btn btn-outline-secondary ml-auto">
-                                    <div th:unless="${#lists.contains(user_favorites, product.id)}">
-                                        <i class="fa-solid fa-heart"></i>
-                                    </div>
-                                    <div th:if="${#lists.contains(user_favorites, product.id)}">
-                                        <i class="fa-solid fa-heart-circle-xmark"></i>
-                                    </div>
-                                </button>
-                            </form>
-                        </div>
-                        <p th:unless="${product.isProductAvailable()}" class="card-text"
-                           th:text="#{products.notAvailable}"
-                           style="color:gray">Is not available now</p>
-                    </div>
-                </div>
-            </a>
-        </div>
-    </div>
-</div>
+<div th:insert="blocks/products :: product-list"></div>
+
 <div class="ml-5 mr-5 mt-4" th:if="${user.isAdmin()}">
     <div th:if="${error}">
         <div style="font-size:18px">
