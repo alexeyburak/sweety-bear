@@ -31,6 +31,7 @@ import java.util.List;
 @AllArgsConstructor
 public class BankCardServiceImpl implements BankCardService, PaymentService {
 
+    private static final int MAX_NUMBER_OF_BANK_CARDS = 4;
     private final BankCardRepository bankCardRepository;
 
     @Override
@@ -50,7 +51,7 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
     public boolean addNewBankCard(BankCardDTO bankCardDTO, User user) {
         BankCard bankCard = toEntity(bankCardDTO);
 
-        if (!isBankCardReadyToAdd(bankCard)) {
+        if (!isBankCardReadyToAdd(bankCard) || !isAcceptableQuantityOfBankcards(user)) {
             log.warn("Bank card validation error.");
             return false;
         }
@@ -78,6 +79,10 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
                 ValidatorFactory.getInstance().getCvvValidator().isValid(bankCard.getCvv().toString()) &&
                 ValidatorFactory.getInstance().getMonthValidator().isValid(bankCard.getExpirationMonth().toString()) &&
                 ValidatorFactory.getInstance().getYearValidator().isValid(bankCard.getExpirationYear().toString());
+    }
+
+    private boolean isAcceptableQuantityOfBankcards(User user) {
+        return user.getBankCards().size() < MAX_NUMBER_OF_BANK_CARDS;
     }
 
     @Override
