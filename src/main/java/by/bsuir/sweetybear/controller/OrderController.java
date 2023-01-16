@@ -34,7 +34,6 @@ public class OrderController {
 
     private static final String PDF_CONTENT_TYPE = "application/pdf";
     private static final String PDF_HEADER_KEY = "Content-Disposition";
-
     private final OrderServiceImpl orderService;
     private final UserServiceImpl userService;
     private final BankCardServiceImpl bankCardService;
@@ -82,17 +81,16 @@ public class OrderController {
     @GetMapping("/orders/user/{id}")
     public String aboutUserOrder(@PathVariable("id") Long id,
                                  Model model,
-                                 Principal principal) {
+                                 Principal principal,
+                                 @RequestParam(name = "tab") String tab) {
         orderService.checkForOrderPaymentDate(id);
 
         User userFromPrincipal = userService.getUserByPrincipal(principal);
-        if (!userFromPrincipal.isActive())
-            return "redirect:/login";
         if (!Objects.equals(id, userFromPrincipal.getId()))
             return "redirect:/";
 
-        model.addAttribute("user", userService.getUserByPrincipal(principal));
-        model.addAttribute("orders", orderService.getUserOrdersById(id));
+        model.addAttribute("user", userFromPrincipal);
+        model.addAttribute("orders", orderService.getUserOrdersByIdWithStatus(id, tab));
         return "user-orders";
     }
 
@@ -118,7 +116,7 @@ public class OrderController {
             return "order-payment";
         }
 
-        return "redirect:/orders/user/" + user.getId();
+        return "redirect:/orders/user/" + user.getId() + "?tab=waiting";
     }
 
     private void addDataToModelInOrderPayment(Model model, Long id, User user) {

@@ -17,9 +17,26 @@
 </head>
 <body>
 <header th:insert="blocks/header :: header"></header>
-<div class="mt-3 ml-5" style="font-size:18px">
-    Your orders
-</div>
+<nav aria-label="Page navigation example">
+    <ul class="pagination justify-content-left ml-4 mt-3">
+        <li class="page-item mr-2">
+            <form th:action="@{/orders/user/{id}(id=${user.id})}">
+                <button type="submit" class="btn btn-light mt-1" th:name="tab"
+                        th:value="waiting">
+                    Waiting list
+                </button>
+            </form>
+        </li>
+        <li class="page-item">
+            <form th:action="@{/orders/user/{id}(id=${user.id})}">
+                <button type="submit" class="btn btn-light mt-1" th:name="tab"
+                        th:value="purchases">
+                    Purchases
+                </button>
+            </form>
+        </li>
+    </ul>
+</nav>
 <div class="mt-3 ml-5" th:if="${#arrays.isEmpty(orders)}">
     You have never ordered on our website. Make purchases in our <a href="/">catalog</a>
 </div>

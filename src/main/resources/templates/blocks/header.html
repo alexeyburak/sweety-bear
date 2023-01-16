@@ -14,7 +14,7 @@
                     <a class="nav-link active" aria-current="page" href="/" th:text="#{menu.catalog}">Catalog</a>
                 </li>
                 <li class="nav-item" th:if="${user.email}">
-                    <a class="nav-link active" th:href="@{/orders/user/{id}(id=${user.id})}" th:text="#{menu.myOrders}">My
+                    <a class="nav-link active" th:href="@{/orders/user/{id}(id=${user.id}, tab='waiting')}" th:text="#{menu.myOrders}">My
                         orders</a>
                 </li>
                 <li class="nav-item" th:if="${user.email}">

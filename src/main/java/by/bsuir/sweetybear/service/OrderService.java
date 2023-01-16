@@ -12,7 +12,6 @@ import java.util.List;
  */
 
 public interface OrderService {
-
     // Save order to database
     void save(Order order);
     // Return orders with special status
@@ -23,6 +22,7 @@ public interface OrderService {
     void updateOrderStatusById(Long id, OrderStatus status);
     // Return user orders
     List<Order> getUserOrdersById(Long id);
+    List<Order> getUserOrdersByIdWithStatus(Long id, String status);
     // Delete product from database
     void deleteProductFromOrdersById(Long id);
     void deleteOrderById(Long id);

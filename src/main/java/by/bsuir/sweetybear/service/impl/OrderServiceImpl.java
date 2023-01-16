@@ -24,6 +24,8 @@ import java.util.List;
 @RequiredArgsConstructor
 public class OrderServiceImpl implements OrderService {
 
+    private static final String ORDERS_WAITING_LIST = "waiting";
+    private static final String ORDERS_PURCHASES = "purchases";
     private final OrderRepository orderRepository;
     private final BankCardServiceImpl bankCardService;
 
@@ -62,11 +64,25 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public List<Order> getUserOrdersById(Long id) {
-        return orderRepository
-                .findByUserId(id)
+        return orderRepository.findByUserId(id);
+    }
+
+    @Override
+    public List<Order> getUserOrdersByIdWithStatus(Long id, String status) {
+        final List<Order> orders = this.getUserOrdersById(id)
                 .stream()
                 .sorted(Order::compareTo)
                 .toList();
+
+        return switch (status) {
+            case ORDERS_WAITING_LIST -> orders.stream()
+                    .filter(order -> order.getStatus().equals(OrderStatus.NEW) || order.getStatus().equals(OrderStatus.APPROVED))
+                    .toList();
+            case ORDERS_PURCHASES -> orders.stream()
+                    .filter(order -> order.getStatus().equals(OrderStatus.CANCELED) || order.getStatus().equals(OrderStatus.CLOSED))
+                    .toList();
+            default -> orders;
+        };
     }
 
     @Override
