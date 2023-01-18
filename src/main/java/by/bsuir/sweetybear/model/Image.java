@@ -1,8 +1,10 @@
 package by.bsuir.sweetybear.model;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import lombok.experimental.FieldDefaults;
 
 import javax.persistence.*;
 
@@ -17,23 +19,23 @@ import javax.persistence.*;
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class Image extends IdentifiedModel {
-
     @Column(name = "name")
-    private String name;
+    String name;
     @Column(name = "original_File_Name")
-    private String originalFileName;
+    String originalFileName;
     @Column(name = "size")
-    private Long size;
+    Long size;
     @Column(name = "content_Type")
-    private String contentType;
+    String contentType;
     @Column(name = "is_Preview_Image")
-    private boolean isPreviewImage;
+    boolean isPreviewImage;
     @Lob
-    private byte[] bytes;
+    byte[] bytes;
     @ManyToOne(cascade = CascadeType.REFRESH, fetch = FetchType.EAGER)
-    private Product product;
+    Product product;
     @OneToOne(cascade = CascadeType.REFRESH, fetch = FetchType.LAZY)
-    private User user;
+    User user;
 
 }
