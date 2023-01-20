@@ -6,7 +6,7 @@ package by.bsuir.sweetybear.validator;
  * Dec 2022
  */
 
-public interface Validator {
-
-    boolean isValid(String expression);
+@FunctionalInterface
+public interface Validator<T> {
+    boolean isValid(T expression);
 }
