@@ -119,7 +119,8 @@ public class BucketServiceImpl implements BucketService {
     @Override
     @Transactional
     public void addBucketToOrder(final String email,
-                                 final Address address) {
+                                 final Address address,
+                                 boolean isDelivery) {
         User user = this.getUserForOrderAndSetAddress(email, address);
 
         Bucket bucket = user.getBucket();
@@ -137,7 +138,7 @@ public class BucketServiceImpl implements BucketService {
         BigDecimal totalSum = countOrderTotalSum(orderDetails);
         order.setSum(totalSum);
 
-        addDeliveryStatusAndAddressToOrder(order, address);
+        addDeliveryStatusAndAddressToOrder(order, address, isDelivery);
         order.setDetails(orderDetails);
         log.info("Add bucket to order. Bucket id: {}.", bucket.getId());
         orderService.save(order);
@@ -146,12 +147,13 @@ public class BucketServiceImpl implements BucketService {
     }
 
     private void addDeliveryStatusAndAddressToOrder(final Order order,
-                                                    final Address address) {
-        if (address.getStreet().isEmpty())
-            order.setDelivery(DeliveryType.PICKUP);
-        else {
+                                                    final Address address,
+                                                    boolean isDelivery) {
+        if (isDelivery) {
             order.setAddress(address);
             order.setDelivery(DeliveryType.DELIVERY);
+        } else {
+            order.setDelivery(DeliveryType.PICKUP);
         }
     }
 

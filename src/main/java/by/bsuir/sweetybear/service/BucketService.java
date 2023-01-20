@@ -24,7 +24,7 @@ public interface BucketService {
     // Count bucket price
     BucketDTO getBucketByUser(String email);
     // Add bucket to order
-    void addBucketToOrder(String email, Address address);
+    void addBucketToOrder(String email, Address address, boolean isDelivery);
     // Delete product from database
     void deleteProductByIdFromBucket(Long id);
 }

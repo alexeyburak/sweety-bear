@@ -10,10 +10,7 @@ import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import java.security.Principal;
 
@@ -55,12 +52,13 @@ public class BucketController {
 
     @PostMapping("/bucket")
     public String commitBucketToOrder(@ModelAttribute("address") AddressDTO address,
+                                      @RequestParam("isDelivery") boolean isDelivery,
                                       Principal principal) {
         Address addressDb = this.modelMapper.map(address, Address.class);
 
         User userFromDB = userService.getUserByPrincipal(principal);
         if (userFromDB != null)
-            bucketService.addBucketToOrder(userFromDB.getEmail(), addressDb);
+            bucketService.addBucketToOrder(userFromDB.getEmail(), addressDb, isDelivery);
         return "redirect:/bucket?success";
     }
 }

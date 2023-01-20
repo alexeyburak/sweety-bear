@@ -18,7 +18,7 @@
 <div th:if="${param.success}" class="mb-3 ml-5 mt-3" style="width:60%">
     <div class="alert alert-success">
         <span>You have successfully placed an order. Please pay for your order
-            <a th:href="@{/orders/user/{id}(id=${user.getId()})}" class="alert-link">in your orders.</a></span>
+            <a th:href="@{/orders/user/{id}(id=${user.getId()}, tab='waiting')}" class="alert-link">in your orders.</a></span>
     </div>
 </div>
 <div th:unless="${bucket.isBucketEmpty()}">
@@ -61,7 +61,10 @@
         <input class="form-check-input col-md-3" type="checkbox"
                role="switch" id="flexSwitchCheckChecked"
                onclick="showAddressInput(this)"
+               name="isDelivery"
+               th:value="1"
                checked>
+        <input type="hidden" name="isDelivery" value="0">
         <label class="form-check-label" for="flexSwitchCheckChecked">Pickup | Delivery</label>
     </div>
     <div style="width: 80%" id="addressInput" class="row g-3 ml-2 mt-2">
