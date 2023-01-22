@@ -22,4 +22,5 @@ public interface ErrorMessage {
     String RESET_PASSWORD_SUCCESS = "You successfully changed your password.";
     String RESET_PASSWORD_ERROR = "Error changing password. Please, try again.";
     String ADD_BANK_CARD_ERROR = "Error adding card. Please check input data.";
+    String ADDRESS_INVALID_DATA_INPUT = "Invalid address data.";
 }
