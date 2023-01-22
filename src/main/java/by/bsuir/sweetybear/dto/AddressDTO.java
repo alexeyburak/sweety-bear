@@ -16,8 +16,8 @@ import lombok.experimental.FieldDefaults;
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class AddressDTO {
     String street;
-    Integer apartmentNumber;
     Integer houseNumber;
+    Integer apartmentNumber;
     Integer caseNumber;
-    Integer postCode;
+    Integer postalCode;
 }
