@@ -68,6 +68,11 @@
         <label class="form-check-label" for="flexSwitchCheckChecked">Pickup | Delivery</label>
     </div>
     <div style="width: 80%" id="addressInput" class="row g-3 ml-2 mt-2">
+        <div th:if="${errorMessage}" class="input-group">
+            <div class="alert alert-danger">
+                <span th:utext="${errorMessage}">Error message</span>
+            </div>
+        </div>
         <div class="input-group">
             <div class="col-md-6">
                 <label for="Street" class="form-label">Street</label>
@@ -89,7 +94,7 @@
             </div>
             <div class="col-md-4">
                 <label for="Street" class="form-label">Post code</label>
-                <input th:field="*{postCode}" type="number" class="form-control" aria-label="Address">
+                <input th:field="*{postalCode}" type="number" class="form-control" aria-label="Address">
             </div>
         </div>
     </div>

@@ -1,4 +1,4 @@
-package by.bsuir.sweetybear.validator.impl;
+package by.bsuir.sweetybear.validator.impl.user;
 
 import by.bsuir.sweetybear.annotation.ForgotPasswordMatch;
 import by.bsuir.sweetybear.dto.UserChangePasswordDTO;
@@ -13,7 +13,7 @@ import javax.validation.ConstraintValidatorContext;
  * Dec 2022
  */
 
-public class ForgotPasswordMatchValidatorImpl implements ConstraintValidator<ForgotPasswordMatch, UserChangePasswordDTO> {
+public class ForgotPasswordMatchConstraintValidatorImpl implements ConstraintValidator<ForgotPasswordMatch, UserChangePasswordDTO> {
 
     @Override
     public void initialize(ForgotPasswordMatch constraintAnnotation) {

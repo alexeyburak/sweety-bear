@@ -1,4 +1,4 @@
-package by.bsuir.sweetybear.validator.impl;
+package by.bsuir.sweetybear.validator.impl.bankcard;
 
 import by.bsuir.sweetybear.validator.AbstractValidator;
 

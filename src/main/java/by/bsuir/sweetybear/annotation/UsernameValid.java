@@ -1,7 +1,7 @@
 package by.bsuir.sweetybear.annotation;
 
 import by.bsuir.sweetybear.validator.ErrorMessage;
-import by.bsuir.sweetybear.validator.impl.UsernameConstraintValidatorImpl;
+import by.bsuir.sweetybear.validator.impl.user.UsernameConstraintValidatorImpl;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -24,8 +24,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface UsernameValid {
     String message() default ErrorMessage.USER_INVALID_USERNAME_INPUT;
-
     Class<?>[] groups() default {};
-
     Class<? extends Payload>[] payload() default {};
 }

@@ -1,4 +1,4 @@
-package by.bsuir.sweetybear.validator.impl;
+package by.bsuir.sweetybear.validator.impl.user;
 
 import by.bsuir.sweetybear.annotation.PasswordValid;
 import lombok.SneakyThrows;

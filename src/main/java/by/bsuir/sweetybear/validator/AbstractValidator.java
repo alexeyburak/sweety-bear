@@ -9,7 +9,7 @@ import java.util.regex.Pattern;
  * Dec 2022
  */
 
-public abstract class AbstractValidator implements Validator {
+public abstract class AbstractValidator implements Validator<String> {
     protected abstract String getRegex();
 
     @Override

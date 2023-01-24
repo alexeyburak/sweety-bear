@@ -1,7 +1,7 @@
 package by.bsuir.sweetybear.annotation;
 
 import by.bsuir.sweetybear.validator.ErrorMessage;
-import by.bsuir.sweetybear.validator.impl.PasswordConstraintValidatorImpl;
+import by.bsuir.sweetybear.validator.impl.user.PasswordConstraintValidatorImpl;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -24,8 +24,6 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 @Documented
 public @interface PasswordValid {
     String message() default ErrorMessage.USER_INVALID_PASSWORD_INPUT;
-
     Class<?>[] groups() default {};
-
     Class<? extends Payload>[] payload() default {};
 }

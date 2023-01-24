@@ -1,7 +1,7 @@
 package by.bsuir.sweetybear.annotation;
 
 import by.bsuir.sweetybear.validator.ErrorMessage;
-import by.bsuir.sweetybear.validator.impl.ForgotPasswordMatchValidatorImpl;
+import by.bsuir.sweetybear.validator.impl.user.ForgotPasswordMatchConstraintValidatorImpl;
 
 import javax.validation.Constraint;
 import javax.validation.Payload;
@@ -20,12 +20,10 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 
 @Target(TYPE)
 @Retention(RUNTIME)
-@Constraint(validatedBy= ForgotPasswordMatchValidatorImpl.class)
+@Constraint(validatedBy= ForgotPasswordMatchConstraintValidatorImpl.class)
 @Documented
 public @interface ForgotPasswordMatch {
     String message() default ErrorMessage.PASSWORDS_NOT_MATCH;
-
     Class<?>[] groups() default {};
-
     Class<? extends Payload>[] payload() default {};
 }

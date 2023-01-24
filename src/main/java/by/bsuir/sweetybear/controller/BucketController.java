@@ -1,11 +1,12 @@
 package by.bsuir.sweetybear.controller;
 
 import by.bsuir.sweetybear.dto.AddressDTO;
-import by.bsuir.sweetybear.dto.BucketDTO;
 import by.bsuir.sweetybear.model.Address;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.service.impl.BucketServiceImpl;
 import by.bsuir.sweetybear.service.impl.UserServiceImpl;
+import by.bsuir.sweetybear.validator.ErrorMessage;
+import by.bsuir.sweetybear.validator.ValidatorFactory;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
@@ -35,10 +36,8 @@ public class BucketController {
         User userPrincipal = userService.getUserByPrincipal(principal);
         if (!userPrincipal.isActive())
             return "redirect:/login";
-        model.addAttribute("user", userPrincipal);
 
-        BucketDTO bucketDTO = bucketService.getBucketByUser(userPrincipal.getEmail());
-        model.addAttribute("bucket", bucketDTO);
+        addDataToBucketModel(model, userPrincipal);
         return "bucket";
     }
 
@@ -53,12 +52,26 @@ public class BucketController {
     @PostMapping("/bucket")
     public String commitBucketToOrder(@ModelAttribute("address") AddressDTO address,
                                       @RequestParam("isDelivery") boolean isDelivery,
+                                      Model model,
                                       Principal principal) {
+        User userPrincipal = userService.getUserByPrincipal(principal);
+        boolean isAddressValid = ValidatorFactory.getInstance().getAddressValidator().isValid(address);
+
+        if (!isAddressValid && isDelivery) {
+            model.addAttribute("errorMessage", ErrorMessage.ADDRESS_INVALID_DATA_INPUT);
+            addDataToBucketModel(model, userPrincipal);
+            return "bucket";
+        }
+
         Address addressDb = this.modelMapper.map(address, Address.class);
 
-        User userFromDB = userService.getUserByPrincipal(principal);
-        if (userFromDB != null)
-            bucketService.addBucketToOrder(userFromDB.getEmail(), addressDb, isDelivery);
+        if (userPrincipal != null)
+            bucketService.addBucketToOrder(userPrincipal.getEmail(), addressDb, isDelivery);
         return "redirect:/bucket?success";
+    }
+
+    private void addDataToBucketModel(Model model, User userPrincipal) {
+        model.addAttribute("user", userPrincipal);
+        model.addAttribute("bucket", bucketService.getBucketByUser(userPrincipal.getEmail()));
     }
 }

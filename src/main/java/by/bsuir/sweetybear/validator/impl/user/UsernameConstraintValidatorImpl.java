@@ -1,4 +1,4 @@
-package by.bsuir.sweetybear.validator.impl;
+package by.bsuir.sweetybear.validator.impl.user;
 
 import by.bsuir.sweetybear.annotation.UsernameValid;
 import by.bsuir.sweetybear.validator.ErrorMessage;
