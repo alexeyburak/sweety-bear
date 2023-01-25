@@ -1,5 +1,6 @@
 package by.bsuir.sweetybear.service.impl;
 
+import by.bsuir.sweetybear.dto.ProductViewingDTO;
 import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.Bucket;
 import by.bsuir.sweetybear.model.Image;
@@ -9,6 +10,7 @@ import by.bsuir.sweetybear.model.enums.ProductSortType;
 import by.bsuir.sweetybear.repository.ImageRepository;
 import by.bsuir.sweetybear.repository.ProductRepository;
 import by.bsuir.sweetybear.service.ProductService;
+import by.bsuir.sweetybear.service.mapper.ProductDTOMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
@@ -39,41 +42,43 @@ public class ProductServiceImpl implements ProductService {
     private final BucketServiceImpl bucketService;
     private final OrderServiceImpl orderService;
     private final ImageRepository imageRepository;
+    private final ProductDTOMapper productDTOMapper;
 
     @Override
-    public List<Product> listProducts(String title, ProductSortType type) {
+    public List<ProductViewingDTO> listProducts(String title, ProductSortType type) {
         if (type != null) return listProductsWithSortingType(type);
-        if (title != null) return productRepository.findByTitle(title);
-        return productRepository.findAll();
+        if (title != null) return productRepository
+                .findByTitle(title)
+                .stream()
+                .map(productDTOMapper)
+                .toList();
+        return productRepository
+                .findAll()
+                .stream()
+                .map(productDTOMapper)
+                .toList();
     }
 
-    private List<Product> listProductsWithSortingType(ProductSortType type) {
+    private List<ProductViewingDTO> listProductsWithSortingType(ProductSortType type) {
+        final List<ProductViewingDTO> productList = new ArrayList<>(
+                productRepository.findAll()
+                        .stream()
+                        .map(productDTOMapper)
+                        .toList()
+        );
+
         switch (type) {
-            case ASCENDING -> {
-                return productRepository
-                        .findAll()
-                        .stream()
-                        .sorted(Comparator.comparing(Product::getPrice))
-                        .toList();
-            }
-            case REDUCING -> {
-                return productRepository
-                        .findAll()
-                        .stream()
-                        .sorted(Comparator.comparing(Product::getPrice)
-                                .reversed())
-                        .toList();
-            }
-            case NEW -> {
-                return productRepository
-                        .findAll()
-                        .stream()
-                        .sorted(Comparator.comparing(Product::getDateOfCreated)
-                                .reversed())
-                        .toList();
-            }
+            case ASCENDING -> productList
+                    .sort(Comparator.comparing(ProductViewingDTO::getPrice));
+            case REDUCING -> productList
+                    .sort(Comparator.comparing(ProductViewingDTO::getPrice)
+                            .reversed());
+            case NEW -> productList
+                    .sort(Comparator.comparing(ProductViewingDTO::getDateOfCreated)
+                            .reversed());
+
         }
-        return productRepository.findAll();
+        return productList;
     }
 
     @Override

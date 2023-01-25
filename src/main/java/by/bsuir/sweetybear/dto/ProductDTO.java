@@ -18,7 +18,6 @@ import javax.validation.constraints.*;
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
 public class ProductDTO {
-
     @Size(min = 3, max = 100, message = "Title must be between 3 and 100 characters")
     @NotEmpty(message = "Title is required")
     String title;

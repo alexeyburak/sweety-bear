@@ -1,8 +1,6 @@
 package by.bsuir.sweetybear.model;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 import org.hibernate.validator.constraints.Length;
 
 import javax.persistence.*;
@@ -21,11 +19,11 @@ import static by.bsuir.sweetybear.utils.Utils.getYearMonthDayHourMinuteSecond;
 
 @Entity
 @Table(name = "products")
-@Data
+@Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
-
     @Id
     @Column(name = "id")
     private Long id;
@@ -49,16 +47,12 @@ public class Product {
     @Column(name = "availability")
     @NotNull(message = "availability is required")
     private boolean availability;
-
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "product")
     @NotNull(message = "image is required")
+    @ToString.Exclude
     private List<Image> images = new ArrayList<>();
     private Long previewImageId;
     private LocalDateTime dateOfCreated;
-
-    public boolean isProductAvailable() {
-        return availability;
-    }
 
     public boolean isOnlyOneImage() {
         return images.size() == 1;

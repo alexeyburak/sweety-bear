@@ -241,7 +241,7 @@
                     <br>
                     <div class="btn-group " role="group">
                         <form th:action="@{/{id}/bucket(id=${product.id})}">
-                            <button th:if="${product.isProductAvailable()}" type="submit"
+                            <button th:if="${product.availability}" type="submit"
                                     class="mt-2 btn btn-outline-secondary mr-3">Add to bucket
                             </button>
                         </form>
@@ -256,7 +256,7 @@
                             </button>
                         </form>
                     </div>
-                    <p th:unless="${product.isProductAvailable()}" class="card-text"
+                    <p th:unless="${product.availability}" class="card-text"
                        style="color:gray">Is not available now</p>
                     <div th:if="${user.isAdmin()}">
                         <form th:action="@{/product/delete/{id}(id=${product.id})}" method="post">

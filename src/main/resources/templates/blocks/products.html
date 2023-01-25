@@ -21,7 +21,7 @@
                         <p class="card-text" th:utext="${product.description}">Des</p>
                         <div class="btn-group " role="group">
                             <form th:action="@{/{id}/bucket(id=${product.id})}">
-                                <button th:if="${product.isProductAvailable()}" type="submit"
+                                <button th:if="${product.availability}" type="submit"
                                         class="btn btn-outline-secondary mr-3">
                                     <span th:text="#{products.addToBucket}">Add to bucket</span>
                                 </button>
@@ -37,7 +37,7 @@
                                 </button>
                             </form>
                         </div>
-                        <p th:unless="${product.isProductAvailable()}" class="card-text"
+                        <p th:unless="${product.availability}" class="card-text"
                            th:text="#{products.notAvailable}"
                            style="color:gray">Is not available now</p>
                     </div>
