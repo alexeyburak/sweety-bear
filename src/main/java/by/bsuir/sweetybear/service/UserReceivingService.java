@@ -1,5 +1,6 @@
 package by.bsuir.sweetybear.service;
 
+import by.bsuir.sweetybear.dto.UserDTO;
 import by.bsuir.sweetybear.model.User;
 
 import java.security.Principal;
@@ -16,5 +17,5 @@ public interface UserReceivingService {
     User getUserByEmail(String email);
     User getUserByPrincipal(Principal principal);
     User getUserByResetPasswordCode(String resetPasswordCode);
-    List<User> userList(String email);
+    List<UserDTO> userList(String email);
 }

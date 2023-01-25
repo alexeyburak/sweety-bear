@@ -1,5 +1,6 @@
 package by.bsuir.sweetybear.service.impl;
 
+import by.bsuir.sweetybear.dto.UserDTO;
 import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.Image;
 import by.bsuir.sweetybear.model.Product;
@@ -11,6 +12,7 @@ import by.bsuir.sweetybear.repository.OrderRepository;
 import by.bsuir.sweetybear.repository.UserRepository;
 import by.bsuir.sweetybear.service.UserReceivingService;
 import by.bsuir.sweetybear.service.UserService;
+import by.bsuir.sweetybear.service.mapper.UserDTOMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -42,6 +44,7 @@ public class UserServiceImpl implements UserService, UserReceivingService {
     private final UserRepository userRepository;
     private final ImageRepository imageRepository;
     private final PasswordEncoder passwordEncoder;
+    private final UserDTOMapper userDTOMapper;
     private final MailSenderImpl mailSender;
     private final BucketRepository bucketRepository;
     private final OrderRepository orderRepository;
@@ -82,9 +85,17 @@ public class UserServiceImpl implements UserService, UserReceivingService {
     }
 
     @Override
-    public List<User> userList(String email) {
-        if (email != null) return userRepository.findAllByEmail(email);
-        return userRepository.findAll();
+    public List<UserDTO> userList(String email) {
+        if (email != null) return userRepository
+                .findAllByEmail(email)
+                .stream()
+                .map(userDTOMapper)
+                .toList();
+        return userRepository
+                .findAll()
+                .stream()
+                .map(userDTOMapper)
+                .toList();
     }
 
     @Override

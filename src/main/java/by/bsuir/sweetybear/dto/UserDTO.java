@@ -1,34 +1,33 @@
 package by.bsuir.sweetybear.dto;
 
-import by.bsuir.sweetybear.annotation.PasswordMatch;
-import by.bsuir.sweetybear.annotation.PasswordValid;
-import by.bsuir.sweetybear.annotation.UsernameValid;
-import lombok.AccessLevel;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import by.bsuir.sweetybear.model.enums.Role;
+import lombok.*;
 import lombok.experimental.FieldDefaults;
 
-import javax.validation.constraints.Email;
-import javax.validation.constraints.NotBlank;
+import java.time.LocalDateTime;
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * sweety-bear
  * Created by Alexey Burak
- * Oct 2022
+ * Jan 2023
  */
 
 @Data
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-@PasswordMatch
 public class UserDTO {
-    @UsernameValid
-    String name;
-    @Email(message = "Email must be valid")
-    @NotBlank(message = "Email is required")
+    Long id;
     String email;
-    @PasswordValid
-    String password;
-    @PasswordValid
-    String confirmPassword;
+    String name;
+    boolean active;
+    LocalDateTime dateOfCreated;
+    Set<Role> roles = new HashSet<>();
+
+    public boolean isOwner() {
+        return roles.contains(Role.ROLE_OWNER);
+    }
 }

@@ -57,10 +57,10 @@
             <th scope="row">
                 <form th:action="@{/admin/user/ban/{id}(id=${user.id})}" th:unless="${user.isOwner()}" method="post">
                     <input type="hidden" name="_csrf" value="${_csrf.token}">
-                    <button th:if="${user.isEnabled()}" onclick="return deleteConfig()" type="submit" th:value="Bun"
+                    <button th:if="${user.isActive()}" onclick="return deleteConfig()" type="submit" th:value="Bun"
                             class="btn btn-outline-secondary"><i class="fa-solid fa-ban"></i> Ban
                     </button>
-                    <button th:unless="${user.isEnabled()}" onclick="return deleteConfig()" type="submit" th:value="Bun"
+                    <button th:unless="${user.isActive()}" onclick="return deleteConfig()" type="submit" th:value="Bun"
                             class="btn btn-outline-secondary">Unban
                     </button>
                 </form>

@@ -1,7 +1,7 @@
 package by.bsuir.sweetybear.service.impl;
 
+import by.bsuir.sweetybear.dto.UserDTO;
 import by.bsuir.sweetybear.model.Order;
-import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.service.PDFGeneratorService;
 import com.lowagie.text.Font;
 import com.lowagie.text.*;
@@ -33,7 +33,7 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
     @Override
     public void exportUsersInPDF(HttpServletResponse response) {
 
-        List<User> userList = userService.userList(null);
+        List<UserDTO> userList = userService.userList(null);
 
         try (Document document = new Document(PageSize.A4)) {
             PdfWriter.getInstance(document, response.getOutputStream());
@@ -49,13 +49,13 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
             table.addCell("Id");
             table.addCell("Email");
             table.addCell("Name");
-            table.addCell("Role");
+            table.addCell("Active");
             table.addCell("Joined");
             userList.forEach(user -> {
                 table.addCell(String.valueOf(user.getId()));
                 table.addCell(user.getEmail());
                 table.addCell(user.getName());
-                table.addCell(String.valueOf(user.getRoles()));
+                table.addCell(String.valueOf(user.isActive()));
                 table.addCell(String.valueOf(user.getDateOfCreated()));
             });
             document.add(title);

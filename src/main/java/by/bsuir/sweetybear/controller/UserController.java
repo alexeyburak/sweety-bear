@@ -1,7 +1,7 @@
 package by.bsuir.sweetybear.controller;
 
 import by.bsuir.sweetybear.dto.UserChangePasswordDTO;
-import by.bsuir.sweetybear.dto.UserDTO;
+import by.bsuir.sweetybear.dto.UserRegistrationDTO;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.service.impl.BankCardServiceImpl;
 import by.bsuir.sweetybear.service.impl.FeedbackServiceImpl;
@@ -38,12 +38,12 @@ public class UserController {
     private final ModelMapper modelMapper;
 
     @GetMapping("/registration")
-    public String registration(@ModelAttribute("user") UserDTO user) {
+    public String registration(@ModelAttribute("user") UserRegistrationDTO user) {
         return "registration";
     }
 
     @PostMapping("/registration")
-    public String registration(@ModelAttribute("user") @Valid UserDTO user,
+    public String registration(@ModelAttribute("user") @Valid UserRegistrationDTO user,
                                BindingResult bindingResult,
                                Model model) {
         if (bindingResult.hasErrors()) {

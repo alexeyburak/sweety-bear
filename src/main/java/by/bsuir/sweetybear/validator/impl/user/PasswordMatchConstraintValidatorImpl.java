@@ -1,7 +1,7 @@
 package by.bsuir.sweetybear.validator.impl.user;
 
 import by.bsuir.sweetybear.annotation.PasswordMatch;
-import by.bsuir.sweetybear.dto.UserDTO;
+import by.bsuir.sweetybear.dto.UserRegistrationDTO;
 import by.bsuir.sweetybear.validator.ErrorMessage;
 
 import javax.validation.ConstraintValidator;
@@ -13,7 +13,7 @@ import javax.validation.ConstraintValidatorContext;
  * Dec 2022
  */
 
-public class PasswordMatchConstraintValidatorImpl implements ConstraintValidator<PasswordMatch, UserDTO> {
+public class PasswordMatchConstraintValidatorImpl implements ConstraintValidator<PasswordMatch, UserRegistrationDTO> {
 
     @Override
     public void initialize(PasswordMatch constraintAnnotation) {
@@ -21,7 +21,7 @@ public class PasswordMatchConstraintValidatorImpl implements ConstraintValidator
     }
 
     @Override
-    public boolean isValid(UserDTO userDTO, ConstraintValidatorContext constraintValidatorContext) {
+    public boolean isValid(UserRegistrationDTO userDTO, ConstraintValidatorContext constraintValidatorContext) {
         boolean isUserPasswordMatchingConfirmPassword = userDTO.getPassword().equals(userDTO.getConfirmPassword());
         if (!isUserPasswordMatchingConfirmPassword) {
             constraintValidatorContext.disableDefaultConstraintViolation();
