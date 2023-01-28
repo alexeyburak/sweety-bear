@@ -1,6 +1,6 @@
 package by.bsuir.sweetybear.controller;
 
-import by.bsuir.sweetybear.dto.BankCardDTO;
+import by.bsuir.sweetybear.dto.bankcard.BankCardDTO;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.service.impl.BankCardServiceImpl;
 import by.bsuir.sweetybear.service.impl.UserServiceImpl;

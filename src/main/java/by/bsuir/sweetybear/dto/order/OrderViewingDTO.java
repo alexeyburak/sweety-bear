@@ -1,4 +1,4 @@
-package by.bsuir.sweetybear.dto;
+package by.bsuir.sweetybear.dto.order;
 
 import by.bsuir.sweetybear.model.Address;
 import by.bsuir.sweetybear.model.OrderDetails;

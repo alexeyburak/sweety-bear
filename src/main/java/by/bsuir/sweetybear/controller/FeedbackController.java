@@ -1,6 +1,6 @@
 package by.bsuir.sweetybear.controller;
 
-import by.bsuir.sweetybear.dto.FeedbackDTO;
+import by.bsuir.sweetybear.dto.feedback.FeedbackDTO;
 import by.bsuir.sweetybear.model.Feedback;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.service.impl.FeedbackServiceImpl;

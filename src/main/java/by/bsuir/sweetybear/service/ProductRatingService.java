@@ -1,6 +1,6 @@
 package by.bsuir.sweetybear.service;
 
-import by.bsuir.sweetybear.dto.ProductRatingDTO;
+import by.bsuir.sweetybear.dto.product.ProductRatingDTO;
 import by.bsuir.sweetybear.model.Feedback;
 
 import java.util.List;

@@ -1,6 +1,6 @@
 package by.bsuir.sweetybear.service.impl;
 
-import by.bsuir.sweetybear.dto.ProductViewingDTO;
+import by.bsuir.sweetybear.dto.product.ProductViewingDTO;
 import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.Bucket;
 import by.bsuir.sweetybear.model.Image;

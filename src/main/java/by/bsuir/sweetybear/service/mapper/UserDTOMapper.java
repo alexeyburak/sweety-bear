@@ -1,6 +1,6 @@
 package by.bsuir.sweetybear.service.mapper;
 
-import by.bsuir.sweetybear.dto.UserDTO;
+import by.bsuir.sweetybear.dto.user.UserDTO;
 import by.bsuir.sweetybear.model.User;
 import org.springframework.stereotype.Service;
 

@@ -1,4 +1,4 @@
-package by.bsuir.sweetybear.dto;
+package by.bsuir.sweetybear.dto.bucket;
 
 import lombok.Data;
 import lombok.NoArgsConstructor;

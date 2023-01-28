@@ -1,6 +1,6 @@
 package by.bsuir.sweetybear.service;
 
-import by.bsuir.sweetybear.dto.OrderViewingDTO;
+import by.bsuir.sweetybear.dto.order.OrderViewingDTO;
 import by.bsuir.sweetybear.model.Order;
 import by.bsuir.sweetybear.model.enums.OrderStatus;
 

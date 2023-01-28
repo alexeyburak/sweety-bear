@@ -1,6 +1,6 @@
 package by.bsuir.sweetybear.service.impl;
 
-import by.bsuir.sweetybear.dto.ProductRatingDTO;
+import by.bsuir.sweetybear.dto.product.ProductRatingDTO;
 import by.bsuir.sweetybear.model.Feedback;
 import by.bsuir.sweetybear.service.ProductRatingService;
 import lombok.RequiredArgsConstructor;

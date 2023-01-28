@@ -1,9 +1,7 @@
-package by.bsuir.sweetybear.dto;
+package by.bsuir.sweetybear.dto.bankcard;
 
 import lombok.*;
 import lombok.experimental.FieldDefaults;
-
-import java.util.Map;
 
 /**
  * sweety-bear
@@ -11,16 +9,13 @@ import java.util.Map;
  * Jan 2023
  */
 
-@Builder
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 @FieldDefaults(level = AccessLevel.PRIVATE)
-public class ProductRatingDTO {
-    int allRatings;
-    double avgRating;
-    Map<Integer, Double> starsWithPercentages;
+public class AccessibleBankCardDTO {
+    Long id;
+    String cardNumber;
+    String expiryDate;
 }
-
-
-

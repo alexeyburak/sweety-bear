@@ -1,4 +1,4 @@
-package by.bsuir.sweetybear.dto;
+package by.bsuir.sweetybear.dto.bucket;
 
 import by.bsuir.sweetybear.model.Product;
 import lombok.*;

@@ -1,4 +1,4 @@
-package by.bsuir.sweetybear.dto;
+package by.bsuir.sweetybear.dto.address;
 
 import lombok.AccessLevel;
 import lombok.Data;

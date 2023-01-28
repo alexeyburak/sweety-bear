@@ -1,6 +1,6 @@
 package by.bsuir.sweetybear.controller;
 
-import by.bsuir.sweetybear.dto.OrderViewingDTO;
+import by.bsuir.sweetybear.dto.order.OrderViewingDTO;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.model.enums.OrderStatus;
 import by.bsuir.sweetybear.service.impl.BankCardServiceImpl;

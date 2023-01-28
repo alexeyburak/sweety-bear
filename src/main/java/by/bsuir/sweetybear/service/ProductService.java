@@ -1,6 +1,6 @@
 package by.bsuir.sweetybear.service;
 
-import by.bsuir.sweetybear.dto.ProductViewingDTO;
+import by.bsuir.sweetybear.dto.product.ProductViewingDTO;
 import by.bsuir.sweetybear.model.Product;
 import by.bsuir.sweetybear.model.enums.ProductSortType;
 import org.springframework.web.multipart.MultipartFile;

@@ -1,7 +1,7 @@
 package by.bsuir.sweetybear.service;
 
-import by.bsuir.sweetybear.dto.AccessibleBankCardDTO;
-import by.bsuir.sweetybear.dto.BankCardDTO;
+import by.bsuir.sweetybear.dto.bankcard.AccessibleBankCardDTO;
+import by.bsuir.sweetybear.dto.bankcard.BankCardDTO;
 import by.bsuir.sweetybear.model.BankCard;
 import by.bsuir.sweetybear.model.User;
 

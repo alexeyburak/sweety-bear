@@ -1,7 +1,7 @@
 package by.bsuir.sweetybear.service.impl;
 
-import by.bsuir.sweetybear.dto.BucketDTO;
-import by.bsuir.sweetybear.dto.BucketDetailDTO;
+import by.bsuir.sweetybear.dto.bucket.BucketDTO;
+import by.bsuir.sweetybear.dto.bucket.BucketDetailDTO;
 import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.*;
 import by.bsuir.sweetybear.model.enums.DeliveryType;

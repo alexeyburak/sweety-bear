@@ -1,7 +1,7 @@
 package by.bsuir.sweetybear.validator.impl.user;
 
 import by.bsuir.sweetybear.annotation.PasswordMatch;
-import by.bsuir.sweetybear.dto.UserRegistrationDTO;
+import by.bsuir.sweetybear.dto.user.UserRegistrationDTO;
 import by.bsuir.sweetybear.validator.ErrorMessage;
 
 import javax.validation.ConstraintValidator;

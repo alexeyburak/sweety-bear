@@ -1,7 +1,7 @@
 package by.bsuir.sweetybear.controller;
 
-import by.bsuir.sweetybear.dto.FeedbackDTO;
-import by.bsuir.sweetybear.dto.ProductDTO;
+import by.bsuir.sweetybear.dto.feedback.FeedbackDTO;
+import by.bsuir.sweetybear.dto.product.ProductDTO;
 import by.bsuir.sweetybear.model.Product;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.model.enums.FeedbackSortType;

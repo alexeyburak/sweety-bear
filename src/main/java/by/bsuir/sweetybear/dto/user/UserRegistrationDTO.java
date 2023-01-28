@@ -1,4 +1,4 @@
-package by.bsuir.sweetybear.dto;
+package by.bsuir.sweetybear.dto.user;
 
 import by.bsuir.sweetybear.annotation.PasswordMatch;
 import by.bsuir.sweetybear.annotation.PasswordValid;

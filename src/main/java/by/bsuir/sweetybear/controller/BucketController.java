@@ -1,6 +1,6 @@
 package by.bsuir.sweetybear.controller;
 
-import by.bsuir.sweetybear.dto.AddressDTO;
+import by.bsuir.sweetybear.dto.address.AddressDTO;
 import by.bsuir.sweetybear.model.Address;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.service.impl.BucketServiceImpl;

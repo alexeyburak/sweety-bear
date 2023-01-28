@@ -1,6 +1,6 @@
 package by.bsuir.sweetybear.validator.impl.address;
 
-import by.bsuir.sweetybear.dto.AddressDTO;
+import by.bsuir.sweetybear.dto.address.AddressDTO;
 import by.bsuir.sweetybear.validator.Validator;
 import by.bsuir.sweetybear.validator.ValidatorFactory;
 

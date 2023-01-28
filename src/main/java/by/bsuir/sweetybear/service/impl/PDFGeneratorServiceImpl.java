@@ -1,8 +1,7 @@
 package by.bsuir.sweetybear.service.impl;
 
-import by.bsuir.sweetybear.dto.OrderViewingDTO;
-import by.bsuir.sweetybear.dto.UserDTO;
-import by.bsuir.sweetybear.model.Order;
+import by.bsuir.sweetybear.dto.order.OrderViewingDTO;
+import by.bsuir.sweetybear.dto.user.UserDTO;
 import by.bsuir.sweetybear.service.PDFGeneratorService;
 import com.lowagie.text.Font;
 import com.lowagie.text.*;
