@@ -149,7 +149,7 @@ public class UserServiceImpl implements UserService, UserReceivingService {
     }
 
     @Override
-    public void updateUserPasswordId(Long id, User userUpdate) {
+    public void updateUserPasswordById(Long id, User userUpdate) {
         User user = this.getUserById(id);
 
         user.setPassword(passwordEncoder.encode(userUpdate.getPassword()));
@@ -234,7 +234,8 @@ public class UserServiceImpl implements UserService, UserReceivingService {
     public void addProductToFavoritesAndRemoveIfExists(String authorizedEmail, Product product) {
         User user = this.getUserByEmail(authorizedEmail);
 
-        if (!user.getFavoriteProducts().contains(product))
+        boolean isFavoritesContainsProduct = user.getFavoriteProducts().contains(product);
+        if (!isFavoritesContainsProduct)
             user.addProductToFavorites(product);
         else
             user.removeProductFromFavorites(product);

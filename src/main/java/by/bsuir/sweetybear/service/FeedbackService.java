@@ -13,7 +13,6 @@ import java.util.List;
  */
 
 public interface FeedbackService {
-
     List<Feedback> getUserFeedbackList(long userId);
     List<Feedback> getProductFeedbackList(long productId);
     List<Feedback> getProductFeedbackListWithSortingType(long productId, FeedbackSortType sortType);

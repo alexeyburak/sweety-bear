@@ -17,7 +17,7 @@ public interface UserService {
     void addUserAfterOauthLoginSuccess(String email, String name);
     void banUserAccountById(Long id);
     void updateUserDataById(Long id, User userUpdate, MultipartFile multipartFile) throws IOException;
-    void updateUserPasswordId(Long id, User userUpdate);
+    void updateUserPasswordById(Long id, User userUpdate);
     void changeUserRole(User user);
     void save(User user);
     boolean activateUserAccountAfterRegistration(String code);

@@ -14,17 +14,10 @@ import java.util.List;
  */
 
 public interface BucketService {
-
-    // Create bucket
     Bucket createUserBucket(User user, List<Long> productIds);
-    // Add products to user bucket
     void addProductsToUserBucket(Bucket bucket, List<Long> productIds);
-    // Delete one product from bucket
     void deleteProductFromBucket(Bucket bucket, Long id);
-    // Count bucket price
     BucketDTO getBucketByUser(String email);
-    // Add bucket to order
     void addBucketToOrder(String email, Address address, boolean isDelivery);
-    // Delete product from database
     void deleteProductByIdFromBucket(Long id);
 }

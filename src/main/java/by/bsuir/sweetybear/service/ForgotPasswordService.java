@@ -9,7 +9,6 @@ import by.bsuir.sweetybear.model.User;
  */
 
 public interface ForgotPasswordService {
-
     boolean setCodeToResetUserPassword(String email);
     boolean changeUserPasswordByCode(String resetPasswordCode, User userUpdate);
 }

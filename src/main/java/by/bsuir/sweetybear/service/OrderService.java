@@ -19,6 +19,7 @@ public interface OrderService {
     Order getOrderById(Long id);
     boolean orderPayment(Long orderId, Long paymentId);
     void updateOrderStatusById(Long id, OrderStatus status);
+    // Check if order delivery date is before current date and then change order status to CANCELED
     void checkForOrderPaymentDate(Long userId);
     void save(Order order);
     void deleteProductFromOrdersById(Long id);
