@@ -1,5 +1,6 @@
 package by.bsuir.sweetybear.service;
 
+import by.bsuir.sweetybear.dto.OrderViewingDTO;
 import by.bsuir.sweetybear.model.Order;
 import by.bsuir.sweetybear.model.enums.OrderStatus;
 
@@ -12,20 +13,14 @@ import java.util.List;
  */
 
 public interface OrderService {
-    // Save order to database
-    void save(Order order);
-    // Return orders with special status
-    List<Order> orderListFindByStatus(OrderStatus status);
-    // Find order by id
+    OrderViewingDTO getOrderViewingDTOById(Long id);
+    List<OrderViewingDTO> orderListFindByStatus(OrderStatus status);
+    List<OrderViewingDTO> getUserOrdersByIdWithStatus(Long id, String status);
     Order getOrderById(Long id);
-    // Update order status
+    boolean orderPayment(Long orderId, Long paymentId);
     void updateOrderStatusById(Long id, OrderStatus status);
-    // Return user orders
-    List<Order> getUserOrdersById(Long id);
-    List<Order> getUserOrdersByIdWithStatus(Long id, String status);
-    // Delete product from database
+    void checkForOrderPaymentDate(Long userId);
+    void save(Order order);
     void deleteProductFromOrdersById(Long id);
     void deleteOrderById(Long id);
-    boolean orderPayment(Long orderId, Long paymentId);
-    void checkForOrderPaymentDate(Long userId);
 }

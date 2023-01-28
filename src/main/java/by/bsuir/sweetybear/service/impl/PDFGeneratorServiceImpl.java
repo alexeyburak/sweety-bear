@@ -1,5 +1,6 @@
 package by.bsuir.sweetybear.service.impl;
 
+import by.bsuir.sweetybear.dto.OrderViewingDTO;
 import by.bsuir.sweetybear.dto.UserDTO;
 import by.bsuir.sweetybear.model.Order;
 import by.bsuir.sweetybear.service.PDFGeneratorService;
@@ -70,7 +71,7 @@ public class PDFGeneratorServiceImpl implements PDFGeneratorService {
     @Override
     public void exportUserOrderInPDF(HttpServletResponse response, Long orderId) {
 
-        Order order = orderService.getOrderById(orderId);
+        OrderViewingDTO order = orderService.getOrderViewingDTOById(orderId);
 
         try (Document document = new Document(PageSize.A4)) {
             PdfWriter.getInstance(document, response.getOutputStream());

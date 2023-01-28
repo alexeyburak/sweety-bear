@@ -25,7 +25,7 @@
         <th scope="col">User</th>
         <th scope="col">Date</th>
         <th scope="col">Sum</th>
-        <th scope="col">Status</th>
+        <th scope="col">Paid</th>
         <th scope="col"></th>
     </tr>
     <div th:each="order : ${orders}">
@@ -43,7 +43,7 @@
             </th>
             <th scope="row" th:utext="${order.dateOfCreated}">Date</th>
             <th scope="row" th:utext="${order.sum}">Sum</th>
-            <th scope="row" th:utext="${order.status}">Status</th>
+            <th scope="row" th:utext="${order.isOrderPaid}">Status</th>
             <th scope="row">
                 <a th:href="@{/orders/{id}(id=${order.id})}">Details</a>
             </th>

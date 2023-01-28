@@ -2,10 +2,7 @@ package by.bsuir.sweetybear.model;
 
 import by.bsuir.sweetybear.model.enums.DeliveryType;
 import by.bsuir.sweetybear.model.enums.OrderStatus;
-import lombok.AllArgsConstructor;
-import lombok.Builder;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.math.BigDecimal;
@@ -20,12 +17,12 @@ import java.util.List;
 
 @Entity
 @Table(name = "orders")
-@Data
+@Getter
+@Setter
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class Order extends IdentifiedModel implements Comparable<Order>{
-
+public class Order extends IdentifiedModel {
     private static final Long DELIVERY_TIME = 5L;
 
     @ManyToOne(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
@@ -51,51 +48,9 @@ public class Order extends IdentifiedModel implements Comparable<Order>{
     @Column(name = "is_order_paid")
     private boolean isOrderPaid;
 
-    public boolean isOrderDeliveryPickup() {
-        return delivery == DeliveryType.PICKUP;
-    }
-
-    public boolean isOrderCanceled() {
-        return status == OrderStatus.CANCELED || status == OrderStatus.CLOSED;
-    }
-
-    public boolean isOrderApproved() {
-        return status == OrderStatus.APPROVED;
-    }
-
-    public boolean isTotalProductsPriceNotChanged() {
-        return sum.compareTo(BigDecimal.valueOf(countCurrentlyProductsPrice())) == 0;
-    }
-
-    public boolean isOrderPaymentDeprecated() {
-        return dateOfDelivery.isBefore(LocalDateTime.now());
-    }
-
-    public int getNumberOfDaysOfTheOrderPaymentDay() {
-        return dateOfDelivery.compareTo(LocalDateTime.now());
-    }
-
-    private Double countCurrentlyProductsPrice() {
-        return details
-                .stream()
-                .map(OrderDetails::getProductPriceWithAmount)
-                .mapToDouble(BigDecimal::doubleValue)
-                .sum();
-    }
-
     @PrePersist
     private void init() {
         dateOfCreated = LocalDateTime.now();
         dateOfDelivery = LocalDateTime.now().plusDays(DELIVERY_TIME);
-    }
-
-    @Override
-    public int compareTo(Order o) {
-        if(o.status.ordinal() < this.status.ordinal())
-            return 1;
-        else if(o.status.ordinal() > this.status.ordinal())
-            return -1;
-        else
-            return 1;
     }
 }

@@ -1,15 +1,18 @@
 package by.bsuir.sweetybear.service.impl;
 
+import by.bsuir.sweetybear.dto.OrderViewingDTO;
 import by.bsuir.sweetybear.exception.ApiRequestException;
 import by.bsuir.sweetybear.model.Order;
 import by.bsuir.sweetybear.model.enums.OrderStatus;
 import by.bsuir.sweetybear.repository.OrderRepository;
 import by.bsuir.sweetybear.service.OrderService;
+import by.bsuir.sweetybear.service.mapper.OrderDTOMapper;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import javax.transaction.Transactional;
+import java.time.LocalDateTime;
 import java.util.Comparator;
 import java.util.List;
 
@@ -28,6 +31,7 @@ public class OrderServiceImpl implements OrderService {
     private static final String ORDERS_PURCHASES = "purchases";
     private final OrderRepository orderRepository;
     private final BankCardServiceImpl bankCardService;
+    private final OrderDTOMapper orderDTOMapper;
 
     @Override
     public void save(Order order) {
@@ -36,11 +40,12 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> orderListFindByStatus(OrderStatus status) {
+    public List<OrderViewingDTO> orderListFindByStatus(OrderStatus status) {
         return orderRepository
                 .findByStatus(status)
                 .stream()
-                .sorted(Comparator.comparing(Order::getDateOfCreated)
+                .map(orderDTOMapper)
+                .sorted(Comparator.comparing(OrderViewingDTO::getDateOfCreated)
                         .reversed())
                 .toList();
     }
@@ -49,6 +54,14 @@ public class OrderServiceImpl implements OrderService {
     public Order getOrderById(Long id) {
         return orderRepository
                 .findById(id)
+                .orElseThrow(() -> new ApiRequestException("Order not found. Id: " + id));
+    }
+
+    @Override
+    public OrderViewingDTO getOrderViewingDTOById(Long id) {
+        return orderRepository
+                .findById(id)
+                .map(orderDTOMapper)
                 .orElseThrow(() -> new ApiRequestException("Order not found. Id: " + id));
     }
 
@@ -63,15 +76,11 @@ public class OrderServiceImpl implements OrderService {
     }
 
     @Override
-    public List<Order> getUserOrdersById(Long id) {
-        return orderRepository.findByUserId(id);
-    }
-
-    @Override
-    public List<Order> getUserOrdersByIdWithStatus(Long id, String status) {
-        final List<Order> orders = this.getUserOrdersById(id)
+    public List<OrderViewingDTO> getUserOrdersByIdWithStatus(Long id, String status) {
+        final List<OrderViewingDTO> orders = orderRepository.findByUserId(id)
                 .stream()
-                .sorted(Order::compareTo)
+                .map(orderDTOMapper)
+                .sorted(OrderViewingDTO::compareTo)
                 .toList();
 
         return switch (status) {
@@ -115,10 +124,10 @@ public class OrderServiceImpl implements OrderService {
 
     @Override
     public void checkForOrderPaymentDate(Long userId) {
-        this.getUserOrdersById(userId)
+        orderRepository.findByUserId(userId)
                 .stream()
-                .filter(order -> !order.isOrderCanceled())
-                .filter(Order::isOrderPaymentDeprecated)
+                .filter(order -> order.getStatus() != OrderStatus.CANCELED && order.getStatus() != OrderStatus.CLOSED)
+                .filter(order -> order.getDateOfDelivery().isBefore(LocalDateTime.now()))
                 .forEach(order -> {
                             log.info("Order payment was overdue.");
                             this.updateOrderStatusById(order.getId(), OrderStatus.CANCELED);

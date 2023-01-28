@@ -1,6 +1,6 @@
 package by.bsuir.sweetybear.controller;
 
-import by.bsuir.sweetybear.model.Order;
+import by.bsuir.sweetybear.dto.OrderViewingDTO;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.model.enums.OrderStatus;
 import by.bsuir.sweetybear.service.impl.BankCardServiceImpl;
@@ -54,7 +54,7 @@ public class OrderController {
     public String orderInfo(@PathVariable("id") Long id,
                             Model model,
                             Principal principal) {
-        Order order = orderService.getOrderById(id);
+        OrderViewingDTO order = orderService.getOrderViewingDTOById(id);
         orderService.checkForOrderPaymentDate(order.getUser().getId());
 
         model.addAttribute("user", userService.getUserByPrincipal(principal));
@@ -122,7 +122,7 @@ public class OrderController {
     private void addDataToModelInOrderPayment(Model model, Long id, User user) {
         model.addAttribute("user", user);
         model.addAttribute("payments", bankCardService.getBankCardDTOListByUserId(user.getId()));
-        model.addAttribute("order", orderService.getOrderById(id));
+        model.addAttribute("order", orderService.getOrderViewingDTOById(id));
     }
 
     @PostMapping("/orders/delete/{id}")
@@ -135,11 +135,7 @@ public class OrderController {
     public void generatePDF(@PathVariable("id") Long id,
                             HttpServletResponse response,
                             Principal principal) {
-        Order order = orderService.getOrderById(id);
         User user = userService.getUserByPrincipal(principal);
-        if (!user.equals(order.getUser())) {
-            return;
-        }
 
         response.setContentType(PDF_CONTENT_TYPE);
         response.setHeader(PDF_HEADER_KEY, "attachment; filename=order_" + id + ".pdf");
