@@ -20,6 +20,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import static by.bsuir.sweetybear.model.enums.CardPaymentSystem.*;
+import static by.bsuir.sweetybear.validator.impl.bankcard.PaymentSystemStartCodes.AMERICAN_EXPRESS_START_WITH;
+import static by.bsuir.sweetybear.validator.impl.bankcard.PaymentSystemStartCodes.VISA_START_WITH;
+
 /**
  * sweety-bear
  * Created by Alexey Burak
@@ -60,6 +64,7 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
             return false;
         }
 
+        setPaymentSystemToBankCard(bankCard);
         user.addBankCardToUser(bankCard);
 
         bankCardRepository.save(bankCard);
@@ -73,12 +78,24 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
     }
 
     @Override
+    public void setPaymentSystemToBankCard(BankCard bankCard) {
+        var cardFirstChar = bankCard.getCardNumber().toString().substring(0, 1);
+
+        switch (cardFirstChar) {
+            case VISA_START_WITH -> bankCard.setPaymentSystem(VISA);
+            case AMERICAN_EXPRESS_START_WITH -> bankCard.setPaymentSystem(AMERICAN_EXPRESS);
+            default -> bankCard.setPaymentSystem(MASTERCARD);
+        }
+    }
+
+    @Override
     public boolean isBankCardValid(BankCard bankCard) {
         return ValidatorFactory.getInstance().getCardNameValidator().isValid(bankCard.getCardholderName()) &&
                 ValidatorFactory.getInstance().getCardNumberValidator().isValid(bankCard.getCardNumber().toString()) &&
                 ValidatorFactory.getInstance().getCvvValidator().isValid(bankCard.getCvv().toString()) &&
                 ValidatorFactory.getInstance().getMonthValidator().isValid(bankCard.getExpirationMonth().toString()) &&
-                ValidatorFactory.getInstance().getYearValidator().isValid(bankCard.getExpirationYear().toString());
+                ValidatorFactory.getInstance().getYearValidator().isValid(bankCard.getExpirationYear().toString()) &&
+                ValidatorFactory.getInstance().getPaymentSystemValidator().isValid(bankCard.getCardNumber());
     }
 
     private boolean isAcceptableQuantityOfBankcards(User user) {

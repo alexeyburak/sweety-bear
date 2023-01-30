@@ -24,6 +24,7 @@ public class ValidatorFactory {
     private final HouseNumberValidatorImpl houseNumberValidator = new HouseNumberValidatorImpl();
     private final StreetValidatorImpl streetValidator = new StreetValidatorImpl();
     private final AddressValidatorImpl addressValidator = new AddressValidatorImpl();
+    private final PaymentSystemValidatorImpl paymentSystemValidator = new PaymentSystemValidatorImpl();
 
     public static ValidatorFactory getInstance() {
         return Holder.INSTANCE;

@@ -1,5 +1,6 @@
 package by.bsuir.sweetybear.model;
 
+import by.bsuir.sweetybear.model.enums.CardPaymentSystem;
 import lombok.*;
 import org.hibernate.Hibernate;
 
@@ -38,6 +39,9 @@ public class BankCard extends IdentifiedModel {
     private BigDecimal balance;
     @Column(name = "cvv")
     private Integer cvv;
+    @Column(name = "payment_system")
+    @Enumerated(EnumType.STRING)
+    private CardPaymentSystem paymentSystem;
 
     @Override
     public boolean equals(Object o) {

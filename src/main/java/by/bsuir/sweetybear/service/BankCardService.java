@@ -17,6 +17,7 @@ public interface BankCardService {
     BankCard getBankCardById(Long id);
     List<AccessibleBankCardDTO> getBankCardDTOListByUserId(Long userId);
     boolean addNewBankCard(BankCardDTO bankCardDTO, User user);
+    void setPaymentSystemToBankCard(BankCard bankCard);
     boolean isBankCardExist(BankCard bankCard);
     boolean isBankCardInformationCorrect(BankCard bankCard, long cardNumber, int expirationMonth, int expirationYear, int cvv);
     boolean isBankCardValid(BankCard bankCard);
