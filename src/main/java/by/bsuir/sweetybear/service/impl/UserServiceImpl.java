@@ -1,7 +1,7 @@
 package by.bsuir.sweetybear.service.impl;
 
 import by.bsuir.sweetybear.dto.user.UserDTO;
-import by.bsuir.sweetybear.exception.ApiRequestException;
+import by.bsuir.sweetybear.exception.UserNotFoundException;
 import by.bsuir.sweetybear.model.Image;
 import by.bsuir.sweetybear.model.Product;
 import by.bsuir.sweetybear.model.User;
@@ -102,7 +102,7 @@ public class UserServiceImpl implements UserService, UserReceivingService {
     public User getUserById(Long id) {
         return userRepository
                 .findById(id)
-                .orElseThrow(() -> new ApiRequestException("User not found. Id: " + id));
+                .orElseThrow(() -> new UserNotFoundException("User not found. Id: " + id));
     }
 
     @Override

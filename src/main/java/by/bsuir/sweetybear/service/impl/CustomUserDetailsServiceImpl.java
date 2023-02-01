@@ -26,7 +26,7 @@ public class CustomUserDetailsServiceImpl implements UserDetailsService {
         User user = userRepository.findByEmail(email);
 
         if (user == null)
-            throw new ApiRequestException("User is null");
+            throw new UsernameNotFoundException("User not found");
         if (!user.isActive())
             throw new ApiRequestException("User is banned");
 

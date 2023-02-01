@@ -1,7 +1,8 @@
 package by.bsuir.sweetybear.service.impl;
 
 import by.bsuir.sweetybear.dto.product.ProductViewingDTO;
-import by.bsuir.sweetybear.exception.ApiRequestException;
+import by.bsuir.sweetybear.exception.ProductNotFoundException;
+import by.bsuir.sweetybear.exception.UserNotFoundException;
 import by.bsuir.sweetybear.model.Bucket;
 import by.bsuir.sweetybear.model.Image;
 import by.bsuir.sweetybear.model.Product;
@@ -104,7 +105,7 @@ public class ProductServiceImpl implements ProductService {
     public Product getProductById(Long id) {
         return productRepository
                 .findById(id)
-                .orElseThrow(() -> new ApiRequestException("Product not found"));
+                .orElseThrow(() -> new ProductNotFoundException("Product not found"));
     }
 
     private void addImagesToProduct(Product product,
@@ -159,7 +160,7 @@ public class ProductServiceImpl implements ProductService {
         User user = userService.getUserByEmail(email);
         if (user == null) {
             log.error("User not found. Email: " + email);
-            throw new ApiRequestException("User not found. Email: " + email);
+            throw new UserNotFoundException("User not found. Email: " + email);
         }
 
         Bucket bucket = user.getBucket();

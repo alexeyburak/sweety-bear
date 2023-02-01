@@ -2,7 +2,8 @@ package by.bsuir.sweetybear.service.impl;
 
 import by.bsuir.sweetybear.dto.bucket.BucketDTO;
 import by.bsuir.sweetybear.dto.bucket.BucketDetailDTO;
-import by.bsuir.sweetybear.exception.ApiRequestException;
+import by.bsuir.sweetybear.exception.BucketNullException;
+import by.bsuir.sweetybear.exception.UserNotFoundException;
 import by.bsuir.sweetybear.model.*;
 import by.bsuir.sweetybear.model.enums.DeliveryType;
 import by.bsuir.sweetybear.model.enums.OrderStatus;
@@ -15,7 +16,10 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import static by.bsuir.sweetybear.utils.Utils.removeOnlyOneIdFromList;
@@ -125,7 +129,7 @@ public class BucketServiceImpl implements BucketService {
 
         Bucket bucket = user.getBucket();
         if (bucket == null || getProductsFromBucket(bucket).isEmpty()) {
-            throw new ApiRequestException("Bucket is empty");
+            throw new BucketNullException("Bucket is empty");
         }
         Order order = new Order();
         order.setStatus(OrderStatus.NEW);
@@ -161,7 +165,7 @@ public class BucketServiceImpl implements BucketService {
                                               final Address address) {
         User user = userService.getUserByEmail(email);
         if (user == null)
-            throw new ApiRequestException("User is not found");
+            throw new UserNotFoundException("User is not found");
         if (!address.getStreet().isEmpty())
             user.setAddress(address);
 

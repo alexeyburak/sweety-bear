@@ -1,7 +1,7 @@
 package by.bsuir.sweetybear.service.impl;
 
 import by.bsuir.sweetybear.dto.order.OrderViewingDTO;
-import by.bsuir.sweetybear.exception.ApiRequestException;
+import by.bsuir.sweetybear.exception.OrderNotFoundException;
 import by.bsuir.sweetybear.model.Order;
 import by.bsuir.sweetybear.model.enums.OrderStatus;
 import by.bsuir.sweetybear.repository.OrderRepository;
@@ -54,7 +54,7 @@ public class OrderServiceImpl implements OrderService {
     public Order getOrderById(Long id) {
         return orderRepository
                 .findById(id)
-                .orElseThrow(() -> new ApiRequestException("Order not found. Id: " + id));
+                .orElseThrow(() -> new OrderNotFoundException("Order not found. Id: " + id));
     }
 
     @Override
@@ -62,7 +62,7 @@ public class OrderServiceImpl implements OrderService {
         return orderRepository
                 .findById(id)
                 .map(orderDTOMapper)
-                .orElseThrow(() -> new ApiRequestException("Order not found. Id: " + id));
+                .orElseThrow(() -> new OrderNotFoundException("Order not found. Id: " + id));
     }
 
     @Override
