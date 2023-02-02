@@ -1,5 +1,6 @@
 package by.bsuir.sweetybear.service.impl;
 
+import by.bsuir.sweetybear.model.Product;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.model.enums.Role;
 import by.bsuir.sweetybear.repository.UserRepository;
@@ -71,6 +72,46 @@ public class UserServiceImplTest {
         Assertions.assertNotNull(user);
         Assertions.assertTrue(user.isActive());
         Assertions.assertNull(user.getActivationCode());
+    }
+
+    @Test
+    public void addProductToFavoritesAndRemoveIfExistsTest() {
+        Product firstProduct = createProduct(1L);
+        Product secondProduct = createProduct(2L);
+        Product thirdProduct = createProduct(3L);
+        String email = "burakalexey@yahoo.com";
+        User user = User.builder()
+                .email(email)
+                .favoriteProducts(new ArrayList<>(
+                        List.of(
+                                firstProduct,
+                                secondProduct
+                        )
+                ))
+                .build();
+
+        Mockito.when(userRepository.findByEmail(email)).thenReturn(user);
+
+        Assertions.assertNotNull(user.getFavoriteProducts());
+        Assertions.assertEquals(2, user.getFavoriteProducts().size());
+
+        userService.addProductToFavoritesAndRemoveIfExists(email, firstProduct);
+
+        Assertions.assertNotNull(user.getFavoriteProducts());
+        Assertions.assertEquals(1, user.getFavoriteProducts().size());
+        Assertions.assertEquals(2L, user.getFavoriteProducts().get(0).getId());
+
+        userService.addProductToFavoritesAndRemoveIfExists(email, thirdProduct);
+
+        Assertions.assertNotNull(user.getFavoriteProducts());
+        Assertions.assertEquals(2, user.getFavoriteProducts().size());
+        Assertions.assertEquals(3L, user.getFavoriteProducts().get(1).getId());
+    }
+
+    private Product createProduct(Long id) {
+        return Product.builder()
+                .id(id)
+                .build();
     }
 
 }

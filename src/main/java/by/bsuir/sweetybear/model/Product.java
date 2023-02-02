@@ -21,6 +21,7 @@ import static by.bsuir.sweetybear.utils.Utils.getYearMonthDayHourMinuteSecond;
 @Table(name = "products")
 @Getter
 @Setter
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
 public class Product {
