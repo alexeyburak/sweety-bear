@@ -52,4 +52,25 @@ public class UserServiceImplTest {
         Assertions.assertEquals(Set.of(Role.ROLE_ADMIN), user.getRoles());
     }
 
+    @Test
+    public void activateUserAccount() {
+        String activationCode = UUID.randomUUID().toString();
+        User user = User.builder()
+                .active(false)
+                .activationCode(activationCode)
+                .build();
+
+        Mockito.when(userRepository.findByActivationCode(activationCode)).thenReturn(user);
+
+        Assertions.assertFalse(user.isActive());
+        Assertions.assertEquals(activationCode, user.getActivationCode());
+
+        userService.activateUserAccountAfterRegistration(activationCode);
+
+        Mockito.verify(userRepository, Mockito.times(1)).findByActivationCode(activationCode);
+        Assertions.assertNotNull(user);
+        Assertions.assertTrue(user.isActive());
+        Assertions.assertNull(user.getActivationCode());
+    }
+
 }
