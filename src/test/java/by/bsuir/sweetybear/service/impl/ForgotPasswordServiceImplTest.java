@@ -10,6 +10,8 @@ import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import java.util.UUID;
+
 import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
@@ -49,4 +51,32 @@ public class ForgotPasswordServiceImplTest {
         Assertions.assertNotNull(user.getResetPasswordCode());
     }
 
+    @Test
+    public void changeUserPasswordByCodeTest() {
+        String code = UUID.randomUUID().toString();
+        String notExistCode = UUID.randomUUID().toString();
+        User user = User.builder()
+                .password(null)
+                .resetPasswordCode(code)
+                .build();
+        User updatedUser = User.builder()
+                .password(code)
+                .build();
+
+        Mockito.when(userService.getUserByResetPasswordCode(notExistCode)).thenReturn(null);
+        Mockito.when(userService.getUserByResetPasswordCode(code)).thenReturn(user);
+        Mockito.when(passwordEncoder.encode(code)).thenReturn(code);
+
+        boolean result = forgotPasswordService.changeUserPasswordByCode(notExistCode, user);
+
+        Assertions.assertFalse(result);
+
+        result = forgotPasswordService.changeUserPasswordByCode(code, updatedUser);
+
+        Assertions.assertNotNull(user);
+        Assertions.assertNotNull(user.getPassword());
+        Assertions.assertEquals(code, user.getPassword());
+        Assertions.assertNull(user.getResetPasswordCode());
+        Assertions.assertTrue(result);
+    }
 }
