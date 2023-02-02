@@ -11,11 +11,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.*;
 
 @ExtendWith(MockitoExtension.class)
 public class UserServiceImplTest {
+    @Mock
+    private PasswordEncoder passwordEncoder;
     @Mock
     private UserRepository userRepository;
     @InjectMocks
@@ -112,6 +115,29 @@ public class UserServiceImplTest {
         return Product.builder()
                 .id(id)
                 .build();
+    }
+
+    @Test
+    public void updateUserPasswordById() {
+        final String password = "password";
+        final String newPassword = "newPassword";
+        User user = User.builder()
+                .password(password)
+                .build();
+        User updatedUser = User.builder()
+                .password(newPassword)
+                .build();
+        Mockito.when(passwordEncoder.encode(newPassword)).thenReturn(newPassword);
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+
+        Assertions.assertNotNull(user);
+        Assertions.assertNotNull(updatedUser);
+        Assertions.assertEquals(password, user.getPassword());
+
+        userService.updateUserPasswordById(1L, updatedUser);
+
+        Assertions.assertNotNull(user);
+        Assertions.assertEquals(newPassword, user.getPassword());
     }
 
 }
