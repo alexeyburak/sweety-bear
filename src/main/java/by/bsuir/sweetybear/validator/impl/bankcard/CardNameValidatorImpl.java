@@ -9,7 +9,7 @@ import by.bsuir.sweetybear.validator.AbstractValidator;
  */
 
 public class CardNameValidatorImpl extends AbstractValidator {
-    private static final String NAME_REGEX = "^((?:[A-Za-z]+ ?){1,3})$";
+    private static final String NAME_REGEX = "^((?:[A-Za-z]+ ?){1,2})$";
 
     @Override
     protected String getRegex() {
