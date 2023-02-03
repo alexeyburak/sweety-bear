@@ -27,25 +27,28 @@ public class ForgotPasswordServiceImplTest {
 
     @Test
     public void testSetCodeToResetUserPassword() {
+        //given
         String email = "burakalexey@yahoo.com";
         User user = User.builder()
                 .email(email)
                 .active(false)
                 .build();
 
+        //when
         Mockito.when(userService.getUserByEmail(email)).thenReturn(user);
-
         boolean result = forgotPasswordService.setCodeToResetUserPassword(email);
 
+        //then
         Mockito.verify(userService, Mockito.times(1)).getUserByEmail(email);
         Mockito.verify(userService, Mockito.times(0)).save(user);
-
         Assertions.assertFalse(result);
 
+        //when
         doNothing().when(mailSender).sendEmailWithResetPasswordLinkToUser(user);
         user.setActive(true);
         result = forgotPasswordService.setCodeToResetUserPassword(email);
 
+        //then
         Assertions.assertTrue(result);
         Assertions.assertNotNull(user);
         Assertions.assertNotNull(user.getResetPasswordCode());
@@ -53,6 +56,7 @@ public class ForgotPasswordServiceImplTest {
 
     @Test
     public void changeUserPasswordByCodeTest() {
+        //given
         String code = UUID.randomUUID().toString();
         String notExistCode = UUID.randomUUID().toString();
         User user = User.builder()
@@ -63,16 +67,19 @@ public class ForgotPasswordServiceImplTest {
                 .password(code)
                 .build();
 
+        //when
         Mockito.when(userService.getUserByResetPasswordCode(notExistCode)).thenReturn(null);
         Mockito.when(userService.getUserByResetPasswordCode(code)).thenReturn(user);
         Mockito.when(passwordEncoder.encode(code)).thenReturn(code);
-
         boolean result = forgotPasswordService.changeUserPasswordByCode(notExistCode, user);
 
+        //then
         Assertions.assertFalse(result);
 
+        //when
         result = forgotPasswordService.changeUserPasswordByCode(code, updatedUser);
 
+        //then
         Assertions.assertNotNull(user);
         Assertions.assertNotNull(user.getPassword());
         Assertions.assertEquals(code, user.getPassword());

@@ -4,6 +4,7 @@ import by.bsuir.sweetybear.model.Product;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.model.enums.Role;
 import by.bsuir.sweetybear.repository.UserRepository;
+import org.aspectj.util.Reflection;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -13,7 +14,10 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.multipart.MultipartFile;
 
 import java.util.*;
 
@@ -97,6 +101,30 @@ public class UserServiceImplTest {
         Mockito.verify(userRepository, Mockito.times(1)).findById(1L);
         Assertions.assertNotNull(user);
         Assertions.assertFalse(user.isActive());
+    }
+
+    @Test
+    public void updateUserDataById() {
+        //given
+        User user = User.builder()
+                .email("burakalexey@yahoo.com")
+                .name("Alexey")
+                .build();
+        User userUpdate = User.builder()
+                .email("updated@gmail.com")
+                .name("Updated")
+                .build();
+        MultipartFile file = Mockito.mock(MultipartFile.class);
+
+        //when
+        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
+        Mockito.when(userRepository.save(user)).thenReturn(user);
+        userService.updateUserDataById(1L, userUpdate, file);
+
+        //then
+        Assertions.assertNotNull(user);
+        Assertions.assertEquals(user.getEmail(), userUpdate.getEmail());
+        Assertions.assertEquals(user.getName(), userUpdate.getName());
     }
 
     @Test
