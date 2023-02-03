@@ -17,6 +17,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.util.*;
 
+import static by.bsuir.sweetybear.utils.UUIDGenerator.generateUUID;
 import static org.mockito.Mockito.doNothing;
 
 @ExtendWith(MockitoExtension.class)
@@ -33,7 +34,7 @@ public class UserServiceImplTest {
     @Test
     public void checkAddUser() {
         // given
-        String code = UUID.randomUUID().toString();
+        String code = generateUUID();
         String email = "burakalexey@yahoo.com";
         User user = User.builder()
                 .email(email)
@@ -56,6 +57,24 @@ public class UserServiceImplTest {
         Assertions.assertNotNull(capturedUser);
         AssertionsForClassTypes.assertThat(capturedUser).isEqualTo(user);
 
+    }
+
+    @Test
+    public void getUserByResetCode() {
+        //given
+        String resetCode = generateUUID();
+        User user = User.builder()
+                .resetPasswordCode(resetCode)
+                .build();
+
+        //when
+        Mockito.when(userRepository.findByResetPasswordCode(resetCode)).thenReturn(user);
+        User userFromDatabase = userService.getUserByResetPasswordCode(resetCode);
+
+        //then
+        Mockito.verify(userRepository, Mockito.times(1)).findByResetPasswordCode(resetCode);
+        Assertions.assertNotNull(userFromDatabase);
+        Assertions.assertEquals(user, userFromDatabase);
     }
 
     @Test
@@ -107,7 +126,7 @@ public class UserServiceImplTest {
     @Test
     public void activateUserAccount() {
         //given
-        String activationCode = UUID.randomUUID().toString();
+        String activationCode = generateUUID();
         User user = User.builder()
                 .active(false)
                 .activationCode(activationCode)
