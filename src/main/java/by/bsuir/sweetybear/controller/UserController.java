@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import javax.validation.Valid;
-import java.io.IOException;
 import java.security.Principal;
 import java.util.Objects;
 
@@ -109,7 +108,7 @@ public class UserController {
                                         BindingResult bindingResult,
                                         @PathVariable("id") Long id,
                                         Model model,
-                                        Principal principal) throws IOException {
+                                        Principal principal) {
         User principalUser = userService.getUserByPrincipal(principal);
         insertDataInModelForEditingUserAccount(model, principal, id);
 

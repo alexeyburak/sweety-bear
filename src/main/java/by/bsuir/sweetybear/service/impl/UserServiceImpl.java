@@ -133,11 +133,15 @@ public class UserServiceImpl implements UserService, UserReceivingService {
     @Override
     public void updateUserDataById(Long id,
                                    User userUpdate,
-                                   MultipartFile multipartFile) throws IOException {
+                                   MultipartFile multipartFile) {
         User user = this.getUserById(id);
-
-        if (multipartFile.getSize() != 0)
-            addAvatarToUser(user, multipartFile);
+        try {
+            if (multipartFile.getSize() != 0)
+                addAvatarToUser(user, multipartFile);
+        } catch (IOException e) {
+            log.error("Error while saving avatar. User id: {}", id);
+            throw new RuntimeException(e);
+        }
 
         user.setName(userUpdate.getName());
         user.setEmail(userUpdate.getEmail());
