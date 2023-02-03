@@ -25,8 +25,8 @@ import java.io.IOException;
 import java.security.Principal;
 import java.util.Collections;
 import java.util.List;
-import java.util.UUID;
 
+import static by.bsuir.sweetybear.utils.UUIDGenerator.generateUUID;
 import static by.bsuir.sweetybear.utils.Utils.toImageEntity;
 
 /**
@@ -57,7 +57,7 @@ public class UserServiceImpl implements UserService, UserReceivingService {
         user.setActive(false);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         user.getRoles().add(Role.ROLE_USER);
-        user.setActivationCode(UUID.randomUUID().toString());
+        user.setActivationCode(generateUUID());
 
         log.info("Saving User. Email {}", email);
         userRepository.save(user);
@@ -68,7 +68,7 @@ public class UserServiceImpl implements UserService, UserReceivingService {
 
     @Override
     public void addUserAfterOauthLoginSuccess(String email, String name) {
-        String temporaryPassword = UUID.randomUUID().toString();
+        String temporaryPassword = generateUUID();
 
         userRepository.save(
                 User.builder()
