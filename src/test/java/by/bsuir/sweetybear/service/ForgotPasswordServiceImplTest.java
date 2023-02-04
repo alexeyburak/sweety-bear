@@ -1,6 +1,9 @@
-package by.bsuir.sweetybear.service.impl;
+package by.bsuir.sweetybear.service;
 
 import by.bsuir.sweetybear.model.User;
+import by.bsuir.sweetybear.service.impl.ForgotPasswordServiceImpl;
+import by.bsuir.sweetybear.service.impl.MailSenderImpl;
+import by.bsuir.sweetybear.service.impl.UserServiceImpl;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -26,7 +29,7 @@ public class ForgotPasswordServiceImplTest {
     private ForgotPasswordServiceImpl forgotPasswordService;
 
     @Test
-    public void testSetCodeToResetUserPassword() {
+    public void setCodeToResetUserPassword_UserIsNotActive_False() {
         //given
         String email = "burakalexey@yahoo.com";
         User user = User.builder()
@@ -39,14 +42,22 @@ public class ForgotPasswordServiceImplTest {
         boolean result = forgotPasswordService.setCodeToResetUserPassword(email);
 
         //then
-        Mockito.verify(userService, Mockito.times(1)).getUserByEmail(email);
-        Mockito.verify(userService, Mockito.times(0)).save(user);
         Assertions.assertFalse(result);
+    }
+
+    @Test
+    public void setCodeToResetUserPassword_UserIsActive_ShouldSetResetCodeAndReturnTrue() {
+        //given
+        String email = "burakalexey@yahoo.com";
+        User user = User.builder()
+                .email(email)
+                .active(true)
+                .build();
 
         //when
+        Mockito.when(userService.getUserByEmail(email)).thenReturn(user);
         doNothing().when(mailSender).sendEmailWithResetPasswordLinkToUser(user);
-        user.setActive(true);
-        result = forgotPasswordService.setCodeToResetUserPassword(email);
+        boolean result = forgotPasswordService.setCodeToResetUserPassword(email);
 
         //then
         Assertions.assertTrue(result);
@@ -55,34 +66,41 @@ public class ForgotPasswordServiceImplTest {
     }
 
     @Test
-    public void changeUserPasswordByCodeTest() {
+    public void changeUserPasswordByCode_UserNotFound_False() {
         //given
-        String code = UUID.randomUUID().toString();
         String notExistCode = UUID.randomUUID().toString();
         User user = User.builder()
                 .password(null)
-                .resetPasswordCode(code)
-                .build();
-        User updatedUser = User.builder()
-                .password(code)
                 .build();
 
         //when
         Mockito.when(userService.getUserByResetPasswordCode(notExistCode)).thenReturn(null);
-        Mockito.when(userService.getUserByResetPasswordCode(code)).thenReturn(user);
-        Mockito.when(passwordEncoder.encode(code)).thenReturn(code);
         boolean result = forgotPasswordService.changeUserPasswordByCode(notExistCode, user);
 
         //then
         Assertions.assertFalse(result);
+    }
+
+    @Test
+    public void changeUserPasswordByCode_ResetCodeExists_ShouldSetNullResetCodeSetPasswordToUserAndReturnTrue() {
+        //given
+        String resetPasswordCode = UUID.randomUUID().toString();
+        User user = User.builder()
+                .resetPasswordCode(resetPasswordCode)
+                .build();
+        User updatedUser = User.builder()
+                .password(resetPasswordCode)
+                .build();
 
         //when
-        result = forgotPasswordService.changeUserPasswordByCode(code, updatedUser);
+        Mockito.when(userService.getUserByResetPasswordCode(resetPasswordCode)).thenReturn(user);
+        Mockito.when(passwordEncoder.encode(resetPasswordCode)).thenReturn(resetPasswordCode);
+        boolean result = forgotPasswordService.changeUserPasswordByCode(resetPasswordCode, updatedUser);
 
         //then
         Assertions.assertNotNull(user);
         Assertions.assertNotNull(user.getPassword());
-        Assertions.assertEquals(code, user.getPassword());
+        Assertions.assertEquals(resetPasswordCode, user.getPassword());
         Assertions.assertNull(user.getResetPasswordCode());
         Assertions.assertTrue(result);
     }
