@@ -29,7 +29,7 @@ public class ForgotPasswordServiceImplTest {
     private ForgotPasswordServiceImpl forgotPasswordService;
 
     @Test
-    public void setCodeToResetUserPassword_UserIsNotActive_False() {
+    void setCodeToResetUserPassword_UserIsNotActive_False() {
         //given
         String email = "burakalexey@yahoo.com";
         User user = User.builder()
@@ -46,7 +46,7 @@ public class ForgotPasswordServiceImplTest {
     }
 
     @Test
-    public void setCodeToResetUserPassword_UserIsActive_ShouldSetResetCodeAndReturnTrue() {
+    void setCodeToResetUserPassword_UserIsActive_ShouldSetResetCodeAndReturnTrue() {
         //given
         String email = "burakalexey@yahoo.com";
         User user = User.builder()
@@ -66,7 +66,7 @@ public class ForgotPasswordServiceImplTest {
     }
 
     @Test
-    public void changeUserPasswordByCode_UserNotFound_False() {
+    void changeUserPasswordByCode_UserNotFound_False() {
         //given
         String notExistCode = UUID.randomUUID().toString();
         User user = User.builder()
@@ -82,7 +82,7 @@ public class ForgotPasswordServiceImplTest {
     }
 
     @Test
-    public void changeUserPasswordByCode_ResetCodeExists_ShouldSetNullResetCodeSetPasswordToUserAndReturnTrue() {
+    void changeUserPasswordByCode_ResetCodeExists_ShouldSetNullResetCodeSetPasswordToUserAndReturnTrue() {
         //given
         String resetPasswordCode = UUID.randomUUID().toString();
         User user = User.builder()
