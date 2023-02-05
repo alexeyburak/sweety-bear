@@ -1,5 +1,7 @@
 package by.bsuir.sweetybear.config;
 
+import lombok.AccessLevel;
+import lombok.experimental.FieldDefaults;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -15,25 +17,20 @@ import java.util.Properties;
  */
 
 @Configuration
+@FieldDefaults(level = AccessLevel.PRIVATE)
 public class MailConfig {
-
     @Value("${spring.mail.host}")
-    private String host;
-
+    String host;
     @Value("${spring.mail.username}")
-    private String username;
-
+    String username;
     @Value("${spring.mail.password}")
-    private String password;
-
+    String password;
     @Value("${spring.mail.port}")
-    private int port;
-
+    int port;
     @Value("${spring.mail.protocol}")
-    private String protocol;
-
+    String protocol;
     @Value("${mail.debug}")
-    private String debug;
+    String debug;
 
     @Bean
     public JavaMailSender getMailSender() {
@@ -48,7 +45,6 @@ public class MailConfig {
 
         properties.setProperty("mail.transport.protocol", protocol);
         properties.setProperty("mail.debug", debug);
-
         return mailSender;
     }
 }
