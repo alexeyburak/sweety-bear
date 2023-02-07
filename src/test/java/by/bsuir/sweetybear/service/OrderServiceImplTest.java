@@ -1,10 +1,9 @@
 package by.bsuir.sweetybear.service;
 
 import by.bsuir.sweetybear.model.Order;
-import by.bsuir.sweetybear.model.User;
-import by.bsuir.sweetybear.model.enums.Role;
 import by.bsuir.sweetybear.repository.OrderRepository;
 import by.bsuir.sweetybear.service.impl.OrderServiceImpl;
+import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -15,11 +14,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
-import java.util.Collections;
-import java.util.HashSet;
-
-import static by.bsuir.sweetybear.utils.UUIDGenerator.generateUUID;
-import static org.mockito.Mockito.doNothing;
+import java.util.Optional;
 
 /**
  * sweety-bear
@@ -35,7 +30,7 @@ public class OrderServiceImplTest {
     private OrderServiceImpl orderService;
 
     @Test
-    void addUserToDatabase_NotExistsUser_True() {
+    void save_Order_ShouldSaveOrderToDatabase() {
         // given
         Order order = Order.builder()
                 .isOrderPaid(true)
@@ -52,4 +47,22 @@ public class OrderServiceImplTest {
         Assertions.assertNotNull(capturedOrder);
         AssertionsForClassTypes.assertThat(capturedOrder).isEqualTo(order);
     }
+
+    @Test
+    void getOrderById_OrderId_ShouldFindOrderById() {
+        // given
+        final long id = 1L;
+        Order order = new Order();
+        order.setId(id);
+
+        //when
+        Mockito.when(orderRepository.findById(id)).thenReturn(Optional.of(order));
+        Order result = orderService.getOrderById(id);
+
+        //then
+        Assertions.assertNotNull(result);
+        AssertionsForClassTypes.assertThat(result).isEqualTo(order);
+        Assertions.assertEquals(result.getId(), order.getId());
+    }
+
 }
