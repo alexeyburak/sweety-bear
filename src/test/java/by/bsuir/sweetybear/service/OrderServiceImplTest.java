@@ -1,9 +1,9 @@
 package by.bsuir.sweetybear.service;
 
 import by.bsuir.sweetybear.model.Order;
+import by.bsuir.sweetybear.model.enums.OrderStatus;
 import by.bsuir.sweetybear.repository.OrderRepository;
 import by.bsuir.sweetybear.service.impl.OrderServiceImpl;
-import com.fasterxml.jackson.annotation.JsonTypeInfo;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -63,6 +63,24 @@ public class OrderServiceImplTest {
         Assertions.assertNotNull(result);
         AssertionsForClassTypes.assertThat(result).isEqualTo(order);
         Assertions.assertEquals(result.getId(), order.getId());
+    }
+
+    @Test
+    void updateOrderStatusById_OrderIdStatus_ShouldChangeOrderStatus() {
+        //given
+        final long id = 1L;
+        Order order = Order.builder()
+                .status(OrderStatus.NEW)
+                .build();
+
+        //when
+        Mockito.when(orderRepository.findById(id)).thenReturn(Optional.of(order));
+        orderService.updateOrderStatusById(id, OrderStatus.APPROVED);
+
+        //then
+        Assertions.assertNotNull(order);
+        Assertions.assertNotNull(order.getStatus());
+        Assertions.assertEquals(order.getStatus(), OrderStatus.APPROVED);
     }
 
 }
