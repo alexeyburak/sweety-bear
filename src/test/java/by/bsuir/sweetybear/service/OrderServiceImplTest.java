@@ -14,6 +14,8 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.time.LocalDateTime;
+import java.util.List;
 import java.util.Optional;
 
 /**
@@ -81,6 +83,38 @@ public class OrderServiceImplTest {
         Assertions.assertNotNull(order);
         Assertions.assertNotNull(order.getStatus());
         Assertions.assertEquals(order.getStatus(), OrderStatus.APPROVED);
+    }
+
+    @Test
+    void checkForOrderPaymentDate_UserId_ShouldCancelOrderWhenPaymentDateIsExpired() {
+        //given
+        final long userId = 1L;
+        List<Order> orders = getUserOrdersList();
+
+        //when
+        Mockito.when(orderRepository.findByUserId(userId)).thenReturn(orders);
+        Mockito.when(orderRepository.findById(1L)).thenReturn(Optional.of(orders.get(0)));
+        orderService.checkForOrderPaymentDate(userId);
+
+        //then
+        Assertions.assertNotNull(orders);
+        Assertions.assertEquals(orders.get(0).getStatus(), OrderStatus.CANCELED);
+        Assertions.assertEquals(orders.get(1).getStatus(), OrderStatus.APPROVED);
+    }
+
+    private List<Order> getUserOrdersList() {
+        Order orderToChange = Order.builder()
+                .status(OrderStatus.NEW)
+                .dateOfDelivery(LocalDateTime.now().minusDays(1))
+                .build();
+        orderToChange.setId(1L);
+
+        Order orderValid = Order.builder()
+                .status(OrderStatus.APPROVED)
+                .dateOfDelivery(LocalDateTime.now().plusDays(1))
+                .build();
+        return List.of(orderToChange,
+                orderValid);
     }
 
 }
