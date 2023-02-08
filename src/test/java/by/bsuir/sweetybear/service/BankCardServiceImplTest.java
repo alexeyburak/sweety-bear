@@ -154,11 +154,10 @@ public class BankCardServiceImplTest {
 
     private User getUserWithValidNumberOfCards() {
         return User.builder()
-                .bankCards(new ArrayList<>(
-                        List.of(
+                .bankCards(List.of(
                                 BankCard.builder().build()
                         )
-                ))
+                )
                 .build();
     }
 
