@@ -3,6 +3,7 @@ package by.bsuir.sweetybear.service;
 import by.bsuir.sweetybear.model.Order;
 import by.bsuir.sweetybear.model.enums.OrderStatus;
 import by.bsuir.sweetybear.repository.OrderRepository;
+import by.bsuir.sweetybear.service.impl.BankCardServiceImpl;
 import by.bsuir.sweetybear.service.impl.OrderServiceImpl;
 import org.assertj.core.api.AssertionsForClassTypes;
 import org.junit.jupiter.api.Assertions;
@@ -26,6 +27,8 @@ import java.util.Optional;
 
 @ExtendWith(MockitoExtension.class)
 public class OrderServiceImplTest {
+    @Mock
+    private BankCardServiceImpl bankCardService;
     @Mock
     private OrderRepository orderRepository;
     @InjectMocks
@@ -115,6 +118,46 @@ public class OrderServiceImplTest {
                 .build();
         return List.of(orderToChange,
                 orderValid);
+    }
+
+    @Test
+    void orderPayment_ValidPaymentId_TrueAndMarkOrderPaid() {
+        //given
+        final long orderId = 1L;
+        final long paymentId = 1L;
+        Order order = Order.builder()
+                .isOrderPaid(false)
+                .build();
+
+        //when
+        Mockito.when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
+        Mockito.when(bankCardService.debitingMoneyFromTheBankCard(order, paymentId)).thenReturn(true);
+        boolean result = orderService.orderPayment(orderId, paymentId);
+
+        //then
+        Assertions.assertNotNull(order);
+        Assertions.assertTrue(order.isOrderPaid());
+        Assertions.assertTrue(result);
+    }
+
+    @Test
+    void orderPayment_NotValidPaymentId_False() {
+        //given
+        final long orderId = 1L;
+        final long paymentId = 1L;
+        Order order = Order.builder()
+                .isOrderPaid(false)
+                .build();
+
+        //when
+        Mockito.when(orderRepository.findById(orderId)).thenReturn(Optional.of(order));
+        Mockito.when(bankCardService.debitingMoneyFromTheBankCard(order, paymentId)).thenReturn(false);
+        boolean result = orderService.orderPayment(orderId, paymentId);
+
+        //then
+        Assertions.assertNotNull(order);
+        Assertions.assertFalse(order.isOrderPaid());
+        Assertions.assertFalse(result);
     }
 
 }
