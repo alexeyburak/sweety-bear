@@ -4,6 +4,7 @@ import by.bsuir.sweetybear.dto.bankcard.AccessibleBankCardDTO;
 import by.bsuir.sweetybear.dto.bankcard.BankCardDTO;
 import by.bsuir.sweetybear.model.BankCard;
 import by.bsuir.sweetybear.model.User;
+import by.bsuir.sweetybear.model.enums.CardPaymentSystem;
 import by.bsuir.sweetybear.repository.BankCardRepository;
 import by.bsuir.sweetybear.service.impl.BankCardServiceImpl;
 import org.junit.jupiter.api.Assertions;
@@ -159,6 +160,36 @@ public class BankCardServiceImplTest {
                         )
                 ))
                 .build();
+    }
+
+    @Test
+    void setPaymentSystemToBankCard_ValidBankCard_ShouldSetPaymentSystem() {
+        //given
+        final long visaCardNumber = 4234567890123456L;
+        final long masterCardNumber = 5234567890123456L;
+        final long americanExpressCardNumber = 3234567890123456L;
+        BankCard visaBankCard = BankCard.builder()
+                .cardNumber(visaCardNumber)
+                .build();
+        BankCard masterCardBankCard = BankCard.builder()
+                .cardNumber(masterCardNumber)
+                .build();
+        BankCard americanExpressBankCard = BankCard.builder()
+                .cardNumber(americanExpressCardNumber)
+                .build();
+
+        //when
+        bankCardService.setPaymentSystemToBankCard(visaBankCard);
+        bankCardService.setPaymentSystemToBankCard(masterCardBankCard);
+        bankCardService.setPaymentSystemToBankCard(americanExpressBankCard);
+
+        //then
+        Assertions.assertNotNull(visaBankCard);
+        Assertions.assertNotNull(masterCardBankCard);
+        Assertions.assertNotNull(americanExpressBankCard);
+        Assertions.assertEquals(CardPaymentSystem.VISA, visaBankCard.getPaymentSystem());
+        Assertions.assertEquals(CardPaymentSystem.MASTERCARD, masterCardBankCard.getPaymentSystem());
+        Assertions.assertEquals(CardPaymentSystem.AMERICAN_EXPRESS, americanExpressBankCard.getPaymentSystem());
     }
 
 }
