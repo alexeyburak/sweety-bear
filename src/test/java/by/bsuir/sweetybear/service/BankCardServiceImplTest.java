@@ -260,4 +260,26 @@ public class BankCardServiceImplTest {
         Assertions.assertFalse(result);
     }
 
+    @Test
+    void calculateNewBalance_BigDecimalValues_ShouldReturnSubtractBalance() {
+        //given
+        BigDecimal balance = new BigDecimal("100");
+        BigDecimal balance2 = new BigDecimal("50");
+        BigDecimal balance3 = new BigDecimal("52.24");
+        BigDecimal price = new BigDecimal("50");
+
+        //when
+        BigDecimal result = bankCardService.calculateNewBalance(balance, price);
+        BigDecimal result2 = bankCardService.calculateNewBalance(balance2, price);
+        BigDecimal result3 = bankCardService.calculateNewBalance(balance3, price);
+
+        //then
+        Assertions.assertNotNull(result);
+        Assertions.assertNotNull(result2);
+        Assertions.assertNotNull(result3);
+        Assertions.assertEquals(new BigDecimal(50), result);
+        Assertions.assertEquals(new BigDecimal(0), result2);
+        Assertions.assertEquals(new BigDecimal("2.24"), result3);
+    }
+
 }
