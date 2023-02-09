@@ -18,6 +18,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 /**
  * sweety-bear
@@ -280,6 +281,21 @@ public class BankCardServiceImplTest {
         Assertions.assertEquals(new BigDecimal(50), result);
         Assertions.assertEquals(new BigDecimal(0), result2);
         Assertions.assertEquals(new BigDecimal("2.24"), result3);
+    }
+
+    @Test
+    void getBankCardById_ValidId_ShouldReturnBankCard() {
+        //given
+        BankCard bankCard = new BankCard();
+        bankCard.setId(1L);
+
+        //when
+        Mockito.when(bankCardRepository.findById(1L)).thenReturn(Optional.of(bankCard));
+        BankCard result = bankCardService.getBankCardById(1L);
+
+        //then
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(bankCard, result);
     }
 
 }
