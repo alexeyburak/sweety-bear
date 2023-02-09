@@ -191,4 +191,43 @@ public class BankCardServiceImplTest {
         Assertions.assertEquals(CardPaymentSystem.AMERICAN_EXPRESS, americanExpressBankCard.getPaymentSystem());
     }
 
+    @Test
+    void isBankCardValid_ValidCard_True() {
+        //given
+        BankCard bankCard = BankCard.builder()
+                .cardNumber(3234567890123456L)
+                .expirationMonth(12)
+                .expirationYear(28)
+                .cardholderName("Alexey Burak")
+                .cvv(122)
+                .build();
+
+        //when
+        boolean result = bankCardService.isBankCardValid(bankCard);
+
+        //then
+        Assertions.assertNotNull(bankCard);
+        Assertions.assertTrue(result);
+
+    }
+
+    @Test
+    void isBankCardValid_NotValidCard_False() {
+        //given
+        BankCard bankCard = BankCard.builder()
+                .cardNumber(1234567890123456L)
+                .expirationMonth(9)
+                .expirationYear(13)
+                .cardholderName("Alexey Burak")
+                .cvv(12)
+                .build();
+
+        //when
+        boolean result = bankCardService.isBankCardValid(bankCard);
+
+        //then
+        Assertions.assertNotNull(bankCard);
+        Assertions.assertFalse(result);
+    }
+
 }
