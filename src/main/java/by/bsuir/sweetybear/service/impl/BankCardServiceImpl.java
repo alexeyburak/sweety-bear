@@ -143,7 +143,7 @@ public class BankCardServiceImpl implements BankCardService, PaymentService {
 
     @Override
     public boolean isEnoughMoney(BigDecimal balance, BigDecimal price) {
-        return balance.compareTo(price) > 0;
+        return balance.compareTo(price) >= 0;
     }
 
     @Override
