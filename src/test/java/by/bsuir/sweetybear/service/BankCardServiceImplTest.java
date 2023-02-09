@@ -15,6 +15,7 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -227,6 +228,35 @@ public class BankCardServiceImplTest {
 
         //then
         Assertions.assertNotNull(bankCard);
+        Assertions.assertFalse(result);
+    }
+
+    @Test
+    void isEnoughMoney_ValidAmount_True() {
+        //given
+        BigDecimal balance = new BigDecimal(100);
+        BigDecimal balance2 = new BigDecimal(50);
+        BigDecimal price = new BigDecimal(50);
+
+        //when
+        boolean result = bankCardService.isEnoughMoney(balance, price);
+        boolean result2 = bankCardService.isEnoughMoney(balance2, price);
+
+        //then
+        Assertions.assertTrue(result);
+        Assertions.assertTrue(result2);
+    }
+
+    @Test
+    void isEnoughMoney_NotValidAmount_False() {
+        //given
+        BigDecimal balance = new BigDecimal(10);
+        BigDecimal price = new BigDecimal(50);
+
+        //when
+        boolean result = bankCardService.isEnoughMoney(balance, price);
+
+        //then
         Assertions.assertFalse(result);
     }
 
