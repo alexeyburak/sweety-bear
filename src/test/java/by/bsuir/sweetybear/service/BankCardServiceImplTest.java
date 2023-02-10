@@ -3,6 +3,7 @@ package by.bsuir.sweetybear.service;
 import by.bsuir.sweetybear.dto.bankcard.AccessibleBankCardDTO;
 import by.bsuir.sweetybear.dto.bankcard.BankCardDTO;
 import by.bsuir.sweetybear.model.BankCard;
+import by.bsuir.sweetybear.model.Order;
 import by.bsuir.sweetybear.model.User;
 import by.bsuir.sweetybear.model.enums.CardPaymentSystem;
 import by.bsuir.sweetybear.repository.BankCardRepository;
@@ -296,6 +297,71 @@ public class BankCardServiceImplTest {
         //then
         Assertions.assertNotNull(result);
         Assertions.assertEquals(bankCard, result);
+    }
+
+    @Test
+    void debitingMoneyFromTheBankCard_SuccessfulPayment_True() {
+        //given
+        final long paymentId = 1L;
+        Order order = getOrder();
+        BankCard bankCard = BankCard.builder()
+                .balance(new BigDecimal(1000))
+                .expirationMonth(12)
+                .expirationYear(28)
+                .build();
+
+        //when
+        Mockito.when(bankCardRepository.findById(paymentId)).thenReturn(Optional.of(bankCard));
+        boolean result = bankCardService.debitingMoneyFromTheBankCard(order, paymentId);
+
+        //then
+        Assertions.assertTrue(result);
+        Assertions.assertEquals(new BigDecimal(900), bankCard.getBalance());
+    }
+
+    @Test
+    void debitingMoneyFromTheBankCard_NotEnoughMoney_False() {
+        //given
+        final long paymentId = 1L;
+        Order order = getOrder();
+        BankCard bankCard = BankCard.builder()
+                .balance(new BigDecimal(1))
+                .expirationMonth(12)
+                .expirationYear(28)
+                .build();
+
+        //when
+        Mockito.when(bankCardRepository.findById(paymentId)).thenReturn(Optional.of(bankCard));
+        boolean result = bankCardService.debitingMoneyFromTheBankCard(order, paymentId);
+
+        //then
+        Assertions.assertFalse(result);
+    }
+
+    @Test
+    void debitingMoneyFromTheBankCard_CardDateInvalid_False() {
+        //given
+        final long paymentId = 1L;
+        final int expirationYear = 13;
+        Order order = getOrder();
+        BankCard bankCard = BankCard.builder()
+                .balance(new BigDecimal(1000))
+                .expirationMonth(12)
+                .expirationYear(expirationYear)
+                .build();
+
+        //when
+        Mockito.when(bankCardRepository.findById(paymentId)).thenReturn(Optional.of(bankCard));
+        boolean result = bankCardService.debitingMoneyFromTheBankCard(order, paymentId);
+
+        //then
+        Assertions.assertFalse(result);
+    }
+
+    private Order getOrder() {
+        return Order.builder()
+                .sum(new BigDecimal(100))
+                .build();
     }
 
 }
