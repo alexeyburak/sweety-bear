@@ -49,6 +49,31 @@ public class ProductRatingServiceImplTest {
         Assertions.assertEquals(0, emptyResult);
     }
 
+    @Test
+    void countAvgRatings_FeedbackList_ReturnAvgValue() {
+        //given
+        List<Feedback> feedbacks = new ArrayList<>(
+                List.of(
+                        Feedback.builder().stars(2).build(),
+                        Feedback.builder().stars(4).build(),
+                        Feedback.builder().stars(4).build(),
+                        Feedback.builder().stars(5).build()
+                )
+        );
+        List<Feedback> feedbacks2 = new ArrayList<>(
+                List.of(
+                        Feedback.builder().stars(5).build(),
+                        Feedback.builder().stars(5).build()
+                )
+        );
 
+        //when
+        double result = productRatingService.countAvgRating(feedbacks);
+        double result2 = productRatingService.countAvgRating(feedbacks2);
+
+        //then
+        Assertions.assertEquals(3.75, result);
+        Assertions.assertEquals(5, result2);
+    }
 
 }
