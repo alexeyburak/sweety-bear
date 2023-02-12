@@ -12,6 +12,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * sweety-bear
@@ -76,4 +77,46 @@ public class ProductRatingServiceImplTest {
         Assertions.assertEquals(5, result2);
     }
 
+    @Test
+    void countStarsWithPercentages_FeedbackList_ReturnStarsWithPercentagesMap() {
+        //given
+        List<Feedback> feedbacks = List.of(
+                Feedback.builder().stars(1).build(),
+                Feedback.builder().stars(2).build(),
+                Feedback.builder().stars(3).build(),
+                Feedback.builder().stars(4).build(),
+                Feedback.builder().stars(5).build()
+
+        );
+        Map<Integer, Double> expected = Map.of(
+                1, 20.0,
+                2, 20.0,
+                3, 20.0,
+                4, 20.0,
+                5, 20.0
+        );
+        List<Feedback> feedbacks2 = List.of(
+                Feedback.builder().stars(5).build(),
+                Feedback.builder().stars(5).build()
+
+        );
+        Map<Integer, Double> expected2 = Map.of(
+                1, 0.0,
+                2, 0.0,
+                3, 0.0,
+                4, 0.0,
+                5, 100.0
+        );
+
+        //when
+        Map<Integer, Double> result = productRatingService.countStarsWithPercentages(feedbacks);
+        Map<Integer, Double> result2 = productRatingService.countStarsWithPercentages(feedbacks2);
+
+        //then
+        Assertions.assertEquals(5, result.size());
+        Assertions.assertEquals(expected, result);
+
+        Assertions.assertEquals(5, result2.size());
+        Assertions.assertEquals(expected2, result2);
+    }
 }
