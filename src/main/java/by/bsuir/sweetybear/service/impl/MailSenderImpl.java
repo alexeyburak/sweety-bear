@@ -40,7 +40,7 @@ public class MailSenderImpl extends AbstractMailSender {
         );
         title = "Reset password";
 
-        sendWithMime(user.getEmail(), title, message);
+        new Thread(() -> sendWithMime(user.getEmail(), title, message)).start();
         log.warn("Send resetting password message.");
     }
 
@@ -64,7 +64,7 @@ public class MailSenderImpl extends AbstractMailSender {
         );
         title = "Thanks for registration!";
 
-        sendWithMime(user.getEmail(), title, message);
+        new Thread(() -> sendWithMime(user.getEmail(), title, message)).start();
         log.warn("Send greeting message.");
     }
 
@@ -72,7 +72,7 @@ public class MailSenderImpl extends AbstractMailSender {
     public void sendEmailWithPasswordToUser(final String email, final String temporaryPassword) {
         message = String.format(
                 """
-                        There are your account data
+                        <h4>There are your account data</h4>
                         Email: %s
                         Password: %s
                 """,
@@ -81,7 +81,7 @@ public class MailSenderImpl extends AbstractMailSender {
         );
         title = "Thanks for registration!";
 
-        send(email, title, message);
+        new Thread(() -> sendWithMime(email, title, message)).start();
         log.warn("Send message with password.");
     }
 }
