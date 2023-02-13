@@ -1,5 +1,6 @@
 package by.bsuir.sweetybear.service;
 
+import by.bsuir.sweetybear.dto.product.ProductRatingDTO;
 import by.bsuir.sweetybear.model.Feedback;
 import by.bsuir.sweetybear.service.impl.FeedbackServiceImpl;
 import by.bsuir.sweetybear.service.impl.ProductRatingServiceImpl;
@@ -8,9 +9,11 @@ import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
@@ -118,5 +121,52 @@ public class ProductRatingServiceImplTest {
 
         Assertions.assertEquals(5, result2.size());
         Assertions.assertEquals(expected2, result2);
+    }
+
+    @Test
+    void generateProductRating_ProductIdWithNotEmptyFeedbacks_ShouldReturnFilledInRatingDTO() {
+        //given
+        final long productId = 1L;
+        List<Feedback> feedbacks = List.of(
+                Feedback.builder().stars(5).build()
+        );
+
+        final int expectedAllRatings = 1;
+        final double expectedAvgRating = 5.0;
+        Map<Integer, Double> expectedMap = Map.of(
+                1, 0.0,
+                2, 0.0,
+                3, 0.0,
+                4, 0.0,
+                5, 100.0
+        );
+
+        //when
+        Mockito.when(feedbackService.getProductFeedbackList(productId)).thenReturn(feedbacks);
+        ProductRatingDTO result = productRatingService.generateProductRating(productId);
+
+        //then
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(expectedAllRatings, result.getAllRatings());
+        Assertions.assertEquals(expectedAvgRating, result.getAvgRating());
+        Assertions.assertEquals(expectedMap, result.getStarsWithPercentages());
+
+    }
+
+    @Test
+    void generateProductRating_ProductIdWithEmptyFeedbacks_ShouldReturnEmptyRatingDTO() {
+        //given
+        final long productId = 1L;
+        List<Feedback> feedbacks = Collections.emptyList();
+
+        //when
+        Mockito.when(feedbackService.getProductFeedbackList(productId)).thenReturn(feedbacks);
+        ProductRatingDTO result = productRatingService.generateProductRating(productId);
+
+        //then
+        Assertions.assertNotNull(result);
+        Assertions.assertEquals(0, result.getAllRatings());
+        Assertions.assertEquals(0, result.getAvgRating());
+        Assertions.assertNull(result.getStarsWithPercentages());
     }
 }
