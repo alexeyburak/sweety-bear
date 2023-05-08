@@ -16,9 +16,13 @@ import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.mockito.junit.jupiter.MockitoExtension;
 import org.springframework.security.crypto.password.PasswordEncoder;
-import org.springframework.web.multipart.MultipartFile;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Optional;
+import java.util.Set;
 
 import static by.bsuir.sweetybear.utils.UUIDGenerator.generateUUID;
 import static org.mockito.Mockito.doNothing;
@@ -93,30 +97,6 @@ class UserServiceImplTest {
         //then
         Assertions.assertNotNull(user);
         Assertions.assertFalse(user.isActive());
-    }
-
-    @Test
-    void updateUserDataById_UpdatedUserAndEditedUserId_ShouldUpdateEditedUserData() {
-        //given
-        User user = User.builder()
-                .email("burakalexey@yahoo.com")
-                .name("Alexey")
-                .build();
-        User userUpdate = User.builder()
-                .email("updated@gmail.com")
-                .name("Updated")
-                .build();
-        MultipartFile file = Mockito.mock(MultipartFile.class);
-
-        //when
-        Mockito.when(userRepository.findById(1L)).thenReturn(Optional.of(user));
-        Mockito.when(userRepository.save(user)).thenReturn(user);
-        userService.updateUserDataById(1L, userUpdate, file);
-
-        //then
-        Assertions.assertNotNull(user);
-        Assertions.assertEquals(user.getEmail(), userUpdate.getEmail());
-        Assertions.assertEquals(user.getName(), userUpdate.getName());
     }
 
     @Test

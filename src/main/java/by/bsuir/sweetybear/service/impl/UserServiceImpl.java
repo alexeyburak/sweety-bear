@@ -146,8 +146,8 @@ public class UserServiceImpl implements UserService, UserReceivingService {
         user.setName(userUpdate.getName());
         user.setEmail(userUpdate.getEmail());
 
-        changeSecurityAuthenticationEmail(user.getEmail());
 
+        changeSecurityAuthenticationEmail(user.getEmail());
         userRepository.save(user);
         log.info("Update user data. Id: {}", id);
     }
